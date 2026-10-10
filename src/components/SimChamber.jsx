@@ -207,59 +207,61 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
     <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(12px, 2.5vw, 20px) 16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
       
       {/* Top Procedural Bar */}
-      <div className="craft-card sim-chamber-header" style={{ padding: '12px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '14px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+      <div className="craft-card sim-chamber-header" style={{ padding: '8px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
           <button 
             onClick={onBack}
             className="btn-secondary"
-            style={{ padding: '6px 12px', fontSize: '12.5px' }}
+            style={{ padding: '5px 10px', fontSize: '11.5px', flexShrink: 0 }}
           >
-            <ArrowLeft size={14} />
+            <ArrowLeft size={13} />
             <span>Thoát</span>
           </button>
           
-          <div style={{ height: '20px', width: '1px', background: 'var(--border-subtle)' }} />
+          <div style={{ height: '16px', width: '1px', background: 'var(--border-subtle)', flexShrink: 0 }} />
 
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span className="badge-mono" style={{ background: 'var(--bg-inset)', color: '#9CA3AF', border: '1px solid var(--border-subtle)' }}>
-                LƯỢT #{turnCount}
+          <div style={{ minWidth: 0, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span className="badge-mono" style={{ background: 'var(--bg-inset)', color: '#9CA3AF', border: '1px solid var(--border-subtle)', fontSize: '10px', padding: '2px 5px', flexShrink: 0 }}>
+                #{turnCount}
               </span>
-              <h2 className="font-serif" style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6' }}>
+              <h2 className="font-serif sim-chamber-header-title" style={{ fontSize: '13.5px', fontWeight: 600, color: '#F3F4F6', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {scenario.title}
               </h2>
             </div>
           </div>
         </div>
 
-        <div className="sim-chamber-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="sim-chamber-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
           <button
             onClick={() => {
               if (audioEnabled) stopAiVoice();
               setAudioEnabled(!audioEnabled);
             }}
             className="btn-secondary"
-            style={{ fontSize: '12px', padding: '6px 10px' }}
+            style={{ fontSize: '11px', padding: '5px 8px' }}
+            title="Bật/Tắt âm thanh"
           >
             {audioEnabled ? <Volume2 size={13} color="#60A5FA" /> : <VolumeX size={13} />}
-            <span>Âm Thanh: {audioEnabled ? 'BẬT' : 'TẮT'}</span>
+            <span className="chamber-btn-text">Âm Thanh: {audioEnabled ? 'BẬT' : 'TẮT'}</span>
           </button>
 
           <button
             onClick={() => setShowDossierModal(true)}
             className="btn-secondary"
-            style={{ fontSize: '12px', padding: '6px 10px' }}
+            style={{ fontSize: '11px', padding: '5px 8px' }}
+            title="Hồ sơ chứng cứ"
           >
             <FileText size={13} />
-            <span>Hồ Sơ ({scenario.dossier.length})</span>
+            <span className="chamber-btn-text">Hồ Sơ ({scenario.dossier.length})</span>
           </button>
 
           <button
             onClick={handleFinishSession}
             className="btn-primary"
-            style={{ fontSize: '12px', padding: '6px 14px' }}
+            style={{ fontSize: '11px', padding: '5px 10px' }}
           >
-            <span>Xuất Rubric</span>
+            <span>Rubric</span>
           </button>
         </div>
       </div>
@@ -394,7 +396,7 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
           </div>
 
           {/* Transcript Feed */}
-          <div style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div className="chamber-chat-feed" style={{ flex: 1, padding: 'clamp(10px, 2vw, 18px)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {messages.map((msg, index) => (
               <div 
                 key={index} 
@@ -402,11 +404,11 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
                   display: 'flex', 
                   flexDirection: 'column', 
                   alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                  maxWidth: '88%',
+                  maxWidth: '92%',
                   alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start'
                 }}
               >
-                <div className="font-mono" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px', fontSize: '11px', color: '#6B7280' }}>
+                <div className="font-mono" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px', fontSize: '10px', color: '#6B7280' }}>
                   <span>{msg.sender === 'user' ? '[VIETNAM DELEGATION]' : `[ADVERSE PARTY • ${scenario.persona.name.split(' ')[0]}]`}</span>
                   <span>•</span>
                   <span>{msg.timestamp}</span>
@@ -414,33 +416,33 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
 
                 <div 
                   style={{ 
-                    padding: '14px 16px', 
+                    padding: '10px 14px', 
                     borderRadius: '6px',
                     background: msg.sender === 'user' ? 'var(--accent-primary)' : 'var(--bg-surface-elevated)',
                     border: msg.sender === 'user' ? '1px solid rgba(255,255,255,0.1)' : '1px solid var(--border-subtle)',
                     color: '#F3F4F6',
-                    fontSize: '13.5px',
-                    lineHeight: 1.55
+                    fontSize: '13px',
+                    lineHeight: 1.5
                   }}
                 >
                   {msg.sender === 'ai' ? (
                     <div>
                       {/* Chinese primary text */}
-                      <p className="font-cn" style={{ fontWeight: 500, color: '#F3F4F6', fontSize: '14px', marginBottom: '8px' }}>
+                      <p className="font-cn" style={{ fontWeight: 500, color: '#F3F4F6', fontSize: '13px', marginBottom: '6px' }}>
                         {msg.textZh}
                       </p>
                       {/* Vietnamese translation */}
-                      <p style={{ color: '#9CA3AF', fontSize: '12.5px', borderTop: '1px solid var(--border-subtle)', paddingTop: '8px', lineHeight: 1.5 }}>
-                        <span className="font-mono" style={{ fontSize: '10.5px', color: '#6B7280' }}>[BẢN DỊCH VIỆT]</span> {msg.textVi}
+                      <p style={{ color: '#9CA3AF', fontSize: '11.5px', borderTop: '1px solid var(--border-subtle)', paddingTop: '6px', lineHeight: 1.45 }}>
+                        <span className="font-mono" style={{ fontSize: '10px', color: '#6B7280' }}>[BẢN DỊCH]</span> {msg.textVi}
                       </p>
                       
-                      <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
+                      <div style={{ marginTop: '6px', display: 'flex', justifyContent: 'flex-end' }}>
                         <button
                           onClick={() => playAiVoice(msg.textZh, scenario.persona.languageCode)}
                           className="btn-secondary"
-                          style={{ padding: '3px 8px', fontSize: '11px' }}
+                          style={{ padding: '2px 7px', fontSize: '10.5px' }}
                         >
-                          <Volume2 size={12} color="#60A5FA" />
+                          <Volume2 size={11} color="#60A5FA" />
                           <span>Nghe phát âm</span>
                         </button>
                       </div>
@@ -453,63 +455,59 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
             ))}
 
             {isAiTyping && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: 'var(--bg-inset)', borderRadius: '6px', border: '1px solid var(--border-subtle)', width: 'fit-content' }}>
-                <span className="font-mono" style={{ fontSize: '11.5px', color: '#9CA3AF' }}>Trần Tổng đang cân nhắc lập luận pháp lý & tài chính...</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: 'var(--bg-inset)', borderRadius: '6px', border: '1px solid var(--border-subtle)', width: 'fit-content' }}>
+                <span className="font-mono" style={{ fontSize: '11px', color: '#9CA3AF' }}>Trần Tổng đang cân nhắc lập luận pháp lý & tài chính...</span>
               </div>
             )}
 
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Tactical Prompt Suggester Panel (Structured Strategy Cards) */}
-          <div style={{ padding: '12px 16px', background: 'var(--bg-inset)', borderTop: '1px solid var(--border-subtle)' }}>
-            <div className="font-mono" style={{ fontSize: '11px', color: '#6B7280', marginBottom: '8px', letterSpacing: '0.04em' }}>
-              GỢI Ý CHIẾN LƯỢC ĐỐI ỨNG (TỰ DO SOẠN THẢO HOẶC NHẤP CHỌN):
+          {/* Tactical Prompt Suggester Panel (Compact Chip Scroller on Mobile) */}
+          <div style={{ padding: '8px 12px', background: 'var(--bg-inset)', borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <span className="font-mono" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.04em' }}>
+                CHIẾN LƯỢC ĐỐI ỨNG (CHỌN NHANH HOẶC TỰ SOẠN):
+              </span>
             </div>
             
-            <div className="tactical-prompts-grid">
+            <div className="tactical-prompts-scroller">
               {scenario.tacticalPrompts.map((prompt, i) => (
                 <button
                   key={i}
                   disabled={isAiTyping}
                   onClick={() => handleSendMessage(prompt.textVi, prompt)}
-                  className="craft-card craft-card-interactive"
-                  style={{
-                    padding: '8px 12px',
-                    textAlign: 'left',
-                    background: 'var(--bg-surface)',
-                    cursor: isAiTyping ? 'not-allowed' : 'pointer',
-                    opacity: isAiTyping ? 0.5 : 1
-                  }}
+                  className="tactical-prompt-btn"
+                  title={prompt.textVi}
                 >
-                  <div className="font-mono" style={{ fontSize: '10.5px', color: '#93C5FD', fontWeight: 600, marginBottom: '2px' }}>
-                    {prompt.label.replace(/^[^\s]+/, '')}
-                  </div>
-                  <div style={{ fontSize: '11.5px', color: '#9CA3AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <span className="prompt-btn-badge font-mono">
+                    {prompt.label.split(' ')[0]}
+                  </span>
+                  <span className="prompt-btn-text">
                     {prompt.textVi}
-                  </div>
+                  </span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* User Input Console */}
-          <div style={{ padding: '12px 16px', background: 'var(--bg-surface-elevated)', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '10px' }}>
+          <div style={{ padding: '8px 12px', background: 'var(--bg-surface-elevated)', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '8px', alignItems: 'center' }}>
             <input
               type="text"
               value={userInput}
               onChange={e => setUserInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Soạn thảo lập luận đàm phán (Ví dụ: đề xuất chia 3 kỳ thanh toán, viện dẫn Điều 79 CISG, hoặc kính ngữ tiếng Trung)..."
+              placeholder="Nhập lập luận đàm phán (CISG, chia đợt, ngoại giao...)"
               disabled={isAiTyping}
               style={{
                 flex: 1,
                 background: 'var(--bg-inset)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: '6px',
-                padding: '10px 14px',
+                padding: '8px 12px',
                 color: '#F3F4F6',
-                fontSize: '13px',
+                fontSize: '12.5px',
                 outline: 'none',
                 fontFamily: 'inherit'
               }}
@@ -518,10 +516,10 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
               onClick={() => handleSendMessage()}
               disabled={isAiTyping || !userInput.trim()}
               className="btn-primary"
-              style={{ padding: '0 16px', opacity: isAiTyping || !userInput.trim() ? 0.4 : 1 }}
+              style={{ padding: '8px 14px', fontSize: '12px', height: '36px', whiteSpace: 'nowrap', opacity: isAiTyping || !userInput.trim() ? 0.4 : 1 }}
             >
               <span>Phát Biểu</span>
-              <CornerDownLeft size={14} />
+              <CornerDownLeft size={13} />
             </button>
           </div>
 
@@ -541,25 +539,25 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
               </span>
             </div>
 
-            <RadarChart scores={scores} size={240} />
+            <RadarChart scores={scores} size={210} />
 
             {/* Metric Rows */}
-            <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginTop: '12px' }}>
-              <div className="craft-inset" style={{ padding: '8px 10px' }}>
-                <div className="font-mono" style={{ fontSize: '10px', color: '#6B7280' }}>LUẬT KINH TẾ</div>
-                <div className="font-mono" style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6' }}>{scores.law}%</div>
+            <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginTop: '10px' }}>
+              <div className="craft-inset" style={{ padding: '6px 8px' }}>
+                <div className="font-mono" style={{ fontSize: '9.5px', color: '#6B7280' }}>LUẬT KINH TẾ</div>
+                <div className="font-mono" style={{ fontSize: '13.5px', fontWeight: 600, color: '#F3F4F6' }}>{scores.law}%</div>
               </div>
-              <div className="craft-inset" style={{ padding: '8px 10px' }}>
-                <div className="font-mono" style={{ fontSize: '10px', color: '#6B7280' }}>NGÔN NGỮ THƯƠNG MẠI</div>
-                <div className="font-mono" style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6' }}>{scores.lang}%</div>
+              <div className="craft-inset" style={{ padding: '6px 8px' }}>
+                <div className="font-mono" style={{ fontSize: '9.5px', color: '#6B7280' }}>NGÔN NGỮ THƯƠNG MẠI</div>
+                <div className="font-mono" style={{ fontSize: '13.5px', fontWeight: 600, color: '#F3F4F6' }}>{scores.lang}%</div>
               </div>
-              <div className="craft-inset" style={{ padding: '8px 10px' }}>
-                <div className="font-mono" style={{ fontSize: '10px', color: '#6B7280' }}>QUẢN TRỊ KHỦNG HOẢNG</div>
-                <div className="font-mono" style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6' }}>{scores.mgmt}%</div>
+              <div className="craft-inset" style={{ padding: '6px 8px' }}>
+                <div className="font-mono" style={{ fontSize: '9.5px', color: '#6B7280' }}>QUẢN TRỊ KHỦNG HOẢNG</div>
+                <div className="font-mono" style={{ fontSize: '13.5px', fontWeight: 600, color: '#F3F4F6' }}>{scores.mgmt}%</div>
               </div>
-              <div className="craft-inset" style={{ padding: '8px 10px' }}>
-                <div className="font-mono" style={{ fontSize: '10px', color: '#6B7280' }}>TỐI ƯU TÀI CHÍNH</div>
-                <div className="font-mono" style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6' }}>{scores.econ}%</div>
+              <div className="craft-inset" style={{ padding: '6px 8px' }}>
+                <div className="font-mono" style={{ fontSize: '9.5px', color: '#6B7280' }}>TỐI ƯU TÀI CHÍNH</div>
+                <div className="font-mono" style={{ fontSize: '13.5px', fontWeight: 600, color: '#F3F4F6' }}>{scores.econ}%</div>
               </div>
             </div>
           </div>
