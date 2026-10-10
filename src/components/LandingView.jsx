@@ -17,6 +17,54 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
 
   const videoRef = useRef(null);
 
+  // Mobile Autoplay Enforcer for iOS Safari & Android Chrome
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Explicit DOM properties required by Mobile Safari
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+
+    const tryPlay = () => {
+      if (video && video.paused) {
+        const promise = video.play();
+        if (promise !== undefined) {
+          promise.catch(() => {
+            // Browser restricted initial autoplay without gesture
+          });
+        }
+      }
+    };
+
+    tryPlay();
+
+    // Trigger video playback on the very first touch/gesture if initially restricted
+    const handleFirstGesture = () => {
+      tryPlay();
+      window.removeEventListener('touchstart', handleFirstGesture);
+      window.removeEventListener('touchend', handleFirstGesture);
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('scroll', handleFirstGesture);
+    };
+
+    window.addEventListener('touchstart', handleFirstGesture, { passive: true });
+    window.addEventListener('touchend', handleFirstGesture, { passive: true });
+    window.addEventListener('click', handleFirstGesture, { passive: true });
+    window.addEventListener('scroll', handleFirstGesture, { passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', handleFirstGesture);
+      window.removeEventListener('touchend', handleFirstGesture);
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('scroll', handleFirstGesture);
+    };
+  }, []);
+
   // Entrance Web Animations API
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -123,6 +171,9 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
             muted
             loop
             playsInline
+            webkit-playsinline="true"
+            preload="auto"
+            poster="./assets/hero_poster.jpg"
             style={{
               width: '100%',
               height: '100%',
