@@ -120,7 +120,7 @@ export default function CaseStudioModal({ isOpen, onClose, onCreateScenario }) {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
             <div>
               <label className="font-mono" style={{ fontSize: '11px', color: '#9CA3AF', display: 'block', marginBottom: '6px' }}>
                 TÊN CHỦ THỂ AI ĐỐI ỨNG
@@ -150,7 +150,7 @@ export default function CaseStudioModal({ isOpen, onClose, onCreateScenario }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
             <div>
               <label className="font-mono" style={{ fontSize: '11px', color: '#9CA3AF', display: 'block', marginBottom: '6px' }}>
                 SỐ TIỀN TRANH CHẤP / YÊU CẦU BỒI THƯỜNG

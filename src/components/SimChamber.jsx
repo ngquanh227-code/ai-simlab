@@ -29,6 +29,7 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
   );
   const [turnCount, setTurnCount] = useState(1);
   const [usedBranches, setUsedBranches] = useState([]);
+  const [mobileTab, setMobileTab] = useState('chat');
 
   const messagesEndRef = useRef(null);
 
@@ -203,71 +204,93 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
   };
 
   return (
-    <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(12px, 2.5vw, 20px) 16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
       
       {/* Top Procedural Bar */}
-      <div className="craft-card" style={{ padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div className="craft-card sim-chamber-header" style={{ padding: '12px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <button 
             onClick={onBack}
             className="btn-secondary"
             style={{ padding: '6px 12px', fontSize: '12.5px' }}
           >
             <ArrowLeft size={14} />
-            <span>Thoát Phiên Họp</span>
+            <span>Thoát</span>
           </button>
           
-          <div style={{ height: '24px', width: '1px', background: 'var(--border-subtle)' }} />
+          <div style={{ height: '20px', width: '1px', background: 'var(--border-subtle)' }} />
 
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span className="badge-mono" style={{ background: 'var(--bg-inset)', color: '#9CA3AF', border: '1px solid var(--border-subtle)' }}>
-                HEARING NO. #{turnCount}
+                LƯỢT #{turnCount}
               </span>
-              <h2 className="font-serif" style={{ fontSize: '16px', fontWeight: 600, color: '#F3F4F6' }}>
+              <h2 className="font-serif" style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6' }}>
                 {scenario.title}
               </h2>
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="sim-chamber-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={() => {
               if (audioEnabled) stopAiVoice();
               setAudioEnabled(!audioEnabled);
             }}
             className="btn-secondary"
-            style={{ fontSize: '12.5px', padding: '6px 12px' }}
+            style={{ fontSize: '12px', padding: '6px 10px' }}
           >
-            {audioEnabled ? <Volume2 size={14} color="#60A5FA" /> : <VolumeX size={14} />}
-            <span>Âm Thanh Đàm Thoại: {audioEnabled ? 'BẬT' : 'TẮT'}</span>
+            {audioEnabled ? <Volume2 size={13} color="#60A5FA" /> : <VolumeX size={13} />}
+            <span>Âm Thanh: {audioEnabled ? 'BẬT' : 'TẮT'}</span>
           </button>
 
           <button
             onClick={() => setShowDossierModal(true)}
             className="btn-secondary"
-            style={{ fontSize: '12.5px', padding: '6px 12px' }}
+            style={{ fontSize: '12px', padding: '6px 10px' }}
           >
-            <FileText size={14} />
-            <span>Hồ Sơ Chứng Cứ ({scenario.dossier.length})</span>
+            <FileText size={13} />
+            <span>Hồ Sơ ({scenario.dossier.length})</span>
           </button>
 
           <button
             onClick={handleFinishSession}
             className="btn-primary"
-            style={{ fontSize: '12.5px', padding: '6px 16px' }}
+            style={{ fontSize: '12px', padding: '6px 14px' }}
           >
-            <span>Kết Thúc & Xuất Rubric</span>
+            <span>Xuất Rubric</span>
           </button>
         </div>
       </div>
 
+      {/* Mobile Chamber Segment Control */}
+      <div className="mobile-chamber-tabs">
+        <button
+          className={mobileTab === 'chat' ? 'active' : ''}
+          onClick={() => setMobileTab('chat')}
+        >
+          💬 Đàm Phán ({messages.length})
+        </button>
+        <button
+          className={mobileTab === 'dossier' ? 'active' : ''}
+          onClick={() => setMobileTab('dossier')}
+        >
+          📁 Đối Tác & Mục Tiêu
+        </button>
+        <button
+          className={mobileTab === 'radar' ? 'active' : ''}
+          onClick={() => setMobileTab('radar')}
+        >
+          📊 Radar 4D & Cố Vấn
+        </button>
+      </div>
+
       {/* 3-Column Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr 320px', gap: '14px', alignItems: 'stretch' }}>
+      <div className="sim-chamber-grid" style={{ display: 'grid', gridTemplateColumns: '300px 1fr 320px', gap: '14px', alignItems: 'stretch' }}>
         
         {/* LEFT COLUMN: Persona Dossier & Objectives */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <div className={`chamber-col-left ${mobileTab === 'dossier' ? 'mobile-active' : ''}`} style={{ flexDirection: 'column', gap: '14px' }}>
           
           {/* Persona Dossier Card with Generated Portrait */}
           <div className="craft-card" style={{ padding: '18px' }}>
@@ -345,7 +368,7 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
         </div>
 
         {/* CENTER COLUMN: Hearing Record & Negotiation Console */}
-        <div className="craft-card" style={{ display: 'flex', flexDirection: 'column', height: '760px', overflow: 'hidden' }}>
+        <div className={`craft-card sim-chamber-chat chamber-col-center ${mobileTab === 'chat' ? 'mobile-active' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '760px', overflow: 'hidden' }}>
           
           {/* Transcript Subheader with Wave Motion */}
           <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border-subtle)', background: 'var(--bg-inset)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -444,7 +467,7 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
               GỢI Ý CHIẾN LƯỢC ĐỐI ỨNG (TỰ DO SOẠN THẢO HOẶC NHẤP CHỌN):
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <div className="tactical-prompts-grid">
               {scenario.tacticalPrompts.map((prompt, i) => (
                 <button
                   key={i}
@@ -505,7 +528,7 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
         </div>
 
         {/* RIGHT COLUMN: Realtime Competency HUD & Counsel Whispers */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <div className={`chamber-col-right ${mobileTab === 'radar' ? 'mobile-active' : ''}`} style={{ flexDirection: 'column', gap: '14px' }}>
           
           {/* Radar Chart HUD */}
           <div className="craft-card" style={{ padding: '18px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -593,20 +616,22 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
               </button>
             </div>
 
-            <div style={{ display: 'flex', borderBottom: '1px solid var(--border-subtle)', background: 'var(--bg-inset)' }}>
+            <div style={{ display: 'flex', overflowX: 'auto', WebkitOverflowScrolling: 'touch', borderBottom: '1px solid var(--border-subtle)', background: 'var(--bg-inset)' }}>
               {scenario.dossier.map((doc, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveDossierTab(idx)}
                   style={{
-                    padding: '10px 18px',
+                    padding: '10px 16px',
                     background: activeDossierTab === idx ? 'var(--bg-surface)' : 'transparent',
                     borderRight: '1px solid var(--border-subtle)',
-                    borderBottom: activeDossierTab === idx ? '2px solid var(--accent-primary)' : 'none',
+                    borderBottom: activeDossierTab === idx ? '2px solid var(--teal)' : 'none',
                     color: activeDossierTab === idx ? '#F3F4F6' : '#9CA3AF',
-                    fontSize: '12.5px',
+                    fontSize: '12px',
                     fontWeight: 500,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
                   }}
                 >
                   {doc.title}

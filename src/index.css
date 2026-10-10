@@ -1,6 +1,6 @@
-/* RIVERINE DESIGN SYSTEM APPLIED TO SIMLAB */
+/* RIVERINE DESIGN SYSTEM APPLIED TO SIMLAB (DESKTOP & MOBILE OPTIMIZED) */
 :root {
-  --u: max(0.62px, min(100vw / 1280, 100dvh / 960));
+  --u: clamp(0.75px, min(100vw / 1280, 100dvh / 960), 1.1px);
   --gutter: calc(48 * var(--u));
   
   /* Riverine Palette */
@@ -62,6 +62,7 @@ body {
   line-height: 1.55;
   min-height: 100vh;
   overflow-x: hidden;
+  width: 100%;
 }
 
 a {
@@ -139,7 +140,7 @@ button {
   );
 }
 
-/* RIVERINE CRAFT CARDS */
+/* CRAFT CARDS */
 .craft-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -186,16 +187,16 @@ button {
 
 /* BUTTONS */
 .btn-cta-pill {
-  height: calc(46 * var(--u));
-  padding: 0 calc(20 * var(--u));
+  height: 48px;
+  padding: 0 22px;
   background: var(--cream);
   color: #03080B;
   border-radius: 9999px;
-  font-size: calc(14 * var(--u));
+  font-size: 14px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: calc(12 * var(--u));
+  gap: 12px;
   transition: all 0.2s ease;
   white-space: nowrap;
   border: none;
@@ -203,8 +204,8 @@ button {
 }
 
 .btn-cta-pill .pill-disc {
-  width: calc(28 * var(--u));
-  height: calc(28 * var(--u));
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--pine);
   display: flex;
@@ -214,8 +215,8 @@ button {
 }
 
 .btn-cta-pill .pill-disc svg {
-  width: calc(5 * var(--u));
-  height: calc(8 * var(--u));
+  width: 5px;
+  height: 8px;
   stroke: #FFFFFF;
   fill: none;
   stroke-width: 1.4;
@@ -330,3 +331,273 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--teal);
 }
+
+/* ========================================================= */
+/* DEDICATED MOBILE & TABLET RESPONSIVE STYLES */
+/* ========================================================= */
+.mobile-hamburger-btn {
+  display: none;
+}
+
+.mobile-chamber-tabs {
+  display: none;
+}
+
+.chamber-col-left,
+.chamber-col-center,
+.chamber-col-right {
+  display: flex;
+}
+
+.tactical-prompts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 1023px) {
+  /* Chamber Layout on Tablet & Mobile */
+  .chamber-col-left,
+  .chamber-col-center,
+  .chamber-col-right {
+    display: none !important;
+  }
+
+  .chamber-col-left.mobile-active,
+  .chamber-col-center.mobile-active,
+  .chamber-col-right.mobile-active {
+    display: flex !important;
+    width: 100% !important;
+  }
+
+  .sim-chamber-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .mobile-chamber-tabs {
+    display: flex !important;
+    background: var(--bg-inset);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .mobile-chamber-tabs button {
+    flex: 1;
+    padding: 8px 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .mobile-chamber-tabs button.active {
+    background: var(--bg-surface-elevated);
+    color: var(--teal);
+    border: 1px solid var(--border-medium);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .tactical-prompts-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+
+  .sim-chamber-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .sim-chamber-header-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .sim-chamber-header-actions button {
+    flex: 1 !important;
+    min-width: 120px !important;
+    justify-content: center !important;
+    font-size: 11.5px !important;
+    padding: 8px 10px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --u: 0.95px;
+    --gutter: 16px;
+  }
+
+  /* Hamburger Menu Button */
+  .mobile-hamburger-btn {
+    display: flex !important;
+  }
+
+  /* Hero Section on Mobile */
+  .hero-stage {
+    min-height: 100svh !important;
+    height: auto !important;
+    padding-bottom: 32px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .hero-top-bar {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    padding: max(14px, env(safe-area-inset-top)) 16px 0 16px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    z-index: 20 !important;
+  }
+
+  .hero-nav-pill-desktop {
+    display: none !important;
+  }
+
+  .hero-bottom-content {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    padding: 24px 16px 16px 16px !important;
+    max-width: 100% !important;
+    z-index: 15 !important;
+  }
+
+  .hero-headline-title {
+    font-size: clamp(28px, 8vw, 38px) !important;
+    white-space: normal !important;
+    line-height: 1.15 !important;
+    margin-bottom: 14px !important;
+    word-break: break-word !important;
+  }
+
+  .hero-headline-line {
+    white-space: normal !important;
+  }
+
+  .hero-lede-text {
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .hero-actions-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .btn-cta-pill {
+    width: 100% !important;
+    justify-content: center !important;
+    font-size: 13.5px !important;
+    padding: 0 16px !important;
+    height: 46px !important;
+  }
+
+  .hero-scroll-cue-desktop {
+    display: none !important;
+  }
+
+  /* Grid Layouts to 1-column on mobile */
+  .grid-2col-responsive {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .grid-3col-responsive {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Sim Chamber Chat Feed Height */
+  .sim-chamber-chat {
+    height: 520px !important;
+  }
+
+  /* 4 Pillars Tab Overflow on Mobile */
+  .pillars-tab-bar {
+    overflow-x: auto !important;
+    display: flex !important;
+    width: 100% !important;
+    padding-bottom: 6px !important;
+    gap: 6px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pillars-tab-bar button {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 11.5px !important;
+    padding: 7px 10px !important;
+  }
+
+  /* Image Containers on Mobile */
+  .image-zoom-container {
+    height: 180px !important;
+  }
+
+  /* Top Navbar on Mobile */
+  .nav-desktop-links {
+    display: none !important;
+  }
+
+  .navbar-mobile-actions {
+    gap: 6px !important;
+  }
+
+  .navbar-mobile-actions button {
+    padding: 6px 10px !important;
+    font-size: 11.5px !important;
+  }
+
+  /* Rubric Report Mobile Layout */
+  .rubric-top-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .rubric-top-bar-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .rubric-top-bar-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .rubric-score-summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .rubric-radar-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowRight, ArrowUpRight, Scale, Languages, Shield, TrendingUp, 
   Check, ChevronRight, Play, Volume2, Sparkles, Sliders, Users, 
-  FileText, Award, BookmarkCheck, ExternalLink, HelpCircle
+  FileText, Award, BookmarkCheck, ExternalLink, HelpCircle, Menu, X, Plus
 } from 'lucide-react';
 import { SCENARIOS, FOUR_PILLARS } from '../data/scenarios';
 import RadarChart from './RadarChart';
@@ -10,12 +10,12 @@ import { playAiVoice, stopAiVoice } from '../utils/speech';
 
 export default function LandingView({ onStartScenario, onOpenStudio }) {
   const [activePillarTab, setActivePillarTab] = useState('law');
-  const [compareMetric, setCompareMetric] = useState('after'); // 'before' | 'after'
+  const [compareMetric, setCompareMetric] = useState('after');
   const [soundPressed, setSoundPressed] = useState(true);
   const [isPlayingHeroVoice, setIsPlayingHeroVoice] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const videoRef = useRef(null);
-  const headlineRef = useRef(null);
 
   // Entrance Web Animations API
   useEffect(() => {
@@ -23,9 +23,7 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
     if (prefersReduced) return;
 
     const expoEase = 'cubic-bezier(0.16, 1, 0.3, 1)';
-    const quartEase = 'cubic-bezier(0.25, 1, 0.5, 1)';
 
-    // Headline lines rising from clip-mask
     const lines = document.querySelectorAll('.hero-headline-line');
     lines.forEach((line, idx) => {
       line.animate(
@@ -37,7 +35,6 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
       );
     });
 
-    // Lede lines
     const ledeLines = document.querySelectorAll('.hero-lede-line');
     ledeLines.forEach((line, idx) => {
       line.animate(
@@ -48,18 +45,6 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
         { duration: 800, delay: 750 + idx * 60, easing: expoEase, fill: 'backwards' }
       );
     });
-
-    // Action CTA
-    const cta = document.getElementById('hero-cta-btn');
-    if (cta) {
-      cta.animate(
-        [
-          { transform: 'translateY(12px)', opacity: 0 },
-          { transform: 'translateY(0)', opacity: 1 }
-        ],
-        { duration: 800, delay: 950, easing: expoEase, fill: 'backwards' }
-      );
-    }
   }, []);
 
   const toggleSound = () => {
@@ -125,10 +110,10 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
   const currentPillar = pillarDetails[activePillarTab];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '96px', paddingBottom: '96px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '64px', paddingBottom: '96px', overflowX: 'hidden' }}>
       
-      {/* FULL-VIEWPORT HERO STAGE (EXACT RIVERINE ARCHITECTURE) */}
-      <section style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', backgroundColor: '#03080B' }}>
+      {/* FULL-VIEWPORT HERO STAGE */}
+      <section className="hero-stage" style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', backgroundColor: '#03080B' }}>
         
         {/* Remote Video Background */}
         <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
@@ -150,23 +135,28 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
           </video>
         </div>
 
-        {/* The 3 Shade Overlays */}
+        {/* 3 Shade Overlays */}
         <div className="shade-h" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />
         <div className="shade-v" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />
         <div className="shade-radial" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />
 
-        {/* UI Overlay Layer */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'auto' }}>
-          
-          {/* Top Left Logo Pill */}
+        {/* TOP BAR (RESPONSIVE) */}
+        <header className="hero-top-bar" style={{
+          position: 'absolute',
+          top: 'calc(40 * var(--u))',
+          left: 'calc(48 * var(--u))',
+          right: 'calc(48 * var(--u))',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          zIndex: 20
+        }}>
+          {/* Logo Pill */}
           <a
             href="#"
             style={{
-              position: 'absolute',
-              top: 'calc(40 * var(--u))',
-              left: 'calc(48 * var(--u))',
-              width: 'calc(104 * var(--u))',
-              height: 'calc(46 * var(--u))',
+              height: '46px',
+              padding: '0 10px 0 2px',
               borderRadius: '9999px',
               background: 'rgba(150, 220, 130, 0.035)',
               backdropFilter: 'blur(12px)',
@@ -174,15 +164,14 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
               border: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
-              padding: '0 calc(2 * var(--u))',
-              gap: 'calc(8 * var(--u))',
+              gap: '8px',
               textDecoration: 'none'
             }}
             aria-label="simlab.ai home"
           >
             <div style={{
-              width: 'calc(42 * var(--u))',
-              height: 'calc(42 * var(--u))',
+              width: '42px',
+              height: '42px',
               borderRadius: '50%',
               background: 'var(--logo-disc)',
               display: 'flex',
@@ -190,7 +179,7 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
               justifyContent: 'center',
               flexShrink: 0
             }}>
-              <svg viewBox="0 0 46 46" style={{ width: 'calc(34 * var(--u))', height: 'calc(34 * var(--u))' }}>
+              <svg viewBox="0 0 46 46" style={{ width: '32px', height: '32px' }}>
                 <path d="M24.2 37V24" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
                 <path d="M19.8 39.3c1.2-1.9 2.8-2.7 4.4-2.7s3.2.8 4.4 2.7" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
                 <path d="M23.8 30.2c-2.8-.6-5.5-2.6-7.2-5-2-1.8-5.2-2-7-4.2-1.4-1.8-1.4-4.2 0-6 2-3 5.8-5.2 8.8-6.2 1.4-.5 2.8-1 4.2-1.3" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
@@ -201,33 +190,29 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
               </svg>
             </div>
             
-            {/* Mirrored Moth */}
-            <svg viewBox="0 0 39 30" style={{ width: 'calc(36 * var(--u))', height: 'calc(28 * var(--u))', fill: 'var(--moth)' }}>
+            <svg viewBox="0 0 39 30" style={{ width: '32px', height: '24px', fill: 'var(--moth)' }}>
               <path d="M19.5 12.4C17.5 9.5 14 5 10.8 3 9.6 2.4 8 2.2 6 2.3 4.2 2.4 3.1 3 3 4.8L3.1 9.8C3.2 12.4 5 15 8.3 17.3 6.6 19.5 5.6 21.8 5.4 24.2 5.2 26.2 5.8 27.6 7.3 28 8.8 28.3 10.2 27.3 11.4 25.8 14.2 22.6 17.2 19.8 19.5 17.1Z" />
               <path transform="matrix(-1 0 0 1 39 0)" d="M19.5 12.4C17.5 9.5 14 5 10.8 3 9.6 2.4 8 2.2 6 2.3 4.2 2.4 3.1 3 3 4.8L3.1 9.8C3.2 12.4 5 15 8.3 17.3 6.6 19.5 5.6 21.8 5.4 24.2 5.2 26.2 5.8 27.6 7.3 28 8.8 28.3 10.2 27.3 11.4 25.8 14.2 22.6 17.2 19.8 19.5 17.1Z" />
             </svg>
           </a>
 
-          {/* Top Center-Right Nav Pill */}
+          {/* Desktop Nav Pill */}
           <nav
+            className="hero-nav-pill-desktop"
             style={{
-              position: 'absolute',
-              top: 'calc(40 * var(--u))',
-              left: 'calc(50% + 10 * var(--u))',
-              width: 'calc(452 * var(--u))',
-              height: 'calc(47 * var(--u))',
+              height: '47px',
               background: '#03080B',
               borderRadius: '9999px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
-              paddingLeft: 'calc(24 * var(--u))',
-              paddingRight: 'calc(3 * var(--u))',
-              fontSize: 'calc(13 * var(--u))',
+              paddingLeft: '24px',
+              paddingRight: '3px',
+              fontSize: '13px',
               fontWeight: 400
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(20 * var(--u))', flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginRight: '16px' }}>
               <a href="#framework" style={{ color: 'var(--ink)' }}>Trụ Cột</a>
               <a href="#chamber" style={{ color: 'var(--teal)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                 Phòng Lab
@@ -242,23 +227,23 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
             <button
               onClick={() => onStartScenario(SCENARIOS[0])}
               style={{
-                height: 'calc(41 * var(--u))',
-                padding: '0 calc(16 * var(--u))',
+                height: '41px',
+                padding: '0 16px',
                 background: 'var(--cream)',
                 color: '#03080B',
                 borderRadius: '9999px',
-                fontSize: 'calc(13 * var(--u))',
+                fontSize: '13px',
                 fontWeight: 600,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 'calc(10 * var(--u))',
+                gap: '10px',
                 cursor: 'pointer'
               }}
             >
               <span>Vào Hearing</span>
               <span style={{
-                width: 'calc(26 * var(--u))',
-                height: 'calc(26 * var(--u))',
+                width: '26px',
+                height: '26px',
                 borderRadius: '50%',
                 background: 'var(--pine)',
                 display: 'flex',
@@ -272,185 +257,274 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
             </button>
           </nav>
 
-          {/* Far Top Right Sound Button */}
-          <button
-            onClick={toggleSound}
-            aria-label="Ambient river sound"
-            aria-pressed={soundPressed ? 'true' : 'false'}
-            style={{
-              position: 'absolute',
-              top: 'calc(40 * var(--u))',
-              right: 'calc(48 * var(--u))',
-              width: 'calc(48 * var(--u))',
-              height: 'calc(48 * var(--u))',
-              borderRadius: '50%',
-              background: 'rgba(3, 8, 11, 0.45)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: 'var(--ink)'
-            }}
-          >
-            <svg viewBox="0 0 46 46" fill="currentColor" style={{ width: 'calc(20 * var(--u))', height: 'calc(20 * var(--u))' }}>
-              <path d="M14.6 19.6h3.6l5.9-4.9v18.6l-5.9-4.9h-3.6z" />
-              <path
-                d="M27.6 19.6c1.9 2.8 1.9 6 0 8.8"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                style={{ opacity: soundPressed ? 1 : 0.25, transition: 'opacity 0.2s ease' }}
-              />
-              <path
-                d="M31.2 16.2c3.4 4.9 3.4 10.7 0 15.6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                style={{ opacity: soundPressed ? 1 : 0.25, transition: 'opacity 0.2s ease' }}
-              />
-            </svg>
-          </button>
-
-          {/* Bottom Left Hero Content */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 'calc(48 * var(--u))',
-              left: 'calc(48 * var(--u))',
-              maxWidth: 'calc(800 * var(--u))'
-            }}
-          >
-            <span
+          {/* Right Controls (Sound Toggle + Mobile Menu Button) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              onClick={toggleSound}
+              aria-label="Ambient river sound"
+              aria-pressed={soundPressed ? 'true' : 'false'}
               style={{
-                fontFamily: 'var(--font-brand)',
-                fontWeight: 600,
-                color: 'var(--teal)',
-                fontSize: 'calc(15 * var(--u))',
-                letterSpacing: '0.04em',
-                marginBottom: 'calc(14 * var(--u))',
-                display: 'block'
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                background: 'rgba(3, 8, 11, 0.55)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: 'var(--ink)'
               }}
             >
-              simlab.ai • interdisciplinary simulation
-            </span>
+              <svg viewBox="0 0 46 46" fill="currentColor" style={{ width: '18px', height: '18px' }}>
+                <path d="M14.6 19.6h3.6l5.9-4.9v18.6l-5.9-4.9h-3.6z" />
+                <path
+                  d="M27.6 19.6c1.9 2.8 1.9 6 0 8.8"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  style={{ opacity: soundPressed ? 1 : 0.25, transition: 'opacity 0.2s ease' }}
+                />
+                <path
+                  d="M31.2 16.2c3.4 4.9 3.4 10.7 0 15.6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  style={{ opacity: soundPressed ? 1 : 0.25, transition: 'opacity 0.2s ease' }}
+                />
+              </svg>
+            </button>
 
-            {/* 3-Line Headline Rising from Clip-Masks */}
-            <h1
-              ref={headlineRef}
+            {/* Mobile Hamburger Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="mobile-hamburger-btn"
               style={{
-                fontFamily: 'var(--font-display)',
-                fontWeight: 300,
-                fontSize: 'calc(64 * var(--u))',
-                lineHeight: 1.05,
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                background: 'rgba(3, 8, 11, 0.75)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                alignItems: 'center',
+                justifyContent: 'center',
                 color: 'var(--ink)',
-                whiteSpace: 'nowrap',
-                marginBottom: 'calc(22 * var(--u))'
+                cursor: 'pointer'
               }}
+              aria-label="Toggle menu"
             >
-              <span className="headline-line-mask">
-                <span className="hero-headline-line" style={{ display: 'block', letterSpacing: '-0.01em' }}>Where</span>
-              </span>
-              <span className="headline-line-mask">
-                <span className="hero-headline-line" style={{ display: 'block', letterSpacing: '-0.02em' }}>Interdisciplinary AI</span>
-              </span>
-              <span className="headline-line-mask">
-                <span className="hero-headline-line" style={{ display: 'block', letterSpacing: '-0.015em' }}>Transforms The Boardroom</span>
-              </span>
-            </h1>
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </header>
 
-            {/* 2-Line Lede */}
-            <div
-              style={{
-                fontFamily: 'var(--font-text)',
-                fontWeight: 400,
-                fontSize: 'calc(16 * var(--u))',
-                lineHeight: 1.5,
-                color: 'var(--ink-2)',
-                marginBottom: 'calc(30 * var(--u))'
-              }}
+        {/* Mobile Dropdown Menu Drawer */}
+        {mobileMenuOpen && (
+          <div style={{
+            position: 'absolute',
+            top: '74px',
+            left: '20px',
+            right: '20px',
+            background: 'rgba(7, 15, 19, 0.98)',
+            border: '1px solid var(--border-medium)',
+            borderRadius: '16px',
+            padding: '20px',
+            zIndex: 30,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '14px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.8)'
+          }}>
+            <a 
+              href="#framework" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--ink)', fontSize: '15px' }}
             >
-              <span className="hero-lede-line" style={{ display: 'block' }}>
-                Hệ thống mô phỏng Role-play liên ngành: Kinh tế, Quản trị, Luật kinh tế và Ngôn ngữ.
-              </span>
-              <span className="hero-lede-line" style={{ display: 'block' }}>
-                Rèn luyện bản lĩnh đàm phán, tranh tụng trọng tài và xử lý khủng hoảng đa ngữ cùng AI.
-              </span>
-            </div>
+              4 Trục Năng Lực Liên Ngành
+            </a>
+            <a 
+              href="#chamber" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--teal)', fontSize: '15px' }}
+            >
+              Phòng Mô Phỏng Trọng Tài (Live Chamber)
+            </a>
+            <a 
+              href="#cases" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--ink)', fontSize: '15px' }}
+            >
+              Kho Tình Huống Thực Chiến
+            </a>
+            <a 
+              href="#credentials" 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ padding: '8px 0', color: 'var(--ink)', fontSize: '15px' }}
+            >
+              Đơn Vị Thực Hiện & Cố Vấn
+            </a>
 
-            {/* Action Row */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'calc(26 * var(--u))' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
               <button
-                id="hero-cta-btn"
-                onClick={() => onStartScenario(SCENARIOS[0])}
-                className="btn-cta-pill"
-              >
-                <span>Khởi Chạy Phòng Mô Phỏng Trọng Tài</span>
-                <span className="pill-disc">
-                  <svg viewBox="0 0 5 8">
-                    <path d="M.6.6 4 4 .6 7.4" />
-                  </svg>
-                </span>
-              </button>
-
-              <a
-                href="#framework"
-                style={{
-                  fontSize: 'calc(14.5 * var(--u))',
-                  fontWeight: 400,
-                  color: 'var(--ink)',
-                  whiteSpace: 'nowrap'
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenStudio();
                 }}
+                className="btn-secondary"
+                style={{ width: '100%', justifyContent: 'center', height: '42px' }}
               >
-                Khám Phá 4 Trụ Cột Năng Lực
-              </a>
+                <Plus size={15} />
+                <span>+ Tạo Kịch Bản Mới</span>
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onStartScenario(SCENARIOS[0]);
+                }}
+                className="btn-primary"
+                style={{ width: '100%', justifyContent: 'center', height: '42px' }}
+              >
+                <span>Vào Phiên Điều Trần Ngay</span>
+              </button>
             </div>
           </div>
+        )}
 
-          {/* Bottom Right Scroll Cue */}
-          <a
-            href="#framework"
+        {/* BOTTOM HERO CONTENT (RESPONSIVE) */}
+        <div className="hero-bottom-content" style={{
+          position: 'absolute',
+          bottom: 'calc(48 * var(--u))',
+          left: 'calc(48 * var(--u))',
+          maxWidth: 'calc(800 * var(--u))',
+          zIndex: 15
+        }}>
+          <span
             style={{
-              position: 'absolute',
-              bottom: 'calc(48 * var(--u))',
-              right: 'calc(48 * var(--u))',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 'calc(8 * var(--u))',
-              fontSize: 'calc(13.5 * var(--u))',
-              color: 'var(--ink)',
-              whiteSpace: 'nowrap'
+              fontFamily: 'var(--font-brand)',
+              fontWeight: 600,
+              color: 'var(--teal)',
+              fontSize: '14px',
+              letterSpacing: '0.04em',
+              marginBottom: '12px',
+              display: 'block'
             }}
           >
-            <span>Scroll for Details</span>
-            <svg viewBox="0 0 11 6" style={{ width: 'calc(10 * var(--u))', height: 'calc(6 * var(--u))', stroke: 'var(--chevron)', fill: 'none', strokeWidth: 1.5, strokeLinecap: 'round' }}>
-              <path d="M.7.7 5.5 5.3 10.3.7" />
-            </svg>
-          </a>
+            simlab.ai • interdisciplinary simulation
+          </span>
 
+          <h1
+            className="hero-headline-title font-display"
+            style={{
+              fontWeight: 300,
+              fontSize: 'calc(64 * var(--u))',
+              lineHeight: 1.05,
+              color: 'var(--ink)',
+              marginBottom: '20px'
+            }}
+          >
+            <span className="headline-line-mask">
+              <span className="hero-headline-line" style={{ display: 'block', letterSpacing: '-0.01em' }}>Where</span>
+            </span>
+            <span className="headline-line-mask">
+              <span className="hero-headline-line" style={{ display: 'block', letterSpacing: '-0.02em' }}>Interdisciplinary AI</span>
+            </span>
+            <span className="headline-line-mask">
+              <span className="hero-headline-line" style={{ display: 'block', letterSpacing: '-0.015em' }}>Transforms The Boardroom</span>
+            </span>
+          </h1>
+
+          <div
+            className="hero-lede-text"
+            style={{
+              fontFamily: 'var(--font-text)',
+              fontWeight: 400,
+              fontSize: '15.5px',
+              lineHeight: 1.55,
+              color: 'var(--ink-2)',
+              marginBottom: '28px'
+            }}
+          >
+            <span className="hero-lede-line" style={{ display: 'block' }}>
+              Hệ thống mô phỏng Role-play liên ngành: Kinh tế, Quản trị, Luật kinh tế và Ngôn ngữ.
+            </span>
+            <span className="hero-lede-line" style={{ display: 'block' }}>
+              Rèn luyện bản lĩnh đàm phán, tranh tụng trọng tài và xử lý khủng hoảng đa ngữ cùng AI.
+            </span>
+          </div>
+
+          <div className="hero-actions-container" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <button
+              id="hero-cta-btn"
+              onClick={() => onStartScenario(SCENARIOS[0])}
+              className="btn-cta-pill"
+            >
+              <span>Khởi Chạy Phòng Mô Phỏng Trọng Tài</span>
+              <span className="pill-disc">
+                <svg viewBox="0 0 5 8">
+                  <path d="M.6.6 4 4 .6 7.4" />
+                </svg>
+              </span>
+            </button>
+
+            <a
+              href="#framework"
+              style={{
+                fontSize: '14.5px',
+                fontWeight: 500,
+                color: 'var(--ink)',
+                whiteSpace: 'nowrap',
+                padding: '6px 0'
+              }}
+            >
+              Khám Phá 4 Trụ Cột Năng Lực
+            </a>
+          </div>
         </div>
+
+        {/* Scroll cue (desktop only) */}
+        <a
+          href="#framework"
+          className="hero-scroll-cue-desktop"
+          style={{
+            position: 'absolute',
+            bottom: 'calc(48 * var(--u))',
+            right: 'calc(48 * var(--u))',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '13px',
+            color: 'var(--ink)',
+            whiteSpace: 'nowrap',
+            zIndex: 15
+          }}
+        >
+          <span>Scroll for Details</span>
+          <svg viewBox="0 0 11 6" style={{ width: '10px', height: '6px', stroke: 'var(--chevron)', fill: 'none', strokeWidth: 1.5, strokeLinecap: 'round' }}>
+            <path d="M.7.7 5.5 5.3 10.3.7" />
+          </svg>
+        </a>
+
       </section>
 
       {/* SECTION 2: 4-PILLAR ARCHITECTURE MATRIX */}
-      <section id="framework" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-        <div className="craft-card" style={{ padding: '36px', background: 'var(--bg-surface)' }}>
+      <section id="framework" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div className="craft-card" style={{ padding: 'clamp(20px, 4vw, 36px)', background: 'var(--bg-surface)' }}>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
             <div>
               <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', border: '1px solid var(--border-medium)', marginBottom: '8px' }}>
                 PEDAGOGICAL FRAMEWORK // MÔ HÌNH NĂNG LỰC ĐÀO TẠO
               </div>
-              <h2 className="font-display" style={{ fontSize: '32px', fontWeight: 600, color: 'var(--ink)', marginTop: '4px' }}>
+              <h2 className="font-display" style={{ fontSize: 'clamp(24px, 5vw, 32px)', fontWeight: 600, color: 'var(--ink)', marginTop: '4px' }}>
                 Bốn Trục Tri Thức Giao Thoa Thực Chiến
               </h2>
             </div>
 
-            {/* Tab switchers */}
-            <div style={{ display: 'flex', background: 'var(--bg-inset)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-subtle)', gap: '4px' }}>
+            {/* Pillar Tab Bar (Scrollable on mobile) */}
+            <div className="pillars-tab-bar" style={{ display: 'flex', background: 'var(--bg-inset)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-subtle)', gap: '4px' }}>
               {FOUR_PILLARS.map((p) => (
                 <button
                   key={p.key}
@@ -460,7 +534,7 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
                     color: activePillarTab === p.key ? 'var(--teal)' : 'var(--text-muted)',
                     border: activePillarTab === p.key ? '1px solid var(--border-medium)' : '1px solid transparent',
                     borderRadius: '6px',
-                    padding: '8px 14px',
+                    padding: '8px 12px',
                     fontSize: '12.5px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -473,16 +547,16 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
             </div>
           </div>
 
-          {/* Active Tab Content */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '28px', alignItems: 'start' }}>
+          {/* Active Tab Content (Responsive 1/2 Column) */}
+          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '24px', alignItems: 'start' }}>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              <div className="craft-inset" style={{ padding: '20px', borderLeft: '4px solid var(--teal)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="craft-inset" style={{ padding: '16px 18px', borderLeft: '4px solid var(--teal)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <span className="font-mono" style={{ fontSize: '11px', color: 'var(--teal)' }}>{currentPillar.latinCode}</span>
                   <span className="badge-mono" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--ink-2)' }}>{currentPillar.badge}</span>
                 </div>
-                <h3 className="font-display" style={{ fontSize: '22px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
+                <h3 className="font-display" style={{ fontSize: '20px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
                   {currentPillar.title}
                 </h3>
                 <p style={{ fontSize: '13.5px', color: 'var(--ink-2)', fontStyle: 'italic', lineHeight: 1.6 }}>
@@ -496,8 +570,8 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
                 </div>
 
                 {currentPillar.topics.map((t, idx) => (
-                  <div key={idx} className="craft-card" style={{ padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <div key={idx} className="craft-card" style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                       <span className="badge-mono" style={{ background: 'var(--bg-inset)', color: 'var(--teal)' }}>
                         {t.code}
                       </span>
@@ -505,18 +579,18 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
                         {t.name}
                       </span>
                     </div>
-                    <span className="font-mono" style={{ fontSize: '11.5px', color: 'var(--teal)', whiteSpace: 'nowrap' }}>
-                      {t.impact}
+                    <span className="font-mono" style={{ fontSize: '11.5px', color: 'var(--teal)' }}>
+                      • {t.impact}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Radar Comparison (Before vs After) */}
-            <div className="craft-inset" style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>ĐO LƯỜNG HIỆU QUẢ ĐÀO TẠO</span>
+            {/* Radar Comparison Card */}
+            <div className="craft-inset" style={{ padding: '18px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+                <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>ĐO LƯỜNG NĂNG LỰC</span>
                 
                 <div style={{ display: 'flex', background: 'var(--bg-app)', borderRadius: '4px', padding: '2px' }}>
                   <button
@@ -526,13 +600,13 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
                       color: compareMetric === 'before' ? 'var(--ink)' : 'var(--text-faint)',
                       border: 'none',
                       borderRadius: '3px',
-                      padding: '3px 8px',
+                      padding: '4px 8px',
                       fontSize: '11px',
                       fontFamily: 'var(--font-mono)',
                       cursor: 'pointer'
                     }}
                   >
-                    Chưa Qua SimLab (35%)
+                    Trước (35%)
                   </button>
                   <button
                     onClick={() => setCompareMetric('after')}
@@ -541,13 +615,13 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
                       color: compareMetric === 'after' ? 'var(--teal)' : 'var(--text-faint)',
                       border: 'none',
                       borderRadius: '3px',
-                      padding: '3px 8px',
+                      padding: '4px 8px',
                       fontSize: '11px',
                       fontFamily: 'var(--font-mono)',
                       cursor: 'pointer'
                     }}
                   >
-                    Sau Thực Nghiệm (90%)
+                    Sau SimLab (90%)
                   </button>
                 </div>
               </div>
@@ -557,7 +631,7 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
                   ? { law: 35, lang: 30, mgmt: 40, econ: 35 } 
                   : { law: 92, lang: 95, mgmt: 88, econ: 91 }
                 } 
-                size={240} 
+                size={230} 
               />
 
               <p style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '12px', lineHeight: 1.5 }}>
@@ -573,12 +647,11 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
       </section>
 
       {/* SECTION 3: HEARING CHAMBER PREVIEW */}
-      <section id="chamber" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-        <div className="craft-card" style={{ padding: '28px', background: 'var(--bg-surface-elevated)', border: '1px solid var(--border-medium)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '32px', alignItems: 'center' }}>
+      <section id="chamber" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div className="craft-card" style={{ padding: 'clamp(18px, 3vw, 28px)', background: 'var(--bg-surface-elevated)', border: '1px solid var(--border-medium)' }}>
+          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '24px', alignItems: 'center' }}>
             
-            {/* Hearing Image & Live Stream */}
-            <div className="image-zoom-container" style={{ height: '320px', position: 'relative' }}>
+            <div className="image-zoom-container" style={{ position: 'relative' }}>
               <img 
                 src="./assets/arbitration_hearing.jpg" 
                 alt="Arbitration Hearing Chamber" 
@@ -586,18 +659,17 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
               />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(3, 8, 11, 0.95) 0%, rgba(3, 8, 11, 0.2) 60%)' }} />
               
-              <div style={{ position: 'absolute', bottom: '16px', left: '18px', right: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+              <div style={{ position: 'absolute', bottom: '14px', left: '14px', right: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '8px' }}>
                 <div>
                   <span className="badge-mono" style={{ background: 'rgba(0,0,0,0.7)', color: 'var(--teal)', border: '1px solid rgba(255,255,255,0.1)' }}>
                     PROCEEDING ROOM // SHIAC
                   </span>
-                  <div className="font-display" style={{ fontSize: '18px', fontWeight: 600, color: '#FFFFFF', marginTop: '4px' }}>
-                    Phiên Trọng Tài Tranh Chấp Hợp Đồng Cung Ứng Thượng Hải
+                  <div className="font-display" style={{ fontSize: '16px', fontWeight: 600, color: '#FFFFFF', marginTop: '4px' }}>
+                    Phiên Trọng Tài Hợp Đồng Thượng Hải
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', background: 'rgba(0,0,0,0.6)', padding: '6px 10px', borderRadius: '4px' }}>
-                  <span className="audio-wave-bar" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', background: 'rgba(0,0,0,0.6)', padding: '5px 8px', borderRadius: '4px' }}>
                   <span className="audio-wave-bar" />
                   <span className="audio-wave-bar" />
                   <span className="audio-wave-bar" />
@@ -606,23 +678,22 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
               </div>
             </div>
 
-            {/* Persona Details & Quick Launch */}
             <div>
-              <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '10px' }}>
+              <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '8px' }}>
                 AI PERSONA // CHEN XIAO DONG
               </div>
-              <h3 className="font-display" style={{ fontSize: '24px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
+              <h3 className="font-display" style={{ fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
                 Trần Hiểu Đông (Chen Xiao Dong - 陈晓东)
               </h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.6 }}>
-                Giám đốc Điều hành & Cố vấn Pháp lý cấp cao, Tập đoàn HuaXin Tech (Thượng Hải). Sắc sảo, thực dụng, viện dẫn hợp đồng CISG yêu cầu bồi thường 1.2M USD do chậm trễ thư tín dụng L/C.
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: 1.55 }}>
+                Giám đốc Điều hành & Cố vấn Pháp lý cấp cao, Tập đoàn HuaXin Tech (Thượng Hải). Sắc sảo, thực dụng, viện dẫn hợp đồng CISG yêu cầu bồi thường 1.2M USD.
               </p>
 
-              <div className="craft-inset" style={{ padding: '14px', marginBottom: '20px', borderLeft: '3px solid var(--teal)' }}>
-                <p className="font-cn" style={{ fontSize: '13px', color: 'var(--ink)', marginBottom: '4px' }}>
+              <div className="craft-inset" style={{ padding: '12px 14px', marginBottom: '16px', borderLeft: '3px solid var(--teal)' }}>
+                <p className="font-cn" style={{ fontSize: '12.5px', color: 'var(--ink)', marginBottom: '4px' }}>
                   "如果今天你们依然拿不出实质性的解决方案，我们将在明天正式向SHIAC提起仲裁程序！"
                 </p>
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                <p style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
                   "Nếu hôm nay các bạn không đưa ra phương án thực chất, chúng tôi sẽ nộp đơn lên Trọng tài SHIAC ngay ngày mai!"
                 </p>
               </div>
@@ -644,26 +715,26 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
       </section>
 
       {/* SECTION 4: SCENARIOS REPOSITORY */}
-      <section id="cases" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-        <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '64px', marginBottom: '36px' }}>
+      <section id="cases" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '48px', marginBottom: '28px' }}>
           <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '8px' }}>
-            SIMULATION CASE REPOSITORY // THƯ VIỆN TÌNH HUỐNG THỰC CHIẾN
+            SIMULATION CASE REPOSITORY // THƯ VIỆN KỊCH BẢN
           </div>
-          <h2 className="font-display" style={{ fontSize: '32px', fontWeight: 600, color: 'var(--ink)', marginTop: '6px' }}>
+          <h2 className="font-display" style={{ fontSize: 'clamp(24px, 5vw, 32px)', fontWeight: 600, color: 'var(--ink)', marginTop: '4px' }}>
             Các Bộ Kịch Bản Thực Chiến Sẵn Sàng Vận Hành
           </h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '18px' }}>
           {SCENARIOS.map((sc, i) => (
             <div 
               key={sc.id} 
               className="craft-card craft-card-interactive" 
               style={{ 
-                padding: '20px', 
+                padding: '16px', 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '16px',
+                gap: '14px',
                 border: sc.id === 'shanghai-arbitration' ? '1px solid var(--border-medium)' : '1px solid var(--border-subtle)'
               }}
             >
@@ -689,32 +760,24 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
               </div>
 
               <div>
-                <h3 className="font-display" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35 }}>
+                <h3 className="font-display" style={{ fontSize: '17px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35 }}>
                   {sc.title}
                 </h3>
-                <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '6px', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.45 }}>
                   {sc.subtitle}
                 </p>
               </div>
 
-              <div className="craft-inset" style={{ padding: '12px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <div className="craft-inset" style={{ padding: '10px 12px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
                 <div style={{ color: 'var(--text-muted)' }}>Chủ thể AI: <span style={{ color: 'var(--ink)', fontWeight: 500 }}>{sc.persona.name}</span></div>
                 <div style={{ color: 'var(--text-muted)' }}>Ngôn ngữ: <span style={{ color: 'var(--ink)' }}>{sc.languages.join(' • ')}</span></div>
               </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {sc.tags.map((t, idx) => (
-                  <span key={idx} className="font-mono" style={{ fontSize: '10.5px', background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', padding: '2px 6px', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>
-                    {t}
-                  </span>
-                ))}
-              </div>
-
-              <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid var(--border-subtle)' }}>
+              <div style={{ marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid var(--border-subtle)' }}>
                 <button
                   onClick={() => onStartScenario(sc)}
                   className="btn-primary"
-                  style={{ width: '100%', justifyContent: 'center' }}
+                  style={{ width: '100%', justifyContent: 'center', height: '38px' }}
                 >
                   <span>Mở Hồ Sơ & Điều Trần</span>
                   <ChevronRight size={15} />
@@ -726,42 +789,36 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
       </section>
 
       {/* SECTION 5: CREDENTIALS */}
-      <section id="credentials" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-        <div className="craft-card" style={{ padding: '36px', background: 'var(--bg-surface)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+      <section id="credentials" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div className="craft-card" style={{ padding: 'clamp(20px, 4vw, 36px)', background: 'var(--bg-surface)' }}>
+          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
             
             <div>
               <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '8px' }}>
-                PROJECT CREDENTIALS // ĐƠN VỊ THỰC HIỆN ĐỀ TÀI
+                PROJECT CREDENTIALS // ĐƠN VỊ THỰC HIỆN
               </div>
-              <h3 className="font-display" style={{ fontSize: '24px', fontWeight: 600, color: 'var(--ink)', marginBottom: '12px' }}>
-                Nhóm Nghiên Cứu Sinh Viên Liên Ngành & Cố Vấn Chuyên Môn
+              <h3 className="font-display" style={{ fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 600, color: 'var(--ink)', marginBottom: '10px' }}>
+                Nhóm Nghiên Cứu Sinh Viên Liên Ngành
               </h3>
-              <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '20px' }}>
-                Đề tài được xây dựng nhằm phục vụ công tác giảng dạy thực hành tại các trường đại học khối ngành Kinh tế & Luật, giúp sinh viên có không gian an toàn để trải nghiệm và học hỏi từ các sai lầm trong đàm phán thương mại quốc tế.
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '16px' }}>
+                Đề tài phục vụ giảng dạy thực hành liên môn: Kinh tế, Quản trị, Luật kinh tế và Ngôn ngữ, giúp sinh viên có không gian an toàn để trải nghiệm và học hỏi từ các sai lầm trong đàm phán thương mại quốc tế.
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--ink-2)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className="font-mono" style={{ color: 'var(--teal)' }}>[FACULTY]</span>
-                  <span>Khoa Luật Kinh tế & Khoa Ngoại ngữ Thương mại (Cố vấn học thuật)</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className="font-mono" style={{ color: 'var(--teal)' }}>[STUDENTS]</span>
-                  <span>Nhóm Sinh viên Đề tài Nghiên cứu Khoa học & Khởi nghiệp Sáng tạo</span>
-                </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12.5px', color: 'var(--ink-2)' }}>
+                <div>• Khoa Luật Kinh tế & Khoa Ngoại ngữ Thương mại (Cố vấn)</div>
+                <div>• Nhóm Sinh viên Đề tài Nghiên cứu Khoa học & Đổi mới Sáng tạo</div>
               </div>
             </div>
 
-            <div className="craft-inset" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '14px' }}>
+            <div className="craft-inset" style={{ padding: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Award size={18} color="var(--teal)" />
-                <span className="font-mono" style={{ fontSize: '12px', color: 'var(--teal)', fontWeight: 600 }}>GIÁ TRỊ ĐÓNG GÓP CHO ĐÀO TẠO ĐẠI HỌC</span>
+                <span className="font-mono" style={{ fontSize: '12px', color: 'var(--teal)', fontWeight: 600 }}>GIÁ TRỊ ĐÓNG GÓP CHO ĐÀO TẠO</span>
               </div>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12.5px', color: 'var(--ink-2)' }}>
-                <li>• <b>Đổi mới phương pháp học tập:</b> Chuyển từ đọc slide thụ động sang nhập vai phản biện trực tiếp cùng AI.</li>
-                <li>• <b>Cầu nối thực tiễn:</b> Tiếp cận các bộ hồ sơ vụ án thực tế (Trọng tài SHIAC, VIAC, SIAC) ngay trên ghế nhà trường.</li>
-                <li>• <b>Sẵn sàng tuyển dụng:</b> Sinh viên sở hữu chứng nhận kỹ năng đàm phán đa ngữ và tư duy quản trị rủi ro được chứng thực định lượng.</li>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: 'var(--ink-2)' }}>
+                <li>• <b>Đổi mới phương pháp:</b> Chuyển từ học thụ động sang nhập vai phản biện trực tiếp cùng AI.</li>
+                <li>• <b>Cầu nối thực tiễn:</b> Tiếp cận các bộ hồ sơ vụ án thực tế (Trọng tài SHIAC, VIAC, SIAC).</li>
+                <li>• <b>Chuẩn đầu ra:</b> Chứng thực định lượng 4 chiều năng lực sẵn sàng tuyển dụng.</li>
               </ul>
             </div>
 

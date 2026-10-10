@@ -4,23 +4,23 @@ import { ArrowUpRight, Plus } from 'lucide-react';
 export default function Navbar({ currentView, onNavigate, onQuickStart, onOpenStudio }) {
   return (
     <header className="craft-header" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         
         {/* Brand identity */}
         <div 
           onClick={() => onNavigate('landing')}
-          style={{ display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
         >
           <div style={{ 
-            width: '32px', 
-            height: '32px', 
+            width: '30px', 
+            height: '30px', 
             borderRadius: '6px', 
             background: '#181C25', 
             border: '1px solid rgba(255, 255, 255, 0.12)',
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'center',
-            fontSize: '14px',
+            fontSize: '13px',
             fontWeight: 700,
             color: '#F3F4F6',
             fontFamily: 'var(--font-serif)'
@@ -29,19 +29,19 @@ export default function Navbar({ currentView, onNavigate, onQuickStart, onOpenSt
           </div>
 
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.01em', color: '#F3F4F6' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '14.5px', fontWeight: 700, letterSpacing: '-0.01em', color: '#F3F4F6' }}>
                 SIMLAB
               </span>
-              <span className="badge-mono" style={{ background: 'rgba(255,255,255,0.05)', color: '#9CA3AF', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <span className="badge-mono nav-desktop-links" style={{ background: 'rgba(255,255,255,0.05)', color: '#9CA3AF', border: '1px solid rgba(255,255,255,0.08)' }}>
                 INTERDISCIPLINARY LAB
               </span>
             </div>
           </div>
         </div>
 
-        {/* Center Nav */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        {/* Center Nav (Desktop Only) */}
+        <nav className="nav-desktop-links" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <button
             onClick={() => onNavigate('landing')}
             style={{
@@ -59,7 +59,7 @@ export default function Navbar({ currentView, onNavigate, onQuickStart, onOpenSt
           </button>
 
           <a
-            href="#interactive-terminal"
+            href="#framework"
             onClick={() => onNavigate('landing')}
             style={{
               color: '#9CA3AF',
@@ -90,23 +90,23 @@ export default function Navbar({ currentView, onNavigate, onQuickStart, onOpenSt
         </nav>
 
         {/* Right CTA */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="navbar-mobile-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={onOpenStudio}
             className="btn-secondary"
-            style={{ padding: '7px 12px', fontSize: '12px' }}
+            style={{ padding: '6px 10px', fontSize: '12px' }}
           >
-            <Plus size={14} />
-            <span>Tạo Kịch Bản Mới</span>
+            <Plus size={13} />
+            <span className="nav-desktop-links">Kịch Bản Mới</span>
           </button>
 
           <button
             onClick={onQuickStart}
             className="btn-primary"
-            style={{ padding: '7px 14px', fontSize: '12.5px' }}
+            style={{ padding: '6px 12px', fontSize: '12px' }}
           >
-            <span>Vào Phiên Trọng Tài (Case #HX-2024)</span>
-            <ArrowUpRight size={14} />
+            <span>Vào Hearing</span>
+            <ArrowUpRight size={13} />
           </button>
         </div>
 

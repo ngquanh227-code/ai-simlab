@@ -15,10 +15,10 @@ export default function ReportRubric({ sessionData, scenario, onRetry, onHome })
   const tier = getTier(overallScore);
 
   return (
-    <div style={{ maxWidth: '980px', margin: '0 auto', padding: '32px 24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ maxWidth: '980px', margin: '0 auto', padding: 'clamp(16px, 3vw, 32px) 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
       
       {/* Top Action Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="rubric-top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <button
           onClick={onHome}
           className="btn-secondary"
@@ -28,14 +28,14 @@ export default function ReportRubric({ sessionData, scenario, onRetry, onHome })
           <span>Trang Chủ</span>
         </button>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="rubric-top-bar-actions" style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={() => window.print()}
             className="btn-secondary"
             style={{ fontSize: '12.5px' }}
           >
             <Printer size={14} />
-            <span>In Bảng Điểm / Lưu PDF</span>
+            <span>In Bảng Điểm / PDF</span>
           </button>
           
           <button
@@ -44,21 +44,21 @@ export default function ReportRubric({ sessionData, scenario, onRetry, onHome })
             style={{ fontSize: '12.5px' }}
           >
             <RotateCcw size={14} />
-            <span>Thực Hiện Lại Phiên Này</span>
+            <span>Làm Lại Phiên Này</span>
           </button>
         </div>
       </div>
 
       {/* Official Certificate / Evaluation Header */}
-      <div className="craft-card" style={{ padding: '36px', background: 'var(--bg-surface)' }}>
+      <div className="craft-card" style={{ padding: 'clamp(18px, 4vw, 36px)', background: 'var(--bg-surface)' }}>
         
         {/* Certificate Metadata Header */}
-        <div style={{ borderBottom: '1px solid var(--border-subtle)', paddingBottom: '20px', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ borderBottom: '1px solid var(--border-subtle)', paddingBottom: '18px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '14px' }}>
           <div>
             <div className="font-mono" style={{ fontSize: '11px', color: '#6B7280', letterSpacing: '0.06em' }}>
               INTERDISCIPLINARY AI SIMLAB // PERFORMANCE TRANSCRIPT
             </div>
-            <h1 className="font-serif" style={{ fontSize: '26px', fontWeight: 600, color: '#F3F4F6', marginTop: '4px' }}>
+            <h1 className="font-serif" style={{ fontSize: 'clamp(20px, 4.5vw, 26px)', fontWeight: 600, color: '#F3F4F6', marginTop: '4px' }}>
               Báo Cáo Đánh Giá Năng Lực Thực Nghiệm Đàm Phán
             </h1>
             <div style={{ fontSize: '13px', color: '#9CA3AF', marginTop: '4px' }}>
@@ -66,20 +66,20 @@ export default function ReportRubric({ sessionData, scenario, onRetry, onHome })
             </div>
           </div>
 
-          <div className="craft-inset" style={{ padding: '10px 14px', textAlign: 'right' }}>
-            <div className="font-mono" style={{ fontSize: '10.5px', color: '#6B7280' }}>TRANSCRIPT ID</div>
-            <div className="font-mono" style={{ fontSize: '12.5px', color: '#E5E7EB', fontWeight: 600 }}>SIM-2026-SHIAC-8891</div>
-            <div className="font-mono" style={{ fontSize: '10.5px', color: '#6B7280', marginTop: '2px' }}>DATE: {new Date().toLocaleDateString('vi-VN')}</div>
+          <div className="craft-inset" style={{ padding: '8px 12px', textAlign: 'right' }}>
+            <div className="font-mono" style={{ fontSize: '10px', color: '#6B7280' }}>TRANSCRIPT ID</div>
+            <div className="font-mono" style={{ fontSize: '12px', color: '#E5E7EB', fontWeight: 600 }}>SIM-2026-SHIAC-8891</div>
+            <div className="font-mono" style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>DATE: {new Date().toLocaleDateString('vi-VN')}</div>
           </div>
         </div>
 
         {/* Score & Summary Metric Block */}
-        <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '32px', alignItems: 'center', marginBottom: '32px' }}>
-          <div className="craft-inset" style={{ padding: '24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="font-mono" style={{ fontSize: '46px', fontWeight: 700, color: '#F3F4F6', lineHeight: 1 }}>
+        <div className="rubric-score-summary-grid" style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '24px', alignItems: 'center', marginBottom: '28px' }}>
+          <div className="craft-inset" style={{ padding: '20px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="font-mono" style={{ fontSize: '42px', fontWeight: 700, color: '#F3F4F6', lineHeight: 1 }}>
               {overallScore}
             </div>
-            <div className="font-mono" style={{ fontSize: '11px', color: '#6B7280', marginTop: '6px' }}>
+            <div className="font-mono" style={{ fontSize: '10.5px', color: '#6B7280', marginTop: '6px' }}>
               THANG ĐIỂM 100
             </div>
             <div className="badge-mono" style={{ background: tier.bg, color: tier.color, marginTop: '10px', fontSize: '10px' }}>
@@ -88,24 +88,24 @@ export default function ReportRubric({ sessionData, scenario, onRetry, onHome })
           </div>
 
           <div>
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#F3F4F6', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6', marginBottom: '6px' }}>
               Kết luận tổng quan của Hội đồng Đánh giá
             </h3>
-            <p style={{ fontSize: '13.5px', color: '#9CA3AF', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '13px', color: '#9CA3AF', lineHeight: 1.6 }}>
               Đoàn đàm phán đã bảo vệ thành công quyền lợi doanh nghiệp thông qua việc kết hợp chặt chẽ giữa <b>Điều 79 CISG (Bất khả kháng)</b> và <b>Kính ngữ thương mại tiếng Trung</b>. Phương án thanh toán 3 kỳ giúp giảm thiểu thiệt hại bồi thường từ 1.2M USD xuống 250,000 USD (Tiết kiệm ròng <b>$950,000 USD</b> và giữ vững hạn mức tín dụng ngân hàng).
             </p>
           </div>
         </div>
 
         {/* Radar & 4-Pillar Detail Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderTop: '1px solid var(--border-subtle)', paddingTop: '28px' }}>
+        <div className="rubric-radar-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderTop: '1px solid var(--border-subtle)', paddingTop: '24px' }}>
           
           {/* Radar Chart */}
-          <div className="craft-inset" style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="font-mono" style={{ fontSize: '11px', color: '#6B7280', marginBottom: '10px' }}>
+          <div className="craft-inset" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="font-mono" style={{ fontSize: '11px', color: '#6B7280', marginBottom: '8px' }}>
               4D COMPETENCY DISTRIBUTION
             </div>
-            <RadarChart scores={scores} size={250} />
+            <RadarChart scores={scores} size={230} />
           </div>
 
           {/* 4 Rubric Cards */}
