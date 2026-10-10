@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#03080B">
+  <title>riverine.ai — Where Regeneration Fuels Future Thinking</title>
+  <style>
+    @font-face {
+      font-family: 'RV Display';
+      font-weight: 300;
+      src: url('assets/fonts/rv-display.woff2') format('woff2');
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'RV Brand';
+      font-weight: 600;
+      src: url('assets/fonts/rv-brand.woff2') format('woff2');
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'RV Text';
+      font-weight: 400;
+      src: url('assets/fonts/rv-text.woff2') format('woff2');
+      font-display: block;
+    }
+
+    :root {
+      --u: max(0.62px, min(100vw / 1280, 100dvh / 960));
+      --gutter: calc(48 * var(--u));
+      --shade-rgb: 3, 8, 11;
+      --ink: #F5FAF6;
+      --ink-2: #ECF1EF;
+      --teal: #88DECC;
+      --icon-teal: #7EC4B5;
+      --chevron: #7CCBBA;
+      --moth: #315352;
+      --cream: #EEF1EA;
+      --pine: #122B2A;
+      --pine-hover: #26504d;
+      --logo-disc: #030909;
+
+      --font-display: "RV Display", "Poppins", "Helvetica Neue", Arial, sans-serif;
+      --font-brand: "RV Brand", "Urbanist", "Helvetica Neue", Arial, sans-serif;
+      --font-text: "RV Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: #03080B;
+      color: var(--ink);
+      font-family: var(--font-text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--teal);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
+    }
+
+    /* THE STAGE */
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: #03080B;
+    }
+
+    /* VIDEO & SHADES */
+    .video-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 40%;
+      pointer-events: none;
+      display: block;
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+      .video-wrap video {
+        object-position: 50% 24%;
+      }
+    }
+
+    .shade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Shade 1: Horizontal gradient, left to right, alphas: .683, .595, .458, .221, .039, .054 at 0, 20, 40, 60, 80, 100% */
+    .shade-h {
+      background: linear-gradient(
+        to right,
+        rgba(3, 8, 11, 0.683) 0%,
+        rgba(3, 8, 11, 0.595) 20%,
+        rgba(3, 8, 11, 0.458) 40%,
+        rgba(3, 8, 11, 0.221) 60%,
+        rgba(3, 8, 11, 0.039) 80%,
+        rgba(3, 8, 11, 0.054) 100%
+      );
+    }
+
+    /* Shade 2: Vertical gradient, top to bottom, alphas: .060, .023, .152, .300, .394, .632 */
+    .shade-v {
+      background: linear-gradient(
+        to bottom,
+        rgba(3, 8, 11, 0.060) 0%,
+        rgba(3, 8, 11, 0.023) 20%,
+        rgba(3, 8, 11, 0.152) 40%,
+        rgba(3, 8, 11, 0.300) 60%,
+        rgba(3, 8, 11, 0.394) 80%,
+        rgba(3, 8, 11, 0.632) 100%
+      );
+    }
+
+    /* Shade 3: Bottom-left radial ellipse 93.8% by 41.3% at 0% 100%, shade from 1 to 0 */
+    .shade-radial {
+      background: radial-gradient(
+        ellipse 93.8% 41.3% at 0% 100%,
+        rgba(3, 8, 11, 1) 0%,
+        rgba(3, 8, 11, 0) 100%
+      );
+    }
+
+    /* CONTENT LAYOUT */
+    .ui-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    /* Top Left Logo Pill */
+    .logo-pill {
+      position: absolute;
+      top: calc(40 * var(--u));
+      left: calc(48 * var(--u));
+      width: calc(104 * var(--u));
+      height: calc(46 * var(--u));
+      border-radius: 9999px;
+      background: rgba(150, 220, 130, 0.035);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 calc(2 * var(--u));
+      gap: calc(8 * var(--u));
+      text-decoration: none;
+    }
+
+    .logo-disc {
+      width: calc(42 * var(--u));
+      height: calc(42 * var(--u));
+      border-radius: 50%;
+      background: var(--logo-disc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-tree-svg {
+      width: calc(34 * var(--u));
+      height: calc(34 * var(--u));
+    }
+
+    .logo-tree-svg path {
+      fill: none;
+      stroke: var(--icon-teal);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .moth-svg {
+      width: calc(36 * var(--u));
+      height: calc(28 * var(--u));
+      fill: var(--moth);
+    }
+
+    /* Top Center-Right Nav Pill */
+    .nav-pill {
+      position: absolute;
+      top: calc(40 * var(--u));
+      left: calc(50% + 10 * var(--u));
+      width: calc(442 * var(--u));
+      height: calc(47 * var(--u));
+      background: #03080B;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      padding-left: calc(26 * var(--u));
+      padding-right: calc(3 * var(--u));
+      font-size: calc(13.5 * var(--u));
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: calc(24 * var(--u));
+      list-style: none;
+      flex: 1;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(5 * var(--u));
+      color: var(--ink);
+    }
+
+    .nav-link.is-current {
+      color: var(--teal);
+    }
+
+    .nav-link.is-current svg {
+      width: calc(9 * var(--u));
+      height: calc(5 * var(--u));
+      stroke: var(--chevron);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-left: calc(2 * var(--u));
+    }
+
+    .nav-partner-pill {
+      height: calc(41 * var(--u));
+      padding: 0 calc(16 * var(--u));
+      background: var(--cream);
+      color: #03080B;
+      border-radius: 9999px;
+      font-size: calc(13.5 * var(--u));
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(10 * var(--u));
+      transition: background 0.2s ease;
+    }
+
+    .nav-partner-pill .pill-disc {
+      width: calc(26 * var(--u));
+      height: calc(26 * var(--u));
+      border-radius: 50%;
+      background: var(--pine);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .nav-partner-pill .pill-disc svg {
+      width: calc(4 * var(--u));
+      height: calc(7 * var(--u));
+      stroke: #FFFFFF;
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-partner-pill:hover .pill-disc {
+      background: var(--pine-hover);
+    }
+
+    /* Far Top Right Sound Button */
+    .sound-btn {
+      position: absolute;
+      top: calc(40 * var(--u));
+      right: calc(48 * var(--u));
+      width: calc(48 * var(--u));
+      height: calc(48 * var(--u));
+      border-radius: 50%;
+      background: rgba(3, 8, 11, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .sound-btn svg {
+      width: calc(20 * var(--u));
+      height: calc(20 * var(--u));
+    }
+
+    .sound-btn .wave {
+      transition: opacity 0.2s ease;
+    }
+
+    .sound-btn[aria-pressed="false"] .wave {
+      opacity: 0.25;
+    }
+
+    /* Mobile Hamburger Menu Button (hidden on desktop) */
+    .menu-btn {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #03080B;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .menu-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--ink);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+    }
+
+    .mobile-menu-panel {
+      display: none;
+    }
+
+    /* Bottom Left Hero Content */
+    .hero-block {
+      position: absolute;
+      bottom: calc(48 * var(--u));
+      left: calc(48 * var(--u));
+      max-width: calc(780 * var(--u));
+    }
+
+    .brand-eyebrow {
+      font-family: var(--font-brand);
+      font-weight: 600;
+      color: var(--teal);
+      font-size: calc(15 * var(--u));
+      letter-spacing: 0.02em;
+      margin-bottom: calc(14 * var(--u));
+      display: block;
+    }
+
+    .headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: calc(66 * var(--u));
+      line-height: 1.05;
+      color: var(--ink);
+      white-space: nowrap;
+      margin-bottom: calc(22 * var(--u));
+    }
+
+    .headline-line-mask {
+      overflow: hidden;
+      display: block;
+    }
+
+    .headline-line {
+      display: block;
+    }
+
+    .headline-line:nth-child(1) {
+      letter-spacing: -0.01em;
+    }
+    .headline-line:nth-child(2) {
+      letter-spacing: -0.02em;
+    }
+    .headline-line:nth-child(3) {
+      letter-spacing: -0.015em;
+    }
+
+    .lede {
+      font-family: var(--font-text);
+      font-weight: 400;
+      font-size: calc(16 * var(--u));
+      line-height: 1.45;
+      color: var(--ink-2);
+      margin-bottom: calc(30 * var(--u));
+    }
+
+    .lede-line {
+      display: block;
+    }
+
+    .actions-row {
+      display: flex;
+      align-items: center;
+      gap: calc(26 * var(--u));
+    }
+
+    .btn-cta-pill {
+      height: calc(46 * var(--u));
+      padding: 0 calc(20 * var(--u));
+      background: var(--cream);
+      color: #03080B;
+      border-radius: 9999px;
+      font-size: calc(14.5 * var(--u));
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(12 * var(--u));
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-cta-pill .pill-disc {
+      width: calc(28 * var(--u));
+      height: calc(28 * var(--u));
+      border-radius: 50%;
+      background: var(--pine);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .btn-cta-pill .pill-disc svg {
+      width: calc(5 * var(--u));
+      height: calc(8 * var(--u));
+      stroke: #FFFFFF;
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .btn-cta-pill:hover .pill-disc {
+      background: var(--pine-hover);
+    }
+
+    .text-link {
+      font-size: calc(14.5 * var(--u));
+      font-weight: 400;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* Bottom Right Scroll Cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: calc(48 * var(--u));
+      right: calc(48 * var(--u));
+      display: inline-flex;
+      align-items: center;
+      gap: calc(8 * var(--u));
+      font-size: calc(13.5 * var(--u));
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .scroll-cue svg {
+      width: calc(10 * var(--u));
+      height: calc(6 * var(--u));
+      stroke: var(--chevron);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .scroll-cue:hover {
+      color: var(--teal);
+    }
+
+    /* ENTRANCE INITIAL STATE (HIDDEN) */
+    body.is-waiting .logo-pill,
+    body.is-waiting .nav-pill,
+    body.is-waiting .sound-btn,
+    body.is-waiting .menu-btn,
+    body.is-waiting .brand-eyebrow,
+    body.is-waiting .headline-line,
+    body.is-waiting .lede-line,
+    body.is-waiting .actions-row > *,
+    body.is-waiting .scroll-cue {
+      opacity: 0;
+    }
+
+    /* RESPONSIVE SPECIFICATIONS */
+    @media (max-width: 649.98px), (max-height: 500px) {
+      :root {
+        --u: clamp(0.94px, 100vw / 390, 1.2px);
+        --gutter: clamp(18px, 5.6vw, 32px);
+      }
+
+      .video-wrap video {
+        object-position: 63% 50%;
+      }
+
+      /* Softer left shade, stronger bottom shade, corner radial removed */
+      .shade-h {
+        background: linear-gradient(
+          to right,
+          rgba(3, 8, 11, 0.45) 0%,
+          rgba(3, 8, 11, 0.25) 50%,
+          rgba(3, 8, 11, 0.05) 100%
+        );
+      }
+
+      .shade-v {
+        background: linear-gradient(
+          to bottom,
+          rgba(3, 8, 11, 0.05) 0%,
+          rgba(3, 8, 11, 0.40) 60%,
+          rgba(3, 8, 11, 0.85) 100%
+        );
+      }
+
+      .shade-radial {
+        display: none;
+      }
+
+      .headline-line:nth-child(1) { letter-spacing: -0.01em; }
+      .headline-line:nth-child(2) { letter-spacing: -0.02em; }
+      .headline-line:nth-child(3) { letter-spacing: -0.015em; }
+
+      .actions-row {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .text-link {
+        padding: 10px 0;
+      }
+
+      .scroll-cue {
+        padding: 10px 0;
+      }
+    }
+
+    /* Mobile screens <= 649.98px */
+    @media (max-width: 649.98px) {
+      .nav-pill {
+        display: none;
+      }
+
+      .top-header-mobile {
+        position: absolute;
+        top: max(var(--gutter), env(safe-area-inset-top));
+        left: max(var(--gutter), env(safe-area-inset-left));
+        right: max(var(--gutter), env(safe-area-inset-right));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 50;
+      }
+
+      .logo-pill {
+        position: static;
+      }
+
+      .mobile-header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .sound-btn {
+        position: static;
+        width: 48px;
+        height: 48px;
+      }
+
+      .menu-btn {
+        display: flex;
+      }
+
+      /* Mobile Menu Panel */
+      .mobile-menu-panel {
+        display: none;
+        position: absolute;
+        top: calc(max(var(--gutter), env(safe-area-inset-top)) + 58px);
+        left: max(var(--gutter), env(safe-area-inset-left));
+        right: max(var(--gutter), env(safe-area-inset-right));
+        background: #03080B;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 24px;
+        z-index: 49;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .mobile-menu-panel.is-open {
+        display: flex;
+      }
+
+      .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        font-size: 17px;
+        color: var(--ink);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .mobile-partner-btn {
+        margin-top: 12px;
+        height: 48px;
+        background: var(--cream);
+        color: #03080B;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .mobile-partner-btn .pill-disc {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--pine);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mobile-partner-btn .pill-disc svg {
+        width: 5px;
+        height: 8px;
+        stroke: #FFFFFF;
+        fill: none;
+        stroke-width: 1.4;
+      }
+
+      /* Hero position on mobile */
+      .hero-block {
+        left: max(var(--gutter), env(safe-area-inset-left));
+        right: max(var(--gutter), env(safe-area-inset-right));
+        bottom: calc(max(var(--gutter), env(safe-area-inset-bottom)) + 52px);
+      }
+
+      .headline {
+        font-size: min(clamp(32px, 10.4vw, 60px), calc((100vw - 2 * var(--gutter)) / 8.7));
+        white-space: normal;
+      }
+
+      .scroll-cue {
+        bottom: max(var(--gutter), env(safe-area-inset-bottom));
+        right: max(var(--gutter), env(safe-area-inset-right));
+      }
+    }
+
+    /* Short landscape phones, max-height 500px and min-aspect-ratio 1/1 */
+    @media (max-height: 500px) and (min-aspect-ratio: 1/1) {
+      :root {
+        --u: clamp(0.82px, 100dvh / 415, 0.94px);
+      }
+
+      .video-wrap video {
+        object-position: 50% 30%;
+      }
+
+      .headline {
+        font-size: clamp(28px, 10dvh, 44px);
+        margin-bottom: calc(12 * var(--u));
+      }
+
+      .lede {
+        margin-bottom: calc(16 * var(--u));
+      }
+
+      .actions-row {
+        flex-wrap: nowrap;
+      }
+
+      @media (max-width: 649.98px) {
+        .mobile-menu-panel.is-open {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+      }
+    }
+
+    /* Tablets 650–1100px wide and at least 501px tall, and portrait screens >=650px with max-aspect-ratio 4/5 */
+    @media (min-width: 650px) and (max-width: 1100px) and (min-height: 501px),
+           (min-width: 650px) and (max-aspect-ratio: 4/5) and (min-height: 501px) {
+      :root {
+        --u: 0.94px;
+      }
+    }
+
+    @media (min-width: 650px) and (max-aspect-ratio: 4/5) and (min-height: 501px) {
+      .hero-block {
+        transform: scale(1.1);
+        transform-origin: bottom left;
+      }
+      .scroll-cue {
+        transform: scale(1.1);
+        transform-origin: bottom right;
+      }
+      .video-wrap video {
+        object-position: 58% 50%;
+      }
+    }
+
+    /* PREFERS-REDUCED-MOTION */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      body.is-waiting .logo-pill,
+      body.is-waiting .nav-pill,
+      body.is-waiting .sound-btn,
+      body.is-waiting .menu-btn,
+      body.is-waiting .brand-eyebrow,
+      body.is-waiting .headline-line,
+      body.is-waiting .lede-line,
+      body.is-waiting .actions-row > *,
+      body.is-waiting .scroll-cue {
+        opacity: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body class="is-waiting">
+  <div class="stage">
+    
+    <!-- Video background -->
+    <div class="video-wrap">
+      <video id="bg-video" autoplay muted loop playsinline preload="auto">
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261005_182346_a590ff3b-72e5-41ce-8f69-a8c823eaecaa.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- 3 Shade Overlays -->
+    <div class="shade shade-h"></div>
+    <div class="shade shade-v"></div>
+    <div class="shade shade-radial"></div>
+
+    <!-- UI Layer -->
+    <div class="ui-layer">
+      
+      <!-- Top Left Logo Pill (Desktop & Mobile anchor) -->
+      <a href="#" class="logo-pill" aria-label="riverine.ai home" id="logo-el">
+        <div class="logo-disc">
+          <svg class="logo-tree-svg" viewBox="0 0 46 46">
+            <path class="tree-stroke" d="M24.2 37V24" />
+            <path class="tree-stroke" d="M19.8 39.3c1.2-1.9 2.8-2.7 4.4-2.7s3.2.8 4.4 2.7" />
+            <path class="tree-stroke" d="M23.8 30.2c-2.8-.6-5.5-2.6-7.2-5-2-1.8-5.2-2-7-4.2-1.4-1.8-1.4-4.2 0-6 2-3 5.8-5.2 8.8-6.2 1.4-.5 2.8-1 4.2-1.3" />
+            <path class="tree-stroke" d="M14.8 23V13.2c0-1.4.8-2.6 2.4-3.4" />
+            <path class="tree-stroke" d="M24 24.2c-1.8-1.8-3.2-3.8-3.7-6.4-.5-2.6-.6-5.2-.3-7.2" />
+            <path class="tree-stroke" d="M24.3 23.2c1.5-3 3.5-6.4 4.3-10.2.4-2.6 1.2-4.1 2.8-4.3H35" />
+            <path class="tree-stroke" d="M24.6 25.7c3-.7 5.8-2.1 7.4-4.5 1.2-1.8 1.4-3.8 2.8-5.2 1.4-1.4 3.2-2.1 5.2-2.4" />
+          </svg>
+        </div>
+        <svg class="moth-svg" viewBox="0 0 39 30" id="moth-el">
+          <path d="M19.5 12.4C17.5 9.5 14 5 10.8 3 9.6 2.4 8 2.2 6 2.3 4.2 2.4 3.1 3 3 4.8L3.1 9.8C3.2 12.4 5 15 8.3 17.3 6.6 19.5 5.6 21.8 5.4 24.2 5.2 26.2 5.8 27.6 7.3 28 8.8 28.3 10.2 27.3 11.4 25.8 14.2 22.6 17.2 19.8 19.5 17.1Z" />
+          <path transform="matrix(-1 0 0 1 39 0)" d="M19.5 12.4C17.5 9.5 14 5 10.8 3 9.6 2.4 8 2.2 6 2.3 4.2 2.4 3.1 3 3 4.8L3.1 9.8C3.2 12.4 5 15 8.3 17.3 6.6 19.5 5.6 21.8 5.4 24.2 5.2 26.2 5.8 27.6 7.3 28 8.8 28.3 10.2 27.3 11.4 25.8 14.2 22.6 17.2 19.8 19.5 17.1Z" />
+        </svg>
+      </a>
+
+      <!-- Desktop Top Nav Pill -->
+      <nav class="nav-pill" id="nav-pill-el">
+        <ul class="nav-links">
+          <li><a href="#work" class="nav-link">Work</a></li>
+          <li>
+            <a href="#regenerate" class="nav-link is-current">
+              Regenerate
+              <svg viewBox="0 0 11 6"><path d="M.7.7 5.5 5.3 10.3.7" /></svg>
+            </a>
+          </li>
+          <li><a href="#nature" class="nav-link">Nature</a></li>
+          <li><a href="#earth" class="nav-link">Earth</a></li>
+          <li><a href="#news" class="nav-link">News</a></li>
+        </ul>
+        <a href="#partner" class="nav-partner-pill">
+          Partner
+          <span class="pill-disc">
+            <svg viewBox="0 0 4 7"><path d="M.5.5 3.5 3.5.5 6.5" /></svg>
+          </span>
+        </a>
+      </nav>
+
+      <!-- Desktop / Mobile Sound Button -->
+      <button class="sound-btn" id="sound-btn-el" aria-label="Ambient river sound" aria-pressed="true">
+        <svg viewBox="0 0 46 46" fill="currentColor">
+          <path d="M14.6 19.6h3.6l5.9-4.9v18.6l-5.9-4.9h-3.6z" />
+          <path class="wave wave-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M27.6 19.6c1.9 2.8 1.9 6 0 8.8" />
+          <path class="wave wave-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M31.2 16.2c3.4 4.9 3.4 10.7 0 15.6" />
+        </svg>
+      </button>
+
+      <!-- Mobile Top Header Bar Container -->
+      <div class="top-header-mobile">
+        <!-- Logo injected here via mobile layout -->
+        <div style="visibility: hidden; width: 1px;"></div>
+        <div class="mobile-header-right">
+          <!-- Hamburger menu button -->
+          <button class="menu-btn" id="menu-btn-el" aria-label="Menu" aria-expanded="false">
+            <svg viewBox="0 0 18 13" id="menu-icon-svg">
+              <path class="menu-bar bar-1" d="M1 1h16" />
+              <path class="menu-bar bar-2" d="M1 6h16" />
+              <path class="menu-bar bar-3" d="M1 11h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Panel -->
+      <div class="mobile-menu-panel" id="mobile-menu-panel-el">
+        <a href="#work" class="mobile-nav-link">Work</a>
+        <a href="#regenerate" class="mobile-nav-link">Regenerate</a>
+        <a href="#nature" class="mobile-nav-link">Nature</a>
+        <a href="#earth" class="mobile-nav-link">Earth</a>
+        <a href="#news" class="mobile-nav-link">News</a>
+        <a href="#partner" class="mobile-partner-btn">
+          <span>Partner</span>
+          <span class="pill-disc">
+            <svg viewBox="0 0 4 7"><path d="M.5.5 3.5 3.5.5 6.5" /></svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Bottom Left Hero -->
+      <div class="hero-block" id="hero-block-el">
+        <span class="brand-eyebrow" id="brand-el">riverine.ai</span>
+        
+        <h1 class="headline" id="headline-el">
+          <span class="headline-line-mask"><span class="headline-line">Where</span></span>
+          <span class="headline-line-mask"><span class="headline-line">Regeneration Fuels</span></span>
+          <span class="headline-line-mask"><span class="headline-line">Future Thinking</span></span>
+        </h1>
+
+        <div class="lede" id="lede-el">
+          <span class="lede-line">Living waterways reveal a hidden logic of renewal</span>
+          <span class="lede-line">Nature's patterns guide more caring AI</span>
+        </div>
+
+        <div class="actions-row" id="actions-el">
+          <a href="#future" class="btn-cta-pill" id="cta-pill-el">
+            Shape our Future
+            <span class="pill-disc">
+              <svg viewBox="0 0 5 8"><path d="M.6.6 4 4 .6 7.4" /></svg>
+            </span>
+          </a>
+          <a href="#rivers" class="text-link" id="rivers-link-el">Discover the Rivers</a>
+        </div>
+      </div>
+
+      <!-- Bottom Right Scroll Cue -->
+      <a href="#details" class="scroll-cue" id="scroll-cue-el">
+        <span>Scroll for Details</span>
+        <svg viewBox="0 0 11 6"><path d="M.7.7 5.5 5.3 10.3.7" /></svg>
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Sound button interactive toggle
+      const soundBtn = document.getElementById('sound-btn-el');
+      if (soundBtn) {
+        soundBtn.addEventListener('click', function() {
+          const pressed = soundBtn.getAttribute('aria-pressed') === 'true';
+          soundBtn.setAttribute('aria-pressed', (!pressed).toString());
+        });
+      }
+
+      // Mobile Menu Interaction
+      const menuBtn = document.getElementById('menu-btn-el');
+      const menuPanel = document.getElementById('mobile-menu-panel-el');
+      const menuIconSvg = document.getElementById('menu-icon-svg');
+
+      function setMenuState(open) {
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+          menuPanel.classList.add('is-open');
+          // transform menu bars into X
+          menuIconSvg.innerHTML = '<path d="M2 2L16 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M2 11L16 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>';
+          const firstLink = menuPanel.querySelector('a');
+          if (firstLink) firstLink.focus();
+        } else {
+          menuPanel.classList.remove('is-open');
+          // reset to 3 bars
+          menuIconSvg.innerHTML = '<path class="menu-bar" d="M1 1h16"/><path class="menu-bar" d="M1 6h16"/><path class="menu-bar" d="M1 11h16"/>';
+          menuBtn.focus();
+        }
+      }
+
+      if (menuBtn && menuPanel) {
+        menuBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+          setMenuState(!isOpen);
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') {
+            setMenuState(false);
+          }
+        });
+
+        document.addEventListener('click', function(e) {
+          if (menuBtn.getAttribute('aria-expanded') === 'true' && !menuPanel.contains(e.target) && e.target !== menuBtn) {
+            setMenuState(false);
+          }
+        });
+
+        menuPanel.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            setMenuState(false);
+          });
+        });
+      }
+
+      // ENTRANCE ANIMATION ORCHESTRATION
+      const video = document.getElementById('bg-video');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let hasRun = false;
+
+      function finishEntrance() {
+        if (hasRun) return;
+        hasRun = true;
+        document.body.classList.remove('is-waiting');
+
+        // Force one-frame redraw of the logo and the action row
+        const logo = document.getElementById('logo-el');
+        const actions = document.getElementById('actions-el');
+        if (logo) void logo.offsetHeight;
+        if (actions) void actions.offsetHeight;
+      }
+
+      if (prefersReducedMotion) {
+        finishEntrance();
+        return;
+      }
+
+      function runEntranceTimeline() {
+        if (hasRun) return;
+        hasRun = true;
+        document.body.classList.remove('is-waiting');
+
+        const ctaBtn = document.getElementById('cta-pill-el');
+        const ctaHeight = ctaBtn ? ctaBtn.getBoundingClientRect().height : 46;
+        const scaleDist = ctaHeight / 46;
+        const isMobileWidth = window.innerWidth < 650;
+        const widthFactor = isMobileWidth ? 0.8 : 1.0;
+
+        function calcLift(basePx) {
+          return Math.round(basePx * scaleDist * widthFactor);
+        }
+
+        const quartEase = 'cubic-bezier(0.25, 1, 0.5, 1)';
+        const expoEase = 'cubic-bezier(0.16, 1, 0.3, 1)';
+        const growEase = 'cubic-bezier(0.45, 0, 0.2, 1)';
+
+        const anims = [];
+
+        // 0ms, 500ms, quart: logo fades in
+        const logoEl = document.getElementById('logo-el');
+        if (logoEl) {
+          anims.push(logoEl.animate(
+            [{ opacity: 0 }, { opacity: 1 }],
+            { duration: 500, delay: 0, easing: quartEase, fill: 'backwards' }
+          ));
+        }
+
+        // Tree strokes draw on with stroke-dashoffset, 80ms plus 45ms per path, 820ms, grow ease
+        const treePaths = document.querySelectorAll('.tree-stroke');
+        treePaths.forEach(function(path, idx) {
+          const len = path.getTotalLength ? path.getTotalLength() : 40;
+          path.style.strokeDasharray = len;
+          path.style.strokeDashoffset = len;
+          const a = path.animate(
+            [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
+            { duration: 820, delay: 80 + idx * 45, easing: growEase, fill: 'forwards' }
+          );
+          anims.push(a);
+          a.onfinish = function() {
+            path.style.strokeDasharray = '';
+            path.style.strokeDashoffset = '';
+          };
+        });
+
+        // Moth fades and scales from 0.92 at 420ms for 650ms, expo
+        const mothEl = document.getElementById('moth-el');
+        if (mothEl) {
+          anims.push(mothEl.animate(
+            [
+              { opacity: 0, transform: 'scale(0.92)' },
+              { opacity: 1, transform: 'scale(1)' }
+            ],
+            { duration: 650, delay: 420, easing: expoEase, fill: 'backwards' }
+          ));
+        }
+
+        // 120ms, 700ms, expo: nav or menu lifts 8px
+        const navEl = document.getElementById('nav-pill-el');
+        const menuBtnEl = document.getElementById('menu-btn-el');
+        const targetNav = isMobileWidth ? menuBtnEl : navEl;
+        const navLift = calcLift(8);
+
+        if (targetNav) {
+          anims.push(targetNav.animate(
+            [
+              { opacity: 0, transform: `translateY(${navLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 700, delay: 120, easing: expoEase, fill: 'backwards' }
+          ));
+        }
+
+        // Links ripple from 260ms, 45ms apart, lifting 4px
+        const links = document.querySelectorAll('.nav-links .nav-link, .nav-partner-pill');
+        const linkLift = calcLift(4);
+        links.forEach(function(link, idx) {
+          anims.push(link.animate(
+            [
+              { opacity: 0, transform: `translateY(${linkLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 600, delay: 260 + idx * 45, easing: expoEase, fill: 'backwards' }
+          ));
+        });
+
+        // Sound lifts 8px at 200ms
+        const soundEl = document.getElementById('sound-btn-el');
+        if (soundEl) {
+          const soundLift = calcLift(8);
+          anims.push(soundEl.animate(
+            [
+              { opacity: 0, transform: `translateY(${soundLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 700, delay: 200, easing: expoEase, fill: 'backwards' }
+          ));
+        }
+
+        // 300ms: "riverine.ai" lifts 10px, 650ms
+        const brandEl = document.getElementById('brand-el');
+        if (brandEl) {
+          const brandLift = calcLift(10);
+          anims.push(brandEl.animate(
+            [
+              { opacity: 0, transform: `translateY(${brandLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 650, delay: 300, easing: expoEase, fill: 'backwards' }
+          ));
+        }
+
+        // 380ms, then +90ms per line, 1050ms: each headline line rises from translateY(115%) inside its own clip mask
+        const headlineLines = document.querySelectorAll('.headline-line');
+        headlineLines.forEach(function(line, idx) {
+          anims.push(line.animate(
+            [
+              { transform: 'translateY(115%)' },
+              { transform: 'translateY(0)' }
+            ],
+            { duration: 1050, delay: 380 + idx * 90, easing: expoEase, fill: 'backwards' }
+          ));
+        });
+
+        // 800ms and 860ms: the two lede lines lift 14px, 800ms
+        const ledeLines = document.querySelectorAll('.lede-line');
+        const ledeLift = calcLift(14);
+        ledeLines.forEach(function(line, idx) {
+          anims.push(line.animate(
+            [
+              { opacity: 0, transform: `translateY(${ledeLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 800, delay: 800 + idx * 60, easing: expoEase, fill: 'backwards' }
+          ));
+        });
+
+        // 1000ms: CTA lifts 12px, 800ms
+        if (ctaBtn) {
+          const ctaLift = calcLift(12);
+          anims.push(ctaBtn.animate(
+            [
+              { opacity: 0, transform: `translateY(${ctaLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 800, delay: 1000, easing: expoEase, fill: 'backwards' }
+          ));
+        }
+
+        // 1100ms: text link lifts 8px, 600ms, quart
+        const riversLink = document.getElementById('rivers-link-el');
+        if (riversLink) {
+          const riversLift = calcLift(8);
+          anims.push(riversLink.animate(
+            [
+              { opacity: 0, transform: `translateY(${riversLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 600, delay: 1100, easing: quartEase, fill: 'backwards' }
+          ));
+        }
+
+        // 1250ms: scroll cue lifts from -6px, 700ms
+        const cueEl = document.getElementById('scroll-cue-el');
+        if (cueEl) {
+          const cueLift = calcLift(-6);
+          anims.push(cueEl.animate(
+            [
+              { opacity: 0, transform: `translateY(${cueLift}px)` },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 700, delay: 1250, easing: expoEase, fill: 'backwards' }
+          ));
+        }
+
+        // When all animations finish, force one-frame redraw of logo and action row
+        Promise.all(anims.map(a => a.finished)).then(function() {
+          if (logoEl) void logoEl.offsetHeight;
+          if (ctaBtn) void ctaBtn.offsetHeight;
+        }).catch(function() {
+          // ignore any interruptions
+        });
+      }
+
+      // Gate: Font ready and video loadeddata (or 3.5s failsafe)
+      const failsafe = setTimeout(function() {
+        runEntranceTimeline();
+      }, 3500);
+
+      const fontsReadyPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+
+      const videoReadyPromise = new Promise(function(resolve) {
+        if (!video || video.readyState >= 2) {
+          resolve();
+        } else {
+          video.addEventListener('loadeddata', resolve, { once: true });
+          video.addEventListener('canplay', resolve, { once: true });
+          video.addEventListener('error', resolve, { once: true });
+        }
+      });
+
+      Promise.all([fontsReadyPromise, videoReadyPromise]).then(function() {
+        clearTimeout(failsafe);
+        runEntranceTimeline();
+      });
+
+    })();
+  </script>
+</body>
+</html>
