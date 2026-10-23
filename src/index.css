@@ -1,45 +1,54 @@
-/* RIVERINE DESIGN SYSTEM APPLIED TO SIMLAB (DESKTOP & MOBILE OPTIMIZED) */
+/* AI SIMLAB DESIGN SYSTEM (DESKTOP & MOBILE OPTIMIZED) */
 :root {
   --u: clamp(0.75px, min(100vw / 1280, 100dvh / 960), 1.1px);
   --gutter: calc(48 * var(--u));
   
-  /* Riverine Palette */
-  --shade-rgb: 3, 8, 11;
-  --bg-app: #03080B;
-  --bg-surface: #070F13;
-  --bg-surface-elevated: #0C171A;
-  --bg-surface-hover: #122226;
-  --bg-inset: #020507;
+  /* Cyber Space Deep Dark Palette */
+  --shade-rgb: 6, 9, 19;
+  --bg-app: #060913;
+  --bg-surface: #0B1124;
+  --bg-surface-elevated: #111A36;
+  --bg-surface-hover: #17244B;
+  --bg-inset: #04060E;
 
-  --ink: #F5FAF6;
-  --ink-2: #ECF1EF;
-  --text-muted: #8E9F9A;
-  --text-faint: #5B6C67;
+  --ink: #F8FAFC;
+  --ink-2: #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-faint: #64748B;
 
-  --teal: #88DECC;
-  --icon-teal: #7EC4B5;
-  --chevron: #7CCBBA;
-  --moth: #315352;
-  --cream: #EEF1EA;
-  --pine: #122B2A;
-  --pine-hover: #26504d;
-  --logo-disc: #030909;
+  /* Cyber Accents from Brand Identity */
+  --cyan: #00F0FF;
+  --cyan-hover: #38BDF8;
+  --purple: #A855F7;
+  --purple-dark: #7C3AED;
+  --magenta: #E879F9;
+  --teal: #00F0FF;
+  --icon-teal: #00F0FF;
+  --chevron: #38BDF8;
+  --cream: #00F0FF;
+  --pine: #1E1B4B;
+  --pine-hover: #312E81;
+  --logo-disc: #060914;
 
-  --border-subtle: rgba(136, 222, 204, 0.08);
-  --border-medium: rgba(136, 222, 204, 0.16);
-  --border-active: #88DECC;
+  --border-subtle: rgba(0, 240, 255, 0.12);
+  --border-medium: rgba(0, 240, 255, 0.28);
+  --border-purple: rgba(168, 85, 247, 0.28);
+  --border-active: #00F0FF;
+  
+  --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.35);
+  --glow-purple: 0 0 20px rgba(168, 85, 247, 0.35);
 
   /* Typography */
-  --font-display: 'Newsreader', 'Poppins', Georgia, serif;
-  --font-brand: 'Plus Jakarta Sans', 'Urbanist', -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-brand: 'Plus Jakarta Sans', -apple-system, sans-serif;
   --font-text: 'Plus Jakarta Sans', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --font-cn: 'Noto Sans SC', sans-serif;
 
   --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
 }
 
 * {
@@ -185,93 +194,116 @@ button {
   text-transform: uppercase;
 }
 
-/* BUTTONS */
+/* BUTTONS - ELEGANT & REFINED (KHÔNG LÒE LOẸT) */
 .btn-cta-pill {
-  height: 48px;
-  padding: 0 22px;
-  background: var(--cream);
-  color: #03080B;
+  height: 38px;
+  padding: 0 18px;
+  background: #0B1124;
+  color: #F8FAFC;
   border-radius: 9999px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 8px;
   transition: all 0.2s ease;
   white-space: nowrap;
-  border: none;
+  border: 1px solid rgba(56, 189, 248, 0.35);
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .btn-cta-pill .pill-disc {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--pine);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease;
-}
-
-.btn-cta-pill .pill-disc svg {
-  width: 5px;
-  height: 8px;
-  stroke: #FFFFFF;
-  fill: none;
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  display: none;
 }
 
 .btn-cta-pill:hover {
-  background: #FFFFFF;
+  background: #17244B;
+  border-color: #38BDF8;
+  color: #FFFFFF;
   transform: translateY(-1px);
-}
-
-.btn-cta-pill:hover .pill-disc {
-  background: var(--pine-hover);
 }
 
 .btn-primary {
-  background: var(--teal);
-  color: #03080B;
+  background: #0284C7;
+  color: #FFFFFF;
   font-weight: 600;
-  font-size: 13.5px;
-  padding: 9px 18px;
+  font-size: 13px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 6px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .btn-primary:hover {
-  background: #A3E8D9;
+  background: #0369A1;
+  border-color: #38BDF8;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .btn-secondary {
-  background: var(--bg-surface-elevated);
-  color: var(--ink);
+  background: rgba(30, 41, 59, 0.7);
+  color: #E2E8F0;
   font-weight: 500;
   font-size: 13px;
   padding: 8px 14px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background: var(--bg-surface-hover);
-  border-color: var(--border-medium);
-  color: var(--teal);
+  background: rgba(51, 65, 85, 0.85);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.btn-cyber-purple {
+  background: #1E293B;
+  color: #F1F5F9;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cyber-purple:hover {
+  background: #334155;
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #FFFFFF;
+}
+
+/* CYBER NEON UTILITIES */
+.glow-cyan {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.glow-purple {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.text-gradient-cyan-purple {
+  color: #F8FAFC;
 }
 
 /* CLIP-MASK ANIMATIONS FOR HEADLINES */
@@ -672,5 +704,27 @@ button {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
   }
+
+  .simlab-history-card {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .simlab-history-card-right {
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-left: 0 !important;
+    padding-top: 14px !important;
+    align-items: stretch !important;
+  }
+
+  .simlab-history-card-right .score-box {
+    text-align: left !important;
+  }
+}
+
+.simlab-history-card {
+  display: grid;
+  grid-template-columns: 180px 1fr 180px;
 }
 

@@ -1,19 +1,27 @@
+// AI Interactive SimLab - 6 Interdisciplinary Fields
+// Scenarios derived from scientific cases, international arbitral awards, and viral business social media crises.
+
 export const SCENARIOS = [
+  // 1. LUẬT (LAW & ARBITRATION)
   {
     id: 'shanghai-arbitration',
-    title: 'Phiên Trọng Tài Thương Mại: Tranh Chấp Hợp Đồng Cung Ứng Quốc Tế',
-    subtitle: 'Đàm phán hòa giải tranh chấp 1.2M USD giữa Công ty Công nghệ Việt Nam & Đối tác Thượng Hải',
+    field: 'law',
+    fieldName: 'Luật Kinh Tế & Trọng Tài',
+    fieldColor: '#38BDF8',
+    image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80',
+    title: 'Phiên Trọng Tài: Tranh Chấp Hợp Đồng Bán Dẫn & Biến Cố Biển Đỏ',
+    subtitle: 'Hòa giải tranh chấp 1.2M USD giữa Công ty Công nghệ Việt Nam & Đối tác Thượng Hải (CISG 1980)',
     level: 'Nâng cao (Advanced)',
     duration: '15 - 20 phút',
-    languages: ['Tiếng Trung Thương Mại (商务中文)', 'Tiếng Anh', 'Tiếng Việt'],
-    targetAudience: 'Sinh viên Luật Kinh tế, Ngôn ngữ Trung, Ngoại thương & Quản trị Logistics',
-    tags: ['Luật Quốc tế CISG', 'Đàm phán đa ngữ', 'Bảo toàn dòng tiền', 'Xử lý mâu thuẫn'],
-    badge: 'Kịch bản Tiêu biểu',
+    languages: ['Tiếng Trung (商务中文)', 'Tiếng Anh', 'Tiếng Việt'],
+    targetAudience: 'Sinh viên Luật Kinh tế, Ngôn ngữ Trung & Trọng tài Quốc tế',
+    tags: ['CISG Điều 79', 'SHIAC', 'Bất Khả Kháng', 'Phạt Vi Phạm'],
+    badge: 'Hồ Sơ Trọng Tài Tiêu Biểu',
     persona: {
       name: 'Trần Hiểu Đông (Chen Xiao Dong - 陈晓东)',
       title: 'Giám đốc Điều hành & Cố vấn Pháp lý cấp cao, Tập đoàn HuaXin Tech (Thượng Hải)',
-      avatar: './assets/persona_chen.jpg',
-      personality: 'Cương quyết, sắc bén, am hiểu luật CISG, đặt lợi ích tài chính và cam kết giao hàng lên hàng đầu.',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+      personality: 'Cương quyết, sắc bén, am hiểu luật CISG, đặt áp lực tài chính và uy tín hợp đồng lên hàng đầu.',
       initialStance: 'Quyết liệt (Aggressive)',
       languageCode: 'zh-CN',
       audioVoicePrefix: 'zh',
@@ -21,13 +29,13 @@ export const SCENARIOS = [
       initialMessageVi: 'Chào các vị đại diện. HuaXin Tech chúng tôi đã đợi phương án sửa L/C và bồi thường chậm hạn của quý công ty suốt 3 tuần qua! Điều 12 hợp đồng nêu rõ: chậm thanh toán làm ngưng trệ sản xuất phải chịu phạt 15% và bồi thường tổn thất lưu kho tổng cộng 1.2 triệu USD. Nếu hôm nay các bạn vẫn không đưa ra giải pháp thực chất, đội ngũ pháp lý của chúng tôi sẽ nộp đơn lên SHIAC ngay ngày mai!',
     },
     context: {
-      overview: 'Công ty công nghệ Việt Nam (bên Mua) ký hợp đồng mua 200.000 linh kiện bán dẫn trị giá 8 triệu USD từ HuaXin Tech (Thượng Hải). Do chuỗi logistics đường biển qua Biển Đỏ gián đoạn và tỷ giá USD/VND biến động mạnh, ngân hàng phía Việt Nam chậm phát hành bảo lãnh L/C đợt 2, dẫn đến tồn kho tại Thượng Hải. Đối tác yêu cầu bồi thường 1.2 triệu USD hoặc kiện ra Trọng tài SHIAC.',
-      studentRole: 'Trưởng ban Đàm phán Liên ngành (Đại diện Công ty Việt Nam), phối hợp Luật sư nội bộ, Chuyên viên Ngôn ngữ Trung và Giám đốc Tài chính.',
+      overview: 'Công ty công nghệ Việt Nam ký hợp đồng mua 200.000 linh kiện bán dẫn trị giá 8 triệu USD từ HuaXin Tech (Thượng Hải). Tuyến logistics Biển Đỏ đứt gãy làm cước tàu tăng 280%, ngân hàng chậm duyệt bảo lãnh L/C. Đối tác đòi phạt 1.2M USD.',
+      studentRole: 'Trưởng ban Đàm phán Liên ngành (Đại diện Công ty Việt Nam), phối hợp Luật sư nội bộ và Chuyên viên Ngôn ngữ.',
       coreObjectives: [
-        'Hạ mức bồi thường từ 1.2 triệu USD xuống dưới 300.000 USD (hoặc bù đắp bằng đơn hàng tương lai).',
-        'Vận dụng Điều 79 CISG (Bất khả kháng/Trở ngại khách quan) để đàm phán miễn trừ phạt vi phạm.',
-        'Sử dụng ngôn ngữ ngoại giao và kính ngữ thương mại tiếng Trung để xoa dịu quan hệ đối tác chiến lược.',
-        'Đưa ra lộ trình thanh toán linh hoạt 3 giai đoạn để bảo toàn thanh khoản công ty.'
+        'Hạ mức bồi thường từ 1.2 triệu USD xuống dưới 300.000 USD thực tế kho bãi.',
+        'Vận dụng Điều 79 CISG (Bất khả kháng) để miễn trừ 100% khoản phạt vi phạm 15%.',
+        'Sử dụng kính ngữ thương mại tiếng Trung để giữ vững quan hệ đối tác chiến lược.',
+        'Đề xuất lộ trình thanh toán 3 đợt để bảo toàn thanh khoản.'
       ]
     },
     dossier: [
@@ -35,253 +43,374 @@ export const SCENARIOS = [
         title: 'Hợp đồng Ngoại thương số HX-VN-2024 (§ Trích yếu)',
         type: 'contract',
         content: `• ĐIỀU 8 (FORCE MAJEURE - BẤT KHẢ KHÁNG):
-"Các bên được miễn trừ trách nhiệm bồi thường nếu chứng minh được việc không thực hiện nghĩa vụ do trở ngại khách quan nằm ngoài tầm kiểm soát hợp lý, không lường trước được tại thời điểm ký kết (theo Điều 79 Công ước Viên CISG 1980)."
+"Các bên được miễn trừ trách nhiệm bồi thường nếu chứng minh được việc không thực hiện nghĩa vụ do trở ngại khách quan nằm ngoài tầm kiểm soát hợp lý (theo Điều 79 Công ước Viên CISG 1980)."
 
 • ĐIỀU 12 (PHẠT VI PHẠM & BỒI THƯỜNG THIỆT HẠI):
-"Bên vi phạm thời hạn mở L/C quá 14 ngày làm việc phải chịu phạt vi phạm 8% giá trị lô hàng chậm trễ và bồi thường toàn bộ thiệt hại thực tế phát sinh (gồm chi phí lưu kho bãi, nhân công chờ việc)."
+"Bên vi phạm thời hạn mở L/C quá 14 ngày làm việc phải chịu phạt vi phạm 8% giá trị lô hàng và bồi thường thiệt hại thực tế phát sinh có hóa đơn kiểm toán."
 
-• ĐIỀU 14 (LUẬT ÁP DỤNG & GIẢI QUYẾT TRANH CHẤP):
-"Mọi tranh chấp phát sinh được ưu tiên hòa giải thương lượng trong vòng 30 ngày. Trường hợp không đạt được thỏa thuận, vụ việc sẽ được đưa ra Trung tâm Trọng tài Quốc tế Thượng Hải (SHIAC) phán quyết. Luật áp dụng là CISG 1980 và tập quán thương mại quốc tế Incoterms 2020."`
+• ĐIỀU 14 (TRỌNG TÀI ÁP DỤNG):
+"Giải quyết tại Trung tâm Trọng tài Quốc tế Thượng Hải (SHIAC). Luật áp dụng: CISG 1980 & Incoterms 2020."`
       },
       {
-        title: 'Báo cáo Dòng tiền & Thanh khoản Quý 4 (Nội bộ)',
+        title: 'Báo cáo Kiểm toán Dòng tiền Quý 4',
         type: 'finance',
-        content: `• Dự trữ tiền mặt khả dụng: 650.000 USD.
-• Nếu phải bồi thường ngay 1.200.000 USD: Công ty sẽ âm vốn lưu động, vi phạm hệ số an toàn nợ với ngân hàng (Debt Covenant Breach), đe dọa trực tiếp hoạt động kinh doanh.
-• Khả năng chịu đựng tối ưu: Bồi thường chi phí phát sinh thực tế lưu kho tối đa 180.000 - 250.000 USD, thanh toán tiền hàng đợt 2 chia làm 3 kỳ trong 60 ngày.`
-      },
-      {
-        title: 'Công văn Gián đoạn Logistics & Ngoại hối',
-        type: 'evidence',
-        content: `• Công văn từ Hãng tàu Quốc tế xác nhận tuyến vận tải qua Biển Đỏ bị đình chỉ bất khả kháng, cước phí tàu tăng 280%, các ngân hàng trung gian đình chỉ duyệt bảo lãnh L/C đa tệ trong 10 ngày.
-• Đủ căn cứ cấu thành yếu tố trở ngại khách quan theo CISG Điều 79 khoản 1.`
+        content: `• Quỹ tiền mặt khả dụng: 650.000 USD.
+• Mức chịu đựng tối ưu: Bồi thường kho bãi thực tế có hóa đơn kiểm toán 200.000 - 250.000 USD. Không chấp nhận phạt phạt chế tài 15% (trên 1 triệu USD).`
       }
     ],
     tacticalPrompts: [
       {
         category: 'law',
-        label: '⚖️ [Luật CISG] Viện dẫn Điều 79 Bất khả kháng & Thiệt hại thực tế',
-        textVi: 'Thưa ông Trần, căn cứ Điều 8 Hợp đồng và Điều 79 CISG, sự gián đoạn tuyến hàng hải và thủ tục L/C là trở ngại khách quan ngoài tầm kiểm soát. Chúng tôi sẵn sàng bồi hoàn chi phí lưu kho bãi thực tế có hóa đơn kiểm toán, nhưng yêu cầu bác bỏ khoản phạt 15% vượt quá thiệt hại thực tế.',
-        textZh: '陈总，根据合同第8条以及联合国《国际货物销售合同公约》(CISG) 第79条，本次航运与外汇通道受阻属于双方无法合理预见的不可抗力。我们充分理解华新科技的难处，愿全额承担经审计的实际仓储与资金占用成本，但希望免除15%惩罚性违约金。',
-        scoreImpact: { law: 26, lang: 20, mgmt: 18, econ: 22 },
+        label: '[Luật] Viện dẫn Điều 79 CISG về trở ngại khách quan hàng hải',
+        textVi: 'Căn cứ Điều 79 Công ước CISG 1980, sự cố hàng hải Biển Đỏ là biến cố nằm ngoài khả năng lường trước của hai bên. Chúng tôi đề nghị miễn trừ hoàn toàn khoản phạt 15% và chỉ đối soát chi phí kho bãi thực tế có chứng từ.',
+        textZh: '依据CISG第79条关于不可抗力免责之规定，红海物流事件属于无法预见的客观障碍。我方主张免除15%惩罚性违约金，仅就经审计的实际仓储损失进行核算。',
+        scoreImpact: { law: 25, lang: 18, mgmt: 15, econ: 20 },
         nextStance: 'Cân nhắc (Evaluating)'
-      },
-      {
-        category: 'lang',
-        label: '🌐 [Ngôn ngữ - Trung] Kính ngữ ngoại giao thương mại & Quan hệ lâu dài',
-        textVi: 'Kính gửi Trần tổng, HuaXin Tech luôn là đối tác chiến lược số một của chúng tôi tại Thượng Hải. Đưa nhau ra trọng tài SHIAC sẽ làm tổn hại danh tiếng và quan hệ 5 năm qua. Chúng tôi muốn đề xuất thỏa thuận hòa giải có lợi cho cả hai bên.',
-        textZh: '陈晓东总经理，华新科技一直是我们最核心的战略合作伙伴。对薄公堂只会损害双方五年建立的信任与市场声誉。中国有句古话叫“和气生财”，我们今天带着百分之百的诚意，希望能达成一份共赢的调解备忘录。',
-        scoreImpact: { law: 16, lang: 28, mgmt: 22, econ: 16 },
-        nextStance: 'Cởi mở (Open)'
-      },
-      {
-        category: 'econ',
-        label: '💰 [Kinh tế] Đề xuất Lộ trình thanh toán 3 kỳ & Cam kết đơn hàng Q1',
-        textVi: 'Về mặt tài chính, chúng tôi đề xuất thanh toán ngay 40% giá trị lô hàng trong 5 ngày tới, phần còn lại chia làm 2 kỳ kèm bảo lãnh ngân hàng hạng A, đồng thời ký trước thỏa thuận mua 100.000 linh kiện cho Quý 1 năm sau.',
-        textZh: '在财务方案上，我们建议分三期执行：5个工作日内电汇支付40%货款及实际仓储补偿20万美元；剩余款项分两期结清并附顶级银行保函。同时，我们愿提前锁定明年初10万件核心元件的采购意向订单。',
-        scoreImpact: { law: 18, lang: 18, mgmt: 22, econ: 28 },
-        nextStance: 'Đồng thuận có điều kiện (Conditional Agreement)'
-      },
-      {
-        category: 'mgmt',
-        label: '🏢 [Quản trị] Thành lập Ban Điều phối Khủng hoảng chung 2 bên',
-        textVi: 'Chúng tôi đề xuất hai bên lập ngay một Task Force khẩn cấp gồm đại diện Logistics và Tài chính hai nước để giám sát tiến độ thông quan từng ngày, chia sẻ dữ liệu tồn kho theo thời gian thực để ngăn ngừa rủi ro tái diễn.',
-        textZh: '我们提议立即建立两家公司的“联合特别工作组”，每天同步物流通关与外汇结算进度。通过全流程数字化透明管理，从根本上杜绝类似供应链风险再度发生。',
-        scoreImpact: { law: 18, lang: 20, mgmt: 28, econ: 18 },
-        nextStance: 'Hòa giải Thành công (Full Consensus)'
-      }
-    ],
-    // Deep dynamic branching dialogue engine
-    dialogueBranches: [
-      {
-        conditionKeywords: ['cisg', 'điều 79', 'bất khả kháng', '不可抗力', '79条', 'hợp đồng', 'trở ngại'],
-        responseZh: '贵方的法律团队确实做足了功课。我承认红海物流阻断有其客观性，CISG第79条的免责法理我们在原则上并不排斥。但是，120万美元中包含了我们垫付给上游晶圆厂的锁料成本与每日高昂的保税仓储费用，这笔真金白银的损失，贵方打算怎么解决？',
-        responseVi: 'Đội ngũ pháp lý của quý vị nghiên cứu rất kỹ. Tôi thừa nhận sự cố hàng hải có tính khách quan, về mặt pháp lý chúng tôi không hoàn toàn bác bỏ Điều 79 CISG. Tuy nhiên, trong 1.2 triệu USD đó có cả chi phí chúng tôi đã ứng trước cho xưởng đúc bán dẫn và kho bãi bảo thuế mỗi ngày. Thiệt hại tiền tươi thóc thật này, quý vị định giải quyết thế nào?',
-        stance: 'Cân nhắc (Evaluating)',
-        pillarBonus: 'law',
-        coachTip: 'Trần Tổng đã chấp nhận lý lẽ pháp lý về Điều 79 CISG và nhượng bộ về tiền phạt vi phạm. Hãy lập tức đưa ra đề xuất bồi hoàn chi phí kho bãi thực tế kèm phương án thanh toán tài chính.'
-      },
-      {
-        conditionKeywords: ['hóa đơn', 'kiểm toán', 'thiệt hại thực tế', 'chứng minh', '审计', '实际损失', 'điều 77', 'giảm thiểu'],
-        responseZh: '我们华新在上海也是上市公司，每一笔报关与仓储账目都清清楚楚、随时经得起四大审计！如果贵方承诺全额承担实际仓储发票的支出，并免除无休止的扯皮，我可以把财务明细表同步给贵方核对。但关键是首笔补偿金何时到账？',
-        responseVi: 'HuaXin chúng tôi tại Thượng Hải cũng là công ty niêm yết, mọi khoản chi hải quan và kho bãi đều minh bạch, sẵn sàng chịu kiểm toán Big 4 bất cứ lúc nào! Nếu quý vị cam kết chi trả các khoản theo hóa đơn kho bãi thực tế, tôi có thể chuyển bảng kê tài chính cho quý vị rà soát ngay. Nhưng quan trọng là khoản bù đắp đầu tiên khi nào về tài khoản?',
-        stance: 'Cân nhắc (Evaluating)',
-        pillarBonus: 'law',
-        coachTip: 'Tuyệt vời! Đối tác đồng ý mở sổ sách kế toán kiểm toán thiệt hại thực tế. Hãy đề xuất mốc thanh toán 40% trong 5 ngày làm việc.'
-      },
-      {
-        conditionKeywords: ['thương mại', 'hợp tác', 'chiến lược', '和气生财', '战略合作', 'danh tiếng', '5 năm', 'tin tưởng'],
-        responseZh: '陈某也是看在两家公司过去五年的情分上，才坐下来跟你们谈这最后一次。我们不想撕破脸，但华新董事会对财报考核非常严厉。如果只讲感情没有真金白银的履约保证，我回去无法向董事会交差！你们必须拿出具有约束力的财务方案。',
-        responseVi: 'Tôi cũng chính vì nể tình nghĩa hợp tác 5 năm qua giữa hai bên nên mới ngồi lại buổi cuối cùng này. Chúng tôi không muốn làm căng, nhưng Hội đồng Quản trị HuaXin kiểm toán rất nghiêm ngặt. Nếu chỉ nói về tình cảm mà không có bảo lãnh thanh toán cụ thể, tôi không thể ăn nói với HĐQT! Các bạn phải đưa ra giải pháp tài chính có tính ràng buộc.',
-        stance: 'Cởi mở (Open)',
-        pillarBonus: 'lang',
-        coachTip: 'Ngoại giao văn hóa phương Đông đã phát huy tác dụng rõ rệt! Trần Tổng đã trải lòng về áp lực với HĐQT. Hãy tung ra phương án thanh toán 3 kỳ có bảo lãnh ngân hàng.'
-      },
-      {
-        conditionKeywords: ['thanh toán', '3 kỳ', '40%', '20 vạn', 'chia đợt', 'quý 1', '采购', 'đơn hàng', 'bảo lãnh', 'l/c'],
-        responseZh: '分三期支付（首期40%），加上锁定明年第一季度的10万件采购意向订单... 这个方案很有建设性！如果我们能将实际仓储补偿明确为25万美元，并在5个工作日内收到首笔款项，我可以代表华新科技签署和解备忘录，暂缓向SHIAC提交仲裁！',
-        responseVi: 'Thanh toán 3 kỳ (đợt đầu 40%), cộng với việc ký thỏa thuận mua 100.000 linh kiện Quý 1 năm sau... Phương án này rất có tính xây dựng! Nếu chúng ta chốt mức bồi thường kho bãi là 250.000 USD và nhận được đợt thanh toán đầu tiên trong 5 ngày làm việc, tôi có thể đại diện HuaXin ký biên bản hòa giải, tạm dừng nộp đơn lên SHIAC!',
-        stance: 'Đồng thuận có điều kiện (Conditional Agreement)',
-        pillarBonus: 'econ',
-        coachTip: 'Thắng lợi lớn về tài chính! Mức bồi thường đã giảm từ 1.2M USD xuống 250k USD (Tiết kiệm ròng 950.000 USD). Hãy đề xuất lập Task Force chung để chốt thỏa thuận.'
-      },
-      {
-        conditionKeywords: ['task force', 'ban điều phối', '联合', 'quản trị', 'minh bạch', 'giám sát', 'chuỗi cung ứng', 'logistics'],
-        responseZh: '太好了！建立联合特别工作组能确保后续的通关与排产万无一失。陈某非常钦佩贵团队今天展现出的专业法律功底、敏锐的商业诚意与国际化格局。我同意签署《争议和解备忘录暨分期提货协议》！愿两家公司的合作历久弥坚！',
-        responseVi: 'Tuyệt vời! Một Ban công tác liên hợp sẽ đảm bảo tiến độ thông quan và sản xuất tiếp theo không phát sinh sai sót. Tôi rất khâm phục sự am hiểu luật pháp, thiện chí thương mại và tầm nhìn quốc tế của đội ngũ các bạn hôm nay. Tôi đồng ý ký Biên bản Hòa giải và Lộ trình nhận hàng! Chúc cho sự hợp tác của chúng ta ngày càng bền chặt!',
-        stance: 'Hòa giải Thành công (Full Consensus)',
-        pillarBonus: 'mgmt',
-        coachTip: 'Phiên đàm phán trọng tài quốc tế đã đạt kết quả viên mãn! Bạn đã giải quyết toàn diện cả 4 trụ cột: Luật, Ngôn ngữ, Quản trị và Tài chính.'
-      },
-      {
-        conditionKeywords: ['kiện', 'tòa án', 'không trả', 'không chấp nhận', 'tùy các vị', 'thách', 'bác bỏ hoàn toàn'],
-        responseZh: '既然贵方态度如此轻率，视商业诚信如无物，那我们也没什么好多谈的了！法务部门已经在起草财产保全申请，明天上午SHIAC立案后，贵方在华关联资产都将被依法冻结！我们法庭上见！',
-        responseVi: 'Nếu quý vị đã có thái độ thiếu thiện chí như vậy, xem nhẹ chữ tín thương mại, thì chúng tôi không còn gì để nói nữa! Bộ phận pháp lý của chúng tôi đang soạn đơn yêu cầu phong tỏa tài sản. Sáng mai khi SHIAC thụ lý, các tài sản liên quan của quý vị sẽ bị áp dụng biện pháp khẩn cấp tạm thời! Hẹn gặp quý vị tại phiên trọng tài!',
-        stance: 'Xung đột gay gắt (Hostile Dispute)',
-        pillarBonus: 'mgmt',
-        coachTip: 'Cảnh báo nguy cơ đổ vỡ! Đối đầu trực diện đang đẩy công ty vào nguy cơ bị phong tỏa tài sản tại Thượng Hải. Hãy lập tức xoa dịu bằng kính ngữ thương mại và đề xuất giải pháp thỏa hiệp.'
       }
     ]
   },
+
+  // 2. KINH TẾ (ECONOMICS & MACRO FINANCE)
   {
-    id: 'crisis-recall',
-    title: 'Xử Lý Khủng Hoảng Truyền Thông: Thu Hồi 50.000 Xe Điện Lỗi Pin',
-    subtitle: 'Đối chất giữa Ban Giám đốc Khủng hoảng & Đại diện Người tiêu dùng / Cơ quan Giám sát Bắc Mỹ',
-    level: 'Trung cấp (Intermediate)',
-    duration: '10 - 15 phút',
+    id: 'macro-currency-crisis',
+    field: 'economics',
+    fieldName: 'Kinh Tế & Tài Chính Vĩ Mô',
+    fieldColor: '#38BDF8',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+    title: 'Khủng Hoảng Tỷ Giá & Đứt Gãy Chuỗi Cung Ứng Năng Lượng EU',
+    subtitle: 'Tái cấu trúc hợp đồng xuất khẩu gỗ sinh khối 15 triệu EUR trước biến động tỷ giá và lạm phát châu Âu',
+    level: 'Chuyên gia (Expert)',
+    duration: '15 - 20 phút',
     languages: ['Tiếng Anh', 'Tiếng Việt'],
-    targetAudience: 'Sinh viên Quản trị Kinh doanh, Luật Bảo vệ NTD & Truyền thông Doanh nghiệp',
-    tags: ['Quản trị rủi ro', 'Trách nhiệm pháp lý', 'Truyền thông khủng hoảng', 'Dự phòng tài chính'],
-    badge: 'Mô phỏng Khủng hoảng',
+    targetAudience: 'Sinh viên Kinh tế Quốc tế, Tài chính - Ngân hàng, Phân tích Kinh tế Vi mô & Vĩ mô',
+    tags: ['Tỷ giá hối đoái', 'Hedging', 'Chi phí cận biên', 'Lạm phát EU'],
+    badge: 'Tài Liệu Nghiên Cứu Vĩ Mô',
     persona: {
-      name: 'Bà Elena Vance',
-      title: 'Đại diện Liên minh Quyền Người Tiêu Dùng Quốc Tế & Ký giả Điều tra (New York)',
-      avatar: './assets/crisis_room.jpg',
-      personality: 'Truy vấn quyết liệt, đòi hỏi tính minh bạch dữ liệu kiểm định và chính sách bồi thường bảo vệ an toàn tính mạng khách hàng.',
-      initialStance: 'Nghi vấn & Áp lực cao',
+      name: 'Dr. Henrik Lindqvist',
+      title: 'Giám đốc Mua hàng Năng lượng Tái tạo Toàn cầu, Nordic EcoPower (Stockholm / Hamburg)',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
+      personality: 'Nhà kinh tế học thực dụng, tính toán chi ly từng cent trên megawatt-giờ, gây sức ép bằng các chỉ số lạm phát.',
+      initialStance: 'Áp lực tài chính cao',
       languageCode: 'en-US',
       audioVoicePrefix: 'en',
-      initialMessage: 'Your company has kept silent for 48 hours while 3 battery fire incidents occurred! We have collected testimony from 1,200 vehicle owners. Are you prioritizing quarterly corporate profits over consumer lives? Will there be an immediate, voluntary global recall, or do we force an injunction through regulatory court tomorrow?',
-      initialMessageVi: 'Công ty của các vị đã giữ im lặng suốt 48 giờ qua trong khi có 3 vụ cháy pin xảy ra! Chúng tôi đã thu thập lời khai của 1.200 chủ xe. Có phải các vị đang đặt lợi nhuận quý lên trên tính mạng người tiêu dùng? Liệu sẽ có một đợt tự nguyện thu hồi toàn cầu ngay lập tức, hay chúng tôi phải yêu cầu tòa án ban hành lệnh khẩn cấp vào ngày mai?',
+      initialMessage: 'Gentlemen, EUR/USD volatility and spot freight indices have destroyed our projected margins! If your Vietnamese consortium cannot offer a 14% price concession per metric ton under CIF Rotterdam, Nordic EcoPower will terminate the 3-year procurement agreement and hedge our supply in Canada.',
+      initialMessageVi: 'Thưa quý vị, biến động tỷ giá EUR/USD và chỉ số cước biển giao ngay đã xóa sổ toàn bộ biên lợi nhuận của chúng tôi! Nếu liên minh Việt Nam không thể giảm 14% đơn giá mỗi tấn theo điều kiện CIF Rotterdam, Nordic EcoPower sẽ hủy hợp đồng 3 năm và chuyển sang mua bù từ Canada.',
     },
     context: {
-      overview: 'Mẫu sedan điện vừa xuất khẩu bị phát hiện lỗi quá nhiệt cụm pin tại thị trường Bắc Mỹ. Cơ quan giám sát chuẩn bị ban hành lệnh cấm lưu hành nếu công ty không chủ động công bố chiến dịch thu hồi và bồi thường.',
-      studentRole: 'Giám đốc Điều hành Khủng hoảng (Crisis CEO) phối hợp Giám đốc Pháp lý và Giám đốc Tài chính.',
+      overview: 'Doanh nghiệp xuất khẩu viên nén gỗ Việt Nam đứng trước nguy cơ mất hợp đồng 15 triệu EUR khi đối tác Bắc Âu đòi hạ giá 14% do đồng Euro mất giá và lạm phát chi phí lưu kho.',
+      studentRole: 'Giám đốc Kinh tế & Chiến lược Định giá Quốc tế (Chief Economist).',
       coreObjectives: [
-        'Công bố chiến lược thu hồi tự nguyện có trách nhiệm để giữ vững thương hiệu.',
-        'Minh bạch dữ liệu kỹ thuật và thiết lập đường dây hotline hỗ trợ xe thay thế 24/7.',
-        'Phân bổ quỹ dự phòng bảo hành 15 triệu USD hợp lý, tránh nguy cơ vỡ nợ.'
+        'Giữ mức điều chỉnh giá không vượt quá 3.5% bằng cách chia sẻ công cụ phòng ngừa rủi ro tỷ giá (Currency Hedging).',
+        'Chứng minh lợi thế chi phí sản xuất cận biên tại Đông Nam Á so với nhà cung cấp Canada.',
+        'Đề xuất thanh toán bằng rổ tiền tệ song song để bảo toàn giá trị thặng dư.'
       ]
     },
     dossier: [
       {
-        title: 'Quy định Pháp lý An toàn Phương tiện Giao thông',
-        type: 'contract',
-        content: `Căn cứ Luật An toàn Phương tiện Quốc tế: Hãng sản xuất có nghĩa vụ báo cáo sự cố trong vòng 5 ngày làm việc và đưa ra phương án khắc phục miễn phí cho người dùng.`
-      },
-      {
-        title: 'Báo cáo Kiểm toán Quỹ Dự phòng Bảo hành',
+        title: 'Bảng Phân Tích Độ Nhạy Tỷ Giá & Chi Phí Sản Xuất',
         type: 'finance',
-        content: `Quỹ bảo hành hiện có: 22 triệu USD. Chi phí thay thế cell pin cho 50.000 xe: ước tính 14.5 triệu USD. Xe thuê thay thế tạm thời: 3.2 triệu USD.`
+        content: `• Biên lợi nhuận ròng hiện tại: 8.2%. Nếu giảm giá 14%, doanh nghiệp Việt Nam sẽ lỗ 5.8% trên mỗi chuyến tàu (khoảng 350.000 EUR/tháng).
+• Điểm hòa vốn (Break-even): Giảm tối đa 3.8% với điều kiện đối tác thanh toán trước 50% tiền cọc bằng USD.`
+      }
+    ],
+    tacticalPrompts: [
+      {
+        category: 'econ',
+        label: '[Kinh tế] Phân tích biên lợi nhuận & Cơ chế chia sẻ rủi ro tỷ giá (Band Corridor)',
+        textVi: 'Nếu giảm 14%, chuỗi sản xuất sẽ chịu lỗ âm vốn. Chúng tôi đề xuất cơ chế trượt giá có kiểm soát (Corridor 3% - 5%) gắn với chỉ số cước Platts và đồng bảo lãnh USD để cả hai bên cùng chia sẻ rủi ro vĩ mô.',
+        textZh: 'A 14% discount will push production below margin. We propose an index-linked hedging corridor (3-5%) pegged to Platts freight and currency collars to preserve mutual viability.',
+        scoreImpact: { law: 18, lang: 22, mgmt: 20, econ: 28 },
+        nextStance: 'Cân nhắc (Evaluating)'
+      }
+    ]
+  },
+
+  // 3. QUẢN TRỊ (MANAGEMENT & CRISIS PR)
+  {
+    id: 'management-pr-scandal',
+    field: 'mgmt',
+    fieldName: 'Quản Trị Doanh Nghiệp & Khủng Hoảng',
+    fieldColor: '#94A3B8',
+    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80',
+    title: 'Xử Lý Rò Rỉ Email Sa Thải 1.500 Nhân Sự & Khủng Hoảng Mạng Xã Hội',
+    subtitle: 'Đối chất giữa Ban Điều Hành Tập Đoàn & Đại diện Công Đoàn / Ký giả Điều tra (Scandal Threads/LinkedIn)',
+    level: 'Trung cấp (Intermediate)',
+    duration: '10 - 15 phút',
+    languages: ['Tiếng Anh', 'Tiếng Việt'],
+    targetAudience: 'Sinh viên Quản trị Kinh doanh, Quản trị Nhân sự & Truyền thông Doanh nghiệp',
+    tags: ['Khủng hoảng PR', 'Threads / LinkedIn', 'Văn hóa doanh nghiệp', 'Bảo toàn thương hiệu'],
+    badge: 'Khủng Hoảng Mạng Xã Hội Thực Tế',
+    persona: {
+      name: 'Victoria Hastings',
+      title: 'Đại diện Liên Minh Quyền Người Lao Động & Biên tập viên Tạp chí Nhân Sự Số (Singapore)',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80',
+      personality: 'Truy vấn đanh thép, dẫn dắt các bình luận chỉ trích gay gắt trên mạng xã hội, đòi hỏi câu trả lời nhân văn và bồi thường.',
+      initialStance: 'Bức xúc & Truy vấn gay gắt',
+      languageCode: 'en-US',
+      audioVoicePrefix: 'en',
+      initialMessage: 'Your internal email telling 1,500 employees their contracts are terminated via an automated bot was leaked on Threads with 4 million views! Former staff are posting internal chats proving toxic culture. Are you issuing a public apology with golden handshakes, or do you expect a nationwide boycott tomorrow morning?',
+      initialMessageVi: 'Email nội bộ sa thải 1.500 nhân viên bằng bot tự động của các vị vừa bị phát tán lên Threads với hơn 4 triệu lượt xem! Nhân sự cũ đang đăng hàng loạt tin nhắn chứng minh văn hóa công ty độc hại. Các vị có công khai xin lỗi và chi trả gói đền bù xứng đáng không, hay chờ đợi một làn sóng tẩy chay vào sáng mai?',
+    },
+    context: {
+      overview: 'Công ty công nghệ tái cấu trúc, gửi email thông báo cắt giảm hàng loạt nhân sự vào lúc nửa đêm. Vụ việc bị leak lên mạng xã hội, các KOLs và cựu nhân viên tố cáo lãnh đạo vô cảm, cổ phiếu công ty giảm 9% trong phiên mở cửa.',
+      studentRole: 'Giám đốc Điều hành Khủng hoảng (Crisis CEO) phối hợp Giám đốc Nhân sự & Truyền thông.',
+      coreObjectives: [
+        'Công bố thông điệp xin lỗi chân thành, nhân văn, xoa dịu làn sóng phẫn nộ trên mạng xã hội.',
+        'Đưa ra gói hỗ trợ tài chính chuyển tiếp (Outplacement Severance 3 tháng lương + bảo hiểm y tế).',
+        'Thiết lập Ban chuyển đổi nội bộ minh bạch, tái ổn định tinh thần cho nhân viên ở lại.'
+      ]
+    },
+    dossier: [
+      {
+        title: 'Báo cáo Đo Lường Dư Luận Xã Hội (Social Listening Quý 4)',
+        type: 'evidence',
+        content: `• Chỉ số cảm xúc (Sentiment): 88% Tiêu cực. Từ khóa nổi bật: "Vô cảm", "Sa thải nửa đêm", "Tẩy chay sản phẩm".
+• Ngân sách dự phòng khủng hoảng tối đa: 2.8 triệu USD cho gói trợ cấp thôi việc nâng cao.`
       }
     ],
     tacticalPrompts: [
       {
         category: 'mgmt',
-        label: '🏢 [Quản trị] Tự nguyện thu hồi toàn diện & Cung cấp xe thay thế 24/7',
-        textVi: 'Chúng tôi nhận trách nhiệm cao nhất, công bố chiến dịch tự nguyện thu hồi toàn bộ 50.000 xe để thay thế cụm pin nâng cấp miễn phí, đồng thời chi trả toàn bộ chi phí thuê xe tạm thời cho khách hàng.',
-        textZh: 'We take full corporate responsibility. We are voluntarily recalling all 50,000 affected units for a free battery module replacement and providing immediate mobility vouchers.',
-        scoreImpact: { law: 22, lang: 24, mgmt: 28, econ: 20 },
+        label: '[Quản trị] Nhận lỗi cá nhân từ CEO & Công bố gói chuyển đổi nhân văn 3 tháng lương',
+        textVi: 'Chúng tôi nhận hoàn toàn trách nhiệm về phương thức giao tiếp thiếu nhân văn vừa qua. Ban điều hành sẽ ban hành thông điệp xin lỗi công khai, cung cấp gói hỗ trợ 3 tháng lương nguyên vẹn và kết nối giới thiệu việc làm cho toàn bộ nhân sự bị ảnh hưởng.',
+        textZh: 'We take full personal accountability for this communication misstep. I am issuing an immediate public apology and guaranteeing a 3-month transition package with health benefits and career placement.',
+        scoreImpact: { law: 16, lang: 24, mgmt: 30, econ: 15 },
         nextStance: 'Hạ nhiệt (De-escalating)'
       }
-    ],
-    dialogueBranches: []
+    ]
   },
+
+  // 4. KINH DOANH (BUSINESS & E-COMMERCE TIKTOK SHOP)
   {
-    id: 'global-franchise',
-    title: 'Đàm Phán Nhượng Quyền F&B Quốc Tế Song Ngữ Anh - Việt',
-    subtitle: 'Thương thảo Hợp đồng Franchise Master khu vực Đông Nam Á',
-    level: 'Cơ bản đến Trung cấp',
+    id: 'business-tiktok-price-war',
+    field: 'business',
+    fieldName: 'Kinh Doanh & Thương Mại Điện Tử',
+    fieldColor: '#38BDF8',
+    image: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=800&q=80',
+    title: 'Đại Chiến Phá Giá Livestream TikTok Shop & Khủng Hoảng KOLs Bóc Phốt',
+    subtitle: 'Giải quyết xung đột kênh phân phối truyền thống vs. Kênh Livestream Mega-Live phá giá 40%',
+    level: 'Thực chiến GenZ',
     duration: '10 - 15 phút',
-    languages: ['Tiếng Anh', 'Tiếng Việt'],
-    targetAudience: 'Sinh viên Quản trị Kinh doanh Quốc tế, Kinh tế Đối ngoại, Tiếng Anh Thương mại',
-    tags: ['Franchise Royalty', 'Độc quyền lãnh thổ', 'Kiểm soát chất lượng', 'Incoterms'],
-    badge: 'Đàm phán Thương mại',
+    languages: ['Tiếng Việt', 'Tiếng Anh'],
+    targetAudience: 'Sinh viên Quản trị Kinh doanh, Marketing Số, Thương mại Điện tử & Bán lẻ',
+    tags: ['TikTok Shop', 'Chiến tranh giá', 'Mega Live', 'Bảo vệ đại lý'],
+    badge: 'Tình Huống GenZ Thời Thượng',
     persona: {
-      name: 'Marcus Sterling',
-      title: 'Phó Chủ tịch Cấp cao phụ trách Nhượng quyền Toàn cầu, Artisan Coffee Corp (New York)',
-      avatar: './assets/arbitration_hearing.jpg',
-      personality: 'Thực dụng, chú trọng thương hiệu quốc tế, đàm phán tỷ lệ phí nhượng quyền (Royalty fee) và điều khoản độc quyền thị trường rất khắt khe.',
-      initialStance: 'Giữ vững lập trường',
-      languageCode: 'en-US',
-      audioVoicePrefix: 'en',
-      initialMessage: 'Good afternoon. We are excited about Vietnam and Southeast Asia, but our standard Master Franchise fee is $1.5M upfront plus a 7.5% gross sales royalty. Any territorial exclusivity also requires opening a minimum of 25 stores within 24 months. What is your counter-proposal?',
-      initialMessageVi: 'Chào buổi chiều. Chúng tôi rất hào hứng với thị trường Việt Nam và ĐNA, nhưng phí Master Franchise tiêu chuẩn của chúng tôi là 1.5 triệu USD trả trước cộng 7.5% doanh thu thô. Bất kỳ sự độc quyền lãnh thổ nào cũng đòi hỏi mở tối thiểu 25 cửa hàng trong 24 tháng. Đề xuất đối ứng của quý vị là gì?',
+      name: 'Nguyễn Đăng Khôi (Top Creator & MCN Agency Director)',
+      title: 'Giám Đốc Mạng Lưới Đa Kênh (MCN) & Đại diện KOL 6 triệu Followers',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+      personality: 'Phong cách năng động, đòi hỏi deal độc quyền giảm giá sốc, dọa cắt đứt hợp tác nếu nhãn hàng phạt vì bán phá giá.',
+      initialStance: 'Căng thẳng & Tự tin vị thế',
+      languageCode: 'vi-VN',
+      audioVoicePrefix: 'vi',
+      initialMessage: 'Bên anh vừa chốt 12.000 đơn trong phiên Mega-Live tối qua, mang về cho nhãn hàng gần 5 tỷ doanh số! Giờ các đại lý truyền thống của các em kêu ca vì giá rẻ hơn 35%, rồi các em đòi giữ lại 800 triệu tiền hoa hồng affiliate của bên anh à? Các em muốn giữ 300 cửa hàng truyền thống ế ẩm hay muốn nắm lấy kênh bán hàng triệu đô của GenZ?',
+      initialMessageVi: 'Bên anh vừa chốt 12.000 đơn trong phiên Mega-Live tối qua, mang về cho nhãn hàng gần 5 tỷ doanh số! Giờ các đại lý truyền thống của các em kêu ca vì giá rẻ hơn 35%, rồi các em đòi giữ lại 800 triệu tiền hoa hồng affiliate của bên anh à? Các em muốn giữ 300 cửa hàng truyền thống ế ẩm hay muốn nắm lấy kênh bán hàng triệu đô của GenZ?',
     },
     context: {
-      overview: 'Tập đoàn F&B Việt Nam đàm phán giành quyền Master Franchise thương hiệu cà phê cao cấp của Mỹ cho 3 quốc gia Việt Nam - Lào - Campuchia.',
-      studentRole: 'Trưởng ban Phát triển Kinh doanh Quốc tế.',
+      overview: 'Nhãn hàng mỹ phẩm hợp tác với Top TikToker tổ chức phiên Mega-Live. Do muốn lập kỷ lục doanh số, KOL đã tự ý cộng dồn voucher trợ giá, bán rẻ hơn giá niêm yết của 300 đại lý phân phối offline, khiến các đại lý đồng loạt đình công trả hàng.',
+      studentRole: 'Giám đốc Kinh doanh (Chief Commercial Officer - CCO).',
       coreObjectives: [
-        'Đàm phán giảm tỷ lệ Royalty từ 7.5% xuống 5% trong 3 năm đầu.',
-        'Điều chỉnh lộ trình mở cửa hàng phù hợp với năng lực tài chính và nghiên cứu thị trường địa phương.',
-        'Bảo lưu quyền cung ứng 40% nguyên liệu hạt cà phê đặc sản nội địa Việt Nam.'
+        'Hòa giải xung đột giữa kênh Digital Livestream và hệ thống đại lý truyền thống (Omni-channel Harmony).',
+        'Cơ cấu lại cơ chế sản phẩm: phân tách phiên bản dung tích độc quyền online và combo quà tặng thay vì giảm giá sốc trực tiếp.',
+        'Giữ vững quan hệ hợp tác với MCN mà không để vỡ trận chính sách giá niêm yết.'
       ]
     },
     dossier: [
       {
-        title: 'Bản Dự thảo Điều khoản Nhượng quyền (Term Sheet)',
+        title: 'Hợp Đồng Hợp Tác Quảng Bá & Cam Kết Duy Trì Giá MAP (Minimum Advertised Price)',
         type: 'contract',
-        content: `• Upfront Fee: 1,500,000 USD. Royalty: 7.5% Monthly Gross Revenue. Marketing Fund: 2% Revenue.`
+        content: `• ĐIỀU 5 (GIÁ BÁN TỐI THIỂU - MAP):
+"KOL không được công bố giá bán thấp hơn 15% so với giá niêm yết tại quầy đại lý trừ khi có văn bản phê duyệt từ nhãn hàng."`
       }
     ],
-    tacticalPrompts: [],
-    dialogueBranches: []
+    tacticalPrompts: [
+      {
+        category: 'biz',
+        label: '[Kinh doanh] Phân tách SKU độc quyền online & Tặng combo trải nghiệm thay vì phá giá niêm yết',
+        textVi: 'Chúng tôi ghi nhận kỷ lục doanh số 5 tỷ, nhưng để bảo vệ thương hiệu bền vững, giải pháp tối ưu là chuyển sang SKU dung tích riêng biệt và bổ sung quà tặng giá trị cao cho phiên live sau, giữ nguyên mức giá sàn để đại lý offline yên tâm đồng hành.',
+        textZh: 'We recognize the record 5B revenue. However, to safeguard brand equity, we will offer exclusive online bundles with gift vouchers rather than discounting the core offline retail price.',
+        scoreImpact: { law: 15, lang: 20, mgmt: 24, econ: 26 },
+        nextStance: 'Đồng thuận có điều kiện (Conditional)'
+      }
+    ]
+  },
+
+  // 5. NGÔN NGỮ (LANGUAGES & DIPLOMATIC TRANSLATION)
+  {
+    id: 'language-customs-nuance',
+    field: 'languages',
+    fieldName: 'Ngôn Ngữ & Ngoại Giao Thương Mại',
+    fieldColor: '#10B981',
+    image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80',
+    title: 'Sự Cố Sai Lệch Bản Dịch Thuật Ngữ Hợp Đồng Song Phương Trung - Việt',
+    subtitle: 'Tranh cãi nghĩa vụ giao hàng "Tại Xưởng" (EXW) hay "Tại Cảng Biên Giới" (CPT Bằng Tường)',
+    level: 'Chuyên sâu Song ngữ',
+    duration: '10 - 15 phút',
+    languages: ['Tiếng Trung (商务汉语)', 'Tiếng Việt'],
+    targetAudience: 'Sinh viên Ngôn ngữ Trung, Biên phiên dịch Thương mại & Luật Quốc tế',
+    tags: ['Dịch thuật hợp đồng', 'Thuật ngữ Incoterms', 'Kính ngữ tiếng Trung', 'Ngoại giao'],
+    badge: 'Thực Nghiệm Ngôn Ngữ Chuyên Sâu',
+    persona: {
+      name: 'Vương Vĩnh Cường (Wang Yong Qiang - 王永强)',
+      title: 'Trưởng ban Thu mua & Logistics, Tập đoàn Nông sản Quảng Tây (Nam Ninh)',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80',
+      personality: 'Cẩn trọng câu chữ, vin vào bản thảo tiếng Trung để thoái thác chi phí thông quan tại cửa khẩu.',
+      initialStance: 'Tranh chấp ngữ nghĩa',
+      languageCode: 'zh-CN',
+      audioVoicePrefix: 'zh',
+      initialMessage: '你们的合同翻译完全是一笔糊涂账！在中文版合同第6条，白纸黑字写着“中方口岸交货”，这就意味着越方必须负责将80车鲜果运过友谊关并完成中方报关！现在货物堵在凭祥口岸产生每天数万块的冷柜费，贵方翻译团队必须对此负全部法律责任！',
+      initialMessageVi: 'Bản dịch hợp đồng của các bạn hoàn toàn mập mờ! Trong bản hợp đồng tiếng Trung Điều 6, ghi rõ ràng "Giao hàng tại cửa khẩu phía Trung Quốc", điều đó có nghĩa là bên Việt Nam phải chịu trách nhiệm đưa 80 xe hoa quả qua Hữu Nghị Quan và làm thủ tục thông quan phía Trung Quốc! Giờ hàng kẹt ở Bằng Tường phát sinh hàng vạn tiền phí container lạnh mỗi ngày, đội ngũ biên dịch của các bạn phải chịu toàn bộ trách nhiệm!',
+    },
+    context: {
+      overview: 'Hợp đồng xuất khẩu thanh long và mít sấy trị giá 3.5 triệu USD ký kết song ngữ. Do sơ suất biên dịch giữa thuật ngữ "Giao tại cửa khẩu bên bán" (DAF) và "Giao tại bãi hàng bên mua", hai bên đổ lỗi cho nhau về phí thông quan và bãi đỗ xe lạnh.',
+      studentRole: 'Chuyên viên Ngôn ngữ & Đàm phán Đối ngoại Song ngữ Trung - Việt.',
+      coreObjectives: [
+        'Vận dụng điều khoản "Ngôn ngữ gốc ưu tiên" (Governing Language Clause) để giải thích thiện chí.',
+        'Sử dụng thuật ngữ tiếng Trung ngoại giao chuẩn xác: 互利共赢 (Cùng có lợi), 厘清责任 (Làm rõ trách nhiệm), 排除歧义 (Loại bỏ mập mờ).',
+        'Thống nhất giải pháp chia đôi chi phí lưu bãi tạm thời để kịp thông quan giải phóng 80 xe hàng tươi.'
+      ]
+    },
+    dossier: [
+      {
+        title: 'Hợp đồng Song ngữ số CN-VN-AGRI (§ Điều khoản ngôn ngữ)',
+        type: 'contract',
+        content: `• ĐIỀU 18 (NGÔN NGỮ HỢP ĐỒNG):
+"Hợp đồng lập bằng tiếng Việt và tiếng Trung. Trường hợp có sự khác biệt về cách hiểu câu chữ, hai bên căn cứ theo bản tiếng Anh chuẩn Incoterms 2020 để giải thích."`
+      }
+    ],
+    tacticalPrompts: [
+      {
+        category: 'lang',
+        label: '[Ngôn ngữ] Viện dẫn Điều khoản Ngôn ngữ đối chiếu Incoterms & Dùng kính ngữ xoa dịu',
+        textVi: 'Thưa ông Vương, theo Điều 18 hợp đồng, bản tham chiếu Incoterms tiếng Anh là căn cứ giải thích tối cao. Để tránh hoa quả tươi hư hại, chúng tôi đề xuất trước mắt chia sẻ 50-50 chi phí container lạnh và cùng phối hợp mở luồng xanh thông quan ngay trong chiều nay.',
+        textZh: '王总，依据合同第18条，双方应参照Incoterms中英文基准条款释义。当务之急是确保果品新鲜度，我方提议暂按50%共同分担冷柜留置费，并协力启动边境通关绿色通道。',
+        scoreImpact: { law: 20, lang: 30, mgmt: 22, econ: 20 },
+        nextStance: 'Hòa giải (Conciliatory)'
+      }
+    ]
+  },
+
+  // 6. THƯƠNG MẠI (COMMERCE & PORT LOGISTICS CIF)
+  {
+    id: 'commerce-cif-logistics',
+    field: 'commerce',
+    fieldName: 'Thương Mại Quốc Tế & Cảng Biển',
+    fieldColor: '#F59E0B',
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80',
+    title: 'Vụ Kiện Gian Lận Xuất Xứ Hàng Hóa C/O Form E & Hàng Kẹt Cảng CIF',
+    subtitle: 'Giải quyết 45 container hàng dệt may bị Hải quan nghi vấn nguồn gốc xơ sợi tại cảng Thượng Hải',
+    level: 'Chuyên sâu Ngoại thương',
+    duration: '15 - 20 phút',
+    languages: ['Tiếng Anh', 'Tiếng Trung', 'Tiếng Việt'],
+    targetAudience: 'Sinh viên Thương mại Quốc tế, Kinh tế Đối ngoại, Logistics & Xuất Nhập Khẩu',
+    tags: ['C/O Form E', 'Incoterms CIF', 'Hải quan cảng biển', 'Chống gian lận'],
+    badge: 'Án Lệ Xuất Nhập Khẩu',
+    persona: {
+      name: 'Cao Khải Phong (Gao Kai Feng - 高凯峰)',
+      title: 'Giám đốc Chuỗi Cung Ứng & Đại diện Cảng Biển Logistics (Thượng Hải / Ninh Ba)',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80',
+      personality: 'Thực dụng, am hiểu thủ tục hải quan, dọa phạt tiền tỷ vì container lưu bãi quá hạn làm ảnh hưởng cầu cảng.',
+      initialStance: 'Cương quyết đòi phạt',
+      languageCode: 'zh-CN',
+      audioVoicePrefix: 'zh',
+      initialMessage: '你们这批45个集装箱的面料，原产地证Form E被上海海关抽查质疑转口欺诈！海关直接扣留，现在堆存费、滞箱费每天产生8万人民币！根据CIF合同，所有清关受阻风险由谁买单？再过3天不解决，海关就要把整批货物没收拍卖！',
+      initialMessageVi: 'Lô 45 container vải dệt của các bạn có chứng nhận xuất xứ Form E vừa bị Hải quan Thượng Hải kiểm tra và nghi vấn gian lận xuất xứ chuyển tải! Hải quan đã tạm giữ hàng, phí lưu bãi lưu container mỗi ngày lên tới 8 vạn NDT! Theo hợp đồng CIF, rủi ro thông quan đình trệ này ai chịu? Nếu 3 ngày nữa không giải quyết xong, hải quan sẽ tịch thu bán đấu giá toàn bộ!',
+    },
+    context: {
+      overview: 'Lô hàng xuất khẩu sang Thượng Hải theo giá CIF bị hải quan nghi ngờ gian lận quy tắc xuất xứ xơ sợi. Đối tác đòi hủy hợp đồng và bắt bên xuất khẩu chịu toàn bộ tiền phạt lưu kho bãi hơn 500.000 NDT.',
+      studentRole: 'Trưởng phòng Chứng từ & Logistics Ngoại thương.',
+      coreObjectives: [
+        'Cung cấp bộ hồ sơ truy xuất nguồn gốc nguyên liệu xơ sợi (BOM - Bill of Materials) đã được VCCI chứng thực.',
+        'Làm rõ phân định chuyển giao rủi ro theo Incoterms 2020 CIF (rủi ro tổn thất hàng hóa đã chuyển giao khi qua lan can tàu).',
+        'Phối hợp với đại lý hải quan địa phương xin cơ chế nộp bảo lãnh tạm giải phóng hàng.'
+      ]
+    },
+    dossier: [
+      {
+        title: 'Bộ Chứng Từ Xuất Xứ VCCI & Tờ Khai Hải Quan Hàng Hải',
+        type: 'evidence',
+        content: `• Giấy chứng nhận C/O Form E số VN-CN-24-9981 do Bộ Công Thương Việt Nam ủy quyền VCCI cấp hợp lệ.
+• Toàn bộ hóa đơn mua phôi xơ dệt nội địa chứng minh hàm lượng giá trị khu vực (RVC) đạt 42.5% (vượt mức tiêu chuẩn 40%).`
+      }
+    ],
+    tacticalPrompts: [
+      {
+        category: 'trade',
+        label: '[Thương mại] Xuất trình BOM truy xuất nguồn gốc RVC 42.5% & Xin bảo lãnh tạm giải phóng hàng',
+        textVi: 'Toàn bộ hồ sơ truy xuất nguồn gốc BOM của chúng tôi đạt 42.5% RVC chuẩn ACFTA. Chúng tôi sẽ chuyển bản công chứng số của VCCI trong vòng 2 giờ và cử đại lý hải quan làm việc với Hải quan Thượng Hải để đặt cọc bảo lãnh thông quan ngay.',
+        textZh: '我方原产地溯源BOM表清晰证明RVC达42.5%，完全符合中国-东盟自贸区规则。两小时内我们将提供经认证的电子关单，并协助贵司向海关缴纳保证金先行放行货物。',
+        scoreImpact: { law: 24, lang: 22, mgmt: 20, econ: 25 },
+        nextStance: 'Hợp tác (Cooperative)'
+      }
+    ]
   }
 ];
 
 export const FOUR_PILLARS = [
   {
     key: 'law',
-    title: 'Luật Kinh Tế',
+    title: 'Luật Kinh Tế & Trọng Tài',
     subtitle: 'Legal Compliance & Arbitration',
-    color: '#3B82F6',
-    bg: 'rgba(59, 130, 246, 0.1)',
-    borderColor: 'rgba(59, 130, 246, 0.25)',
+    color: '#00F0FF',
+    bg: 'rgba(0, 240, 255, 0.1)',
+    borderColor: 'rgba(0, 240, 255, 0.25)',
     icon: 'Scale',
     description: 'Rà soát hợp đồng thương mại quốc tế, viện dẫn Công ước Viên (CISG 1980), Incoterms 2020, điều khoản bất khả kháng và thủ tục trọng tài SHIAC/VIAC.',
     skills: ['Rà soát rủi ro pháp lý hợp đồng', 'Viện dẫn điều khoản miễn trách (CISG Art. 79)', 'Chiến thuật tranh tụng trọng tài thương mại (VIAC/SHIAC/SIAC)']
   },
   {
-    key: 'lang',
-    title: 'Ngôn Ngữ & Ngoại Giao',
-    subtitle: 'Linguistic & Cross-Cultural Mastery',
-    color: '#06B6D4',
-    bg: 'rgba(6, 182, 212, 0.1)',
-    borderColor: 'rgba(6, 182, 212, 0.25)',
-    icon: 'Languages',
-    description: 'Vận dụng ngôn ngữ thương mại chuẩn xác (Tiếng Trung 商务中文, Tiếng Anh đàm phán, Kính ngữ ngoại giao), thấu hiểu văn hóa đàm phán Á - Âu.',
-    skills: ['Kính ngữ & Thuật ngữ thương mại quốc tế', 'Xoa dịu mâu thuẫn đa văn hóa', 'Khả năng chuyển ngữ linh hoạt trong tình huống căng thẳng']
+    key: 'econ',
+    title: 'Kinh Tế & Phân Tích Vĩ Mô',
+    subtitle: 'Macroeconomics & Margin Optimization',
+    color: '#38BDF8',
+    bg: 'rgba(56, 189, 248, 0.1)',
+    borderColor: 'rgba(56, 189, 248, 0.25)',
+    icon: 'TrendingUp',
+    description: 'Tối ưu chi phí bồi thường, bảo toàn thanh khoản dòng tiền, phân tích biên lợi nhuận, cấu trúc phương án thanh toán và dự báo rủi ro tỷ giá.',
+    skills: ['Tối ưu hóa chi phí bồi thường & phạt vi phạm', 'Cấu trúc dòng tiền thanh toán nhiều kỳ', 'Phân tích điểm hòa vốn và rủi ro tỷ giá']
   },
   {
     key: 'mgmt',
-    title: 'Quản Trị Chiến Lược',
+    title: 'Quản Trị Chiến Lược & Khủng Hoảng',
     subtitle: 'Strategic Leadership & Crisis Agility',
-    color: '#10B981',
-    bg: 'rgba(16, 185, 129, 0.1)',
-    borderColor: 'rgba(16, 185, 129, 0.25)',
-    icon: 'ShieldAlert',
-    description: 'Điều hành phòng họp khủng hoảng, lãnh đạo đàm phán liên ngành, giải quyết xung đột lợi ích và bảo vệ uy tín thương hiệu doanh nghiệp.',
-    skills: ['Xử lý khủng hoảng truyền thông & chuỗi cung ứng', 'Phối hợp tác chiến đa phòng ban', 'Bảo toàn uy tín và quan hệ đối tác dài hạn']
-  },
-  {
-    key: 'econ',
-    title: 'Kinh Tế & Tài Chính',
-    subtitle: 'Financial Viability & Cost Optimization',
     color: '#A855F7',
     bg: 'rgba(168, 85, 247, 0.1)',
     borderColor: 'rgba(168, 85, 247, 0.25)',
+    icon: 'ShieldAlert',
+    description: 'Điều hành phòng họp khủng hoảng, lãnh đạo đàm phán liên ngành, giải quyết xung đột nội bộ và bảo vệ uy tín thương hiệu trên mạng xã hội.',
+    skills: ['Xử lý khủng hoảng truyền thông & mạng xã hội', 'Phối hợp tác chiến đa phòng ban', 'Bảo toàn uy tín và quan hệ đối tác dài hạn']
+  },
+  {
+    key: 'biz',
+    title: 'Kinh Doanh & Thương Mại Số',
+    subtitle: 'Commercial Agility & E-Commerce',
+    color: '#E879F9',
+    bg: 'rgba(232, 121, 249, 0.1)',
+    borderColor: 'rgba(232, 121, 249, 0.25)',
     icon: 'TrendingUp',
-    description: 'Tối ưu chi phí bồi thường, bảo toàn thanh khoản dòng tiền, phân tích biên lợi nhuận, cấu trúc phương án thanh toán và dự báo rủi ro tỷ giá.',
-    skills: ['Tối ưu hóa chi phí bồi thường & phạt vi phạm', 'Cấu trúc dòng tiền thanh toán nhiều kỳ (Cashflow optimization)', 'Phân tích điểm hòa vốn và rủi ro tài chính']
+    description: 'Chiến lược cạnh tranh giá, thương thảo chiết khấu kênh phân phối, quản trị xung đột giữa kênh truyền thống và TikTok Shop Mega-Live.',
+    skills: ['Quản trị kênh phân phối đa nền tảng', 'Bảo vệ giá sàn niêm yết (MAP)', 'Nghệ thuật đàm phán hợp đồng MCN/KOLs']
+  },
+  {
+    key: 'lang',
+    title: 'Ngôn Ngữ & Ngoại Giao',
+    subtitle: 'Linguistic & Cross-Cultural Mastery',
+    color: '#10B981',
+    bg: 'rgba(16, 185, 129, 0.1)',
+    borderColor: 'rgba(16, 185, 129, 0.25)',
+    icon: 'Languages',
+    description: 'Vận dụng ngôn ngữ thương mại chuẩn xác (Tiếng Trung 商务中文, Tiếng Anh đàm phán, Kính ngữ ngoại giao), thấu hiểu văn hóa đàm phán Á - Âu.',
+    skills: ['Kính ngữ & Thuật ngữ thương mại quốc tế', 'Xoa dịu mâu thuẫn đa văn hóa', 'Chuyển ngữ linh hoạt trong tình huống căng thẳng']
+  },
+  {
+    key: 'trade',
+    title: 'Thương Mại Quốc Tế & Cảng Biển',
+    subtitle: 'International Trade & Port Logistics',
+    color: '#F59E0B',
+    bg: 'rgba(245, 158, 11, 0.1)',
+    borderColor: 'rgba(245, 158, 11, 0.25)',
+    icon: 'Scale',
+    description: 'Phân định điểm chuyển giao rủi ro CIF/FOB Incoterms 2020, giải quyết vướng mắc chứng nhận xuất xứ C/O Form E và tranh chấp hàng hải cảng biển.',
+    skills: ['Truy xuất nguồn gốc xuất xứ C/O Form E', 'Phân định rủi ro hàng hải Incoterms 2020', 'Kỹ thuật giải phóng hàng lưu kho cảng biển']
   }
 ];

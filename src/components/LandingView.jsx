@@ -1,28 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  ArrowRight, ArrowUpRight, Scale, Languages, Shield, TrendingUp, 
-  Check, ChevronRight, Play, Volume2, Sparkles, Sliders, Users, 
-  FileText, Award, BookmarkCheck, ExternalLink, HelpCircle, Menu, X, Plus
-} from 'lucide-react';
-import { SCENARIOS, FOUR_PILLARS } from '../data/scenarios';
-import RadarChart from './RadarChart';
+import { SCENARIOS } from '../data/scenarios';
+import LogoSimLab from './LogoSimLab';
+import { TRANSLATIONS } from '../data/i18n';
 import { playAiVoice, stopAiVoice } from '../utils/speech';
 
-export default function LandingView({ onStartScenario, onOpenStudio }) {
-  const [activePillarTab, setActivePillarTab] = useState('law');
-  const [compareMetric, setCompareMetric] = useState('after');
-  const [soundPressed, setSoundPressed] = useState(true);
+export default function LandingView({ 
+  onStartScenario, 
+  onOpenHearingModal, 
+  onOpenVideoGuide,
+  onNavigate,
+  language = 'vi' 
+}) {
+  const [activeFieldTab, setActiveFieldTab] = useState('law');
+  const [soundPressed, setSoundPressed] = useState(false);
   const [isPlayingHeroVoice, setIsPlayingHeroVoice] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedDisciplineFilter, setSelectedDisciplineFilter] = useState('all');
 
   const videoRef = useRef(null);
+  const t = TRANSLATIONS[language] || TRANSLATIONS.vi;
 
   // Mobile Autoplay Enforcer for iOS Safari & Android Chrome
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Explicit DOM properties required by Mobile Safari
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
@@ -34,34 +36,25 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
       if (video && video.paused) {
         const promise = video.play();
         if (promise !== undefined) {
-          promise.catch(() => {
-            // Browser restricted initial autoplay without gesture
-          });
+          promise.catch(() => {});
         }
       }
     };
 
     tryPlay();
 
-    // Trigger video playback on the very first touch/gesture if initially restricted
     const handleFirstGesture = () => {
       tryPlay();
       window.removeEventListener('touchstart', handleFirstGesture);
-      window.removeEventListener('touchend', handleFirstGesture);
       window.removeEventListener('click', handleFirstGesture);
-      window.removeEventListener('scroll', handleFirstGesture);
     };
 
     window.addEventListener('touchstart', handleFirstGesture, { passive: true });
-    window.addEventListener('touchend', handleFirstGesture, { passive: true });
     window.addEventListener('click', handleFirstGesture, { passive: true });
-    window.addEventListener('scroll', handleFirstGesture, { passive: true });
 
     return () => {
       window.removeEventListener('touchstart', handleFirstGesture);
-      window.removeEventListener('touchend', handleFirstGesture);
       window.removeEventListener('click', handleFirstGesture);
-      window.removeEventListener('scroll', handleFirstGesture);
     };
   }, []);
 
@@ -79,7 +72,7 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
           { transform: 'translateY(115%)', opacity: 0 },
           { transform: 'translateY(0)', opacity: 1 }
         ],
-        { duration: 1050, delay: 350 + idx * 90, easing: expoEase, fill: 'backwards' }
+        { duration: 1000, delay: 300 + idx * 80, easing: expoEase, fill: 'backwards' }
       );
     });
 
@@ -87,10 +80,10 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
     ledeLines.forEach((line, idx) => {
       line.animate(
         [
-          { transform: 'translateY(14px)', opacity: 0 },
+          { transform: 'translateY(12px)', opacity: 0 },
           { transform: 'translateY(0)', opacity: 1 }
         ],
-        { duration: 800, delay: 750 + idx * 60, easing: expoEase, fill: 'backwards' }
+        { duration: 750, delay: 650 + idx * 50, easing: expoEase, fill: 'backwards' }
       );
     });
   }, []);
@@ -108,61 +101,113 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
     }
   };
 
-  const pillarDetails = {
+  const disciplinesData = {
     law: {
-      title: 'Luật Kinh Tế & Trọng Tài Quốc Tế',
-      latinCode: 'LEX MERCATORIA // JURISPRUDENCE',
-      badge: 'Căn cứ CISG 1980 & VIAC / SHIAC',
-      quote: '"Trong tranh tụng thương mại quốc tế, thắng thua không nằm ở việc ai nói to hơn, mà ở việc chứng minh được chuỗi nghĩa vụ và điều khoản loại trừ trách nhiệm."',
-      topics: [
-        { code: 'CISG § 79', name: 'Miễn trừ nghĩa vụ do trở ngại khách quan (Exemption of Force Majeure)', impact: 'Tiết kiệm 85% chi phí phạt vi phạm hợp đồng' },
-        { code: 'INCOTERMS 2020', name: 'Phân định điểm chuyển giao rủi ro CIF / FOB tại cảng Thượng Hải', impact: 'Bác bỏ trách nhiệm hư hại hàng hóa trong hải trình' },
-        { code: 'SHIAC RULES', name: 'Thủ tục hòa giải thương lượng bắt buộc trước khi mở phiên trọng tài', impact: 'Kéo dài thời hạn thanh toán thêm 60 ngày' }
+      name: t.disciplines.law.name,
+      sub: 'CISG 1980 • VIAC • SHIAC',
+      quote: '"Trong tranh tụng quốc tế, thắng bại quyết định bởi chuỗi nghĩa vụ và căn cứ loại trừ trách nhiệm."',
+      color: '#38BDF8',
+      image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80',
+      imageCaption: 'Phiên giải quyết tranh chấp trọng tài quốc tế',
+      casesCount: 12,
+      highlights: [
+        'Miễn trừ nghĩa vụ do trở ngại khách quan hàng hải (CISG Điều 79)',
+        'Phân định điểm chuyển giao rủi ro CIF/FOB tại cảng Thượng Hải',
+        'Thủ tục hòa giải thương lượng bắt buộc trước khi mở phiên trọng tài'
       ]
     },
-    lang: {
-      title: 'Ngôn Ngữ & Ngoại Giao Thương Mại',
-      latinCode: 'LINGUA COMMERCII // CROSS-CULTURAL',
-      badge: '商务中文 (Business Chinese) & Commercial English',
-      quote: '"Đàm phán với đối tác Á Đông đòi hỏi nghệ thuật giữ thể diện (Mianzi). Một từ ngữ ngoại giao đúng lúc sẽ cứu vãn hợp đồng hàng triệu USD mà văn bản pháp lý cứng nhắc không làm được."',
-      topics: [
-        { code: 'KÍNH NGỮ', name: 'Vận dụng kính ngữ thương mại tiếng Trung ("陈总", "贵司", "和气生财")', impact: 'Chuyển hóa lập trường đối tác từ đối đầu sang hợp tác' },
-        { code: 'DIPLOMATIC TONE', name: 'Ngôn ngữ trung lập tránh quy chụp lỗi vi phạm trước khi có kết luận kiểm toán', impact: 'Bảo toàn danh tiếng doanh nghiệp trên thị trường quốc tế' },
-        { code: 'CROSS-CULTURE', name: 'Thấu hiểu văn hóa ra quyết định theo thứ bậc của doanh nghiệp Thượng Hải', impact: 'Tạo cơ sở cho thỏa thuận bảo lưu điều khoản mật' }
+    economics: {
+      name: t.disciplines.economics.name,
+      sub: 'MACROECONOMICS & HEDGING',
+      quote: '"Mọi quyết định đàm phán thương mại suy cho cùng đều là bài toán tối ưu hóa chi phí cận biên và bảo toàn thanh khoản."',
+      color: '#38BDF8',
+      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80',
+      imageCaption: 'Trạm giám sát thị trường tài chính & quản trị tỷ giá',
+      casesCount: 9,
+      highlights: [
+        'Cơ chế trượt giá có kiểm soát (Band Corridor 3%-5%) gắn tỷ giá USD/EUR',
+        'Phân tích độ nhạy chi phí lưu kho bãi và lạm phát nguyên vật liệu',
+        'Cấu trúc dòng tiền chia 3 giai đoạn bảo vệ hạn mức nợ ngân hàng'
       ]
     },
-    mgmt: {
-      title: 'Quản Trị Chiến Lược & Khủng Hoảng',
-      latinCode: 'CRISIS MANAGEMENT & RISK GOVERNANCE',
-      badge: 'Cross-functional Task Force Protocol',
-      quote: '"Khủng hoảng không phá hủy doanh nghiệp; cách ban giám đốc phản ứng trong 48 giờ đầu tiên mới quyết định sự sống còn của thương hiệu."',
-      topics: [
-        { code: 'TASK FORCE', name: 'Thành lập Tổ công tác điều phối khủng hoảng liên ngành (Pháp lý - Logistics - Tài chính)', impact: 'Rút ngắn 70% thời gian xử lý sự cố hàng hải' },
-        { code: 'PR PROTOCOL', name: 'Kiểm soát thông tin nội bộ và phát ngôn thống nhất trước truyền thông', impact: 'Ngăn chặn tin đồn thất thiệt làm sụt giảm giá cổ phiếu' },
-        { code: 'SUPPLY CHAIN', name: 'Phương án kích hoạt chuỗi cung ứng dự phòng và lưu kho phân tán', impact: 'Bảo đảm cam kết giao hàng cho các khách hàng thứ cấp' }
+    management: {
+      name: t.disciplines.management.name,
+      sub: 'CRISIS PR & LEADERSHIP',
+      quote: '"Khủng hoảng không phá hủy doanh nghiệp, cách lãnh đạo phản hồi công chúng mới quyết định số phận thương hiệu."',
+      color: '#94A3B8',
+      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80',
+      imageCaption: 'Hội đồng quản trị điều hành phòng họp khủng hoảng',
+      casesCount: 11,
+      highlights: [
+        'Xử lý khủng hoảng rò rỉ email sa thải hàng loạt trên Threads/LinkedIn',
+        'Tái cấu trúc ban điều hành khủng hoảng và ổn định tinh thần nhân sự',
+        'Gói hỗ trợ tài chính chuyển tiếp nhân văn bảo vệ giá trị cổ phiếu'
       ]
     },
-    econ: {
-      title: 'Kinh Tế & Tối Ưu Chi Phí',
-      latinCode: 'FINANCIAL VIABILITY & CAPITAL ALLOCATION',
-      badge: 'Working Capital & Debt Covenant Safeguard',
-      quote: '"Mọi giải pháp pháp lý hoàn hảo trên lý thuyết đều vô nghĩa nếu nó làm cạn kiệt dòng tiền mặt và khiến doanh nghiệp vỡ nợ ngắn hạn."',
-      topics: [
-        { code: 'CASHFLOW', name: 'Cấu trúc thanh toán giãn nở 3 kỳ kèm cam kết bảo lãnh thư tín dụng (L/C)', impact: 'Bảo toàn 65% dự trữ tiền mặt khả dụng của quý' },
-        { code: 'DAMAGES CAP', name: 'Giới hạn mức bồi thường thực tế có hóa đơn kiểm toán, bác bỏ tiền phạt khống', impact: 'Tiết kiệm ròng $950,000 USD chi phí bồi thường' },
-        { code: 'FUTURE REVENUE', name: 'Dùng cam kết đơn hàng tương lai làm đòn bẩy bù đắp tổn thất lưu kho đối tác', impact: 'Khóa chặt giá nguồn nguyên liệu linh kiện cho năm sau' }
+    business: {
+      name: t.disciplines.business.name,
+      sub: 'E-COMMERCE & TIKTOK SHOP',
+      quote: '"Bán lẻ thời đại số là nghệ thuật cân bằng giữa sức mạnh Mega-Live của KOLs và sự sống còn của kênh truyền thống."',
+      color: '#38BDF8',
+      image: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=1200&q=80',
+      imageCaption: 'Trung tâm vận hành thương mại điện tử & kênh phân phối số',
+      casesCount: 8,
+      highlights: [
+        'Hòa giải đại chiến phá giá Mega-Live TikTok Shop 12.000 đơn hàng',
+        'Bảo vệ chính sách giá sàn niêm yết (MAP) cho 300 đại lý phân phối',
+        'Phân tách SKU độc quyền online kết hợp combo voucher quà tặng'
+      ]
+    },
+    languages: {
+      name: t.disciplines.languages.name,
+      sub: 'COMMERCIAL LINGUISTICS',
+      quote: '"Một từ dịch sai ngữ cảnh trong hợp đồng ngoại thương có thể trả giá bằng hàng triệu đô lưu bãi tại cửa khẩu."',
+      color: '#10B981',
+      image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80',
+      imageCaption: 'Hội nghị đàm phán ngoại giao & dịch thuật thương mại song phương',
+      casesCount: 10,
+      highlights: [
+        'Tranh chấp ngữ nghĩa bản dịch Trung - Việt tại cửa khẩu Hữu Nghị',
+        'Nghệ thuật sử dụng kính ngữ thương mại tiếng Trung (和气生财, 互利共赢)',
+        'Điều khoản ngôn ngữ tham chiếu tối cao theo quy chuẩn Incoterms'
+      ]
+    },
+    commerce: {
+      name: t.disciplines.commerce.name,
+      sub: 'INTERNATIONAL TRADE & PORTS',
+      quote: '"Ngoại thương là làm chủ quy tắc xuất xứ C/O, thủ tục hải quan cảng biển và rủi ro phòng vệ thương mại."',
+      color: '#F59E0B',
+      image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+      imageCaption: 'Hệ thống cảng biển container & kiểm tra hải quan',
+      casesCount: 14,
+      highlights: [
+        'Xử lý 45 container dệt may kẹt cảng Thượng Hải nghi vấn C/O Form E',
+        'Chứng minh hàm lượng giá trị khu vực RVC đạt 42.5% theo ACFTA',
+        'Thủ tục nộp bảo lãnh tạm giải phóng hàng tươi sống lưu bãi'
       ]
     }
   };
 
-  const currentPillar = pillarDetails[activePillarTab];
+  const currentDiscipline = disciplinesData[activeFieldTab] || disciplinesData.law;
+
+  const filteredScenarios = selectedDisciplineFilter === 'all' 
+    ? SCENARIOS 
+    : SCENARIOS.filter(s => s.field === selectedDisciplineFilter);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '64px', paddingBottom: '96px', overflowX: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '56px', paddingBottom: '88px', overflowX: 'hidden' }}>
       
-      {/* FULL-VIEWPORT HERO STAGE */}
-      <section className="hero-stage" style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', backgroundColor: '#03080B' }}>
-        
+      {/* 1. FULL-VIEWPORT HERO STAGE - TINH GỌN, VỪA VẶN, KHÔNG LÒE LOẸT, KHÔNG DÙNG ICON */}
+      <section 
+        className="hero-stage" 
+        style={{ 
+          position: 'relative', 
+          width: '100vw', 
+          height: '100dvh', 
+          overflow: 'hidden', 
+          backgroundColor: '#060913' 
+        }}
+      >
         {/* Remote Video Background */}
         <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
           <video
@@ -186,294 +231,308 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
           </video>
         </div>
 
-        {/* 3 Shade Overlays */}
+        {/* Authentic Shade Overlays */}
         <div className="shade-h" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />
         <div className="shade-v" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />
         <div className="shade-radial" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }} />
 
-        {/* TOP BAR (RESPONSIVE) */}
-        <header className="hero-top-bar" style={{
-          position: 'absolute',
-          top: 'calc(40 * var(--u))',
-          left: 'calc(48 * var(--u))',
-          right: 'calc(48 * var(--u))',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          zIndex: 20
-        }}>
-          {/* Logo Pill */}
-          <a
-            href="#"
+        {/* TOP BAR: FLOATING PILL NAVIGATION (THU NHỎ GỌN GÀNG, KHÔNG DÙNG ICON) */}
+        <header 
+          className="hero-top-bar" 
+          style={{
+            position: 'absolute',
+            top: '20px',
+            left: '24px',
+            right: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            zIndex: 20
+          }}
+        >
+          {/* Logo Pill on Left */}
+          <div 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             style={{
-              height: '46px',
-              padding: '0 10px 0 2px',
+              height: '38px',
+              padding: '0 10px 0 4px',
               borderRadius: '9999px',
-              background: 'rgba(150, 220, 130, 0.035)',
+              background: 'rgba(6, 9, 19, 0.85)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              textDecoration: 'none'
+              cursor: 'pointer',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.35)'
             }}
-            aria-label="simlab.ai home"
           >
-            <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '50%',
-              background: 'var(--logo-disc)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}>
-              <svg viewBox="0 0 46 46" style={{ width: '32px', height: '32px' }}>
-                <path d="M24.2 37V24" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                <path d="M19.8 39.3c1.2-1.9 2.8-2.7 4.4-2.7s3.2.8 4.4 2.7" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                <path d="M23.8 30.2c-2.8-.6-5.5-2.6-7.2-5-2-1.8-5.2-2-7-4.2-1.4-1.8-1.4-4.2 0-6 2-3 5.8-5.2 8.8-6.2 1.4-.5 2.8-1 4.2-1.3" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                <path d="M14.8 23V13.2c0-1.4.8-2.6 2.4-3.4" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                <path d="M24 24.2c-1.8-1.8-3.2-3.8-3.7-6.4-.5-2.6-.6-5.2-.3-7.2" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                <path d="M24.3 23.2c1.5-3 3.5-6.4 4.3-10.2.4-2.6 1.2-4.1 2.8-4.3H35" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-                <path d="M24.6 25.7c3-.7 5.8-2.1 7.4-4.5 1.2-1.8 1.4-3.8 2.8-5.2 1.4-1.4 3.2-2.1 5.2-2.4" stroke="var(--icon-teal)" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-              </svg>
-            </div>
-            
-            <svg viewBox="0 0 39 30" style={{ width: '32px', height: '24px', fill: 'var(--moth)' }}>
-              <path d="M19.5 12.4C17.5 9.5 14 5 10.8 3 9.6 2.4 8 2.2 6 2.3 4.2 2.4 3.1 3 3 4.8L3.1 9.8C3.2 12.4 5 15 8.3 17.3 6.6 19.5 5.6 21.8 5.4 24.2 5.2 26.2 5.8 27.6 7.3 28 8.8 28.3 10.2 27.3 11.4 25.8 14.2 22.6 17.2 19.8 19.5 17.1Z" />
-              <path transform="matrix(-1 0 0 1 39 0)" d="M19.5 12.4C17.5 9.5 14 5 10.8 3 9.6 2.4 8 2.2 6 2.3 4.2 2.4 3.1 3 3 4.8L3.1 9.8C3.2 12.4 5 15 8.3 17.3 6.6 19.5 5.6 21.8 5.4 24.2 5.2 26.2 5.8 27.6 7.3 28 8.8 28.3 10.2 27.3 11.4 25.8 14.2 22.6 17.2 19.8 19.5 17.1Z" />
-            </svg>
-          </a>
+            <LogoSimLab size="sm" />
+          </div>
 
-          {/* Desktop Nav Pill */}
+          {/* Center Desktop Nav Pill */}
           <nav
             className="hero-nav-pill-desktop"
             style={{
-              height: '47px',
-              background: '#03080B',
+              height: '38px',
+              background: 'rgba(6, 9, 19, 0.88)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
               borderRadius: '9999px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
               display: 'flex',
               alignItems: 'center',
-              paddingLeft: '24px',
+              paddingLeft: '16px',
               paddingRight: '3px',
-              fontSize: '13px',
-              fontWeight: 400
+              fontSize: '12px',
+              fontWeight: 500,
+              gap: '4px',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginRight: '16px' }}>
-              <a href="#framework" style={{ color: 'var(--ink)' }}>Trụ Cột</a>
-              <a href="#chamber" style={{ color: 'var(--teal)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Phòng Lab
-                <svg viewBox="0 0 11 6" style={{ width: '8px', height: '5px', stroke: 'var(--chevron)', fill: 'none', strokeWidth: 1.5, strokeLinecap: 'round' }}>
-                  <path d="M.7.7 5.5 5.3 10.3.7" />
-                </svg>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginRight: '12px' }}>
+              {/* 1. Trang Chủ */}
+              <a 
+                href="#" 
+                onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                style={{ color: '#F8FAFC', fontWeight: 600 }}
+              >
+                {t.nav.home}
               </a>
-              <a href="#cases" style={{ color: 'var(--ink)' }}>Hồ Sơ</a>
-              <a href="#credentials" style={{ color: 'var(--ink)' }}>Đề Tài</a>
+
+              {/* 2. Lĩnh Vực (6 Ngành) */}
+              <a 
+                href="#disciplines-section" 
+                style={{ color: '#94A3B8' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#38BDF8'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#94A3B8'}
+              >
+                {t.nav.disciplines}
+              </a>
+
+              {/* 3. Mục Đích / Sứ Mệnh */}
+              <a 
+                href="#mission" 
+                onClick={(e) => { e.preventDefault(); onNavigate('mission'); }}
+                style={{ color: '#94A3B8' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#F8FAFC'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#94A3B8'}
+              >
+                {t.nav.mission}
+              </a>
+
+              {/* 4. Lịch Sử */}
+              <a 
+                href="#history" 
+                onClick={(e) => { e.preventDefault(); onNavigate('history'); }}
+                style={{ color: '#94A3B8' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#38BDF8'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#94A3B8'}
+              >
+                {t.nav.history}
+              </a>
+
+              {/* 5. Video Hướng Dẫn YouTube (Chữ thuần, không dùng icon) */}
+              <button
+                onClick={onOpenVideoGuide}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#94A3B8',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: 500,
+                  padding: 0
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#F87171'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#94A3B8'}
+              >
+                YouTube
+              </button>
             </div>
 
+            {/* Nút Vào Hearing trong thanh pill - Gọn gàng, chữ thuần */}
             <button
-              onClick={() => onStartScenario(SCENARIOS[0])}
+              onClick={onOpenHearingModal}
               style={{
-                height: '41px',
-                padding: '0 16px',
-                background: 'var(--cream)',
-                color: '#03080B',
+                height: '30px',
+                padding: '0 13px',
+                background: '#0284C7',
+                color: '#FFFFFF',
                 borderRadius: '9999px',
-                fontSize: '13px',
+                fontSize: '11.5px',
                 fontWeight: 600,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '10px',
-                cursor: 'pointer'
+                justifyContent: 'center',
+                cursor: 'pointer',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                transition: 'background 0.15s ease'
               }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#0369A1'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#0284C7'}
             >
-              <span>Vào Hearing</span>
-              <span style={{
-                width: '26px',
-                height: '26px',
-                borderRadius: '50%',
-                background: 'var(--pine)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <svg viewBox="0 0 4 7" style={{ width: '4px', height: '7px', stroke: '#FFFFFF', fill: 'none', strokeWidth: 1.4, strokeLinecap: 'round' }}>
-                  <path d="M.5.5 3.5 3.5.5 6.5" />
-                </svg>
-              </span>
+              <span>{t.nav.enterHearing}</span>
             </button>
           </nav>
 
-          {/* Right Controls (Sound Toggle + Mobile Menu Button) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Right Controls: Ambient Sound (Pure text toggle) + Mobile Menu Button */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button
               onClick={toggleSound}
-              aria-label="Ambient river sound"
-              aria-pressed={soundPressed ? 'true' : 'false'}
+              aria-label="Ambient speech sound"
               style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '50%',
-                background: 'rgba(3, 8, 11, 0.55)',
+                height: '34px',
+                padding: '0 12px',
+                borderRadius: '9999px',
+                background: 'rgba(6, 9, 19, 0.8)',
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                color: 'var(--ink)'
+                color: soundPressed ? '#38BDF8' : '#94A3B8',
+                fontSize: '11.5px',
+                fontWeight: 500
               }}
             >
-              <svg viewBox="0 0 46 46" fill="currentColor" style={{ width: '18px', height: '18px' }}>
-                <path d="M14.6 19.6h3.6l5.9-4.9v18.6l-5.9-4.9h-3.6z" />
-                <path
-                  d="M27.6 19.6c1.9 2.8 1.9 6 0 8.8"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  style={{ opacity: soundPressed ? 1 : 0.25, transition: 'opacity 0.2s ease' }}
-                />
-                <path
-                  d="M31.2 16.2c3.4 4.9 3.4 10.7 0 15.6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  style={{ opacity: soundPressed ? 1 : 0.25, transition: 'opacity 0.2s ease' }}
-                />
-              </svg>
+              {soundPressed ? 'Âm thanh: Bật' : 'Âm thanh: Tắt'}
             </button>
 
-            {/* Mobile Hamburger Toggle */}
+            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="mobile-hamburger-btn"
               style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '50%',
-                background: 'rgba(3, 8, 11, 0.75)',
+                height: '34px',
+                padding: '0 12px',
+                borderRadius: '9999px',
+                background: 'rgba(6, 9, 19, 0.8)',
                 border: '1px solid rgba(255, 255, 255, 0.12)',
+                display: 'none',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--ink)',
+                color: '#F8FAFC',
+                fontSize: '11.5px',
                 cursor: 'pointer'
               }}
-              aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              {mobileMenuOpen ? 'Đóng' : 'Menu'}
             </button>
           </div>
         </header>
 
         {/* Mobile Dropdown Menu Drawer */}
         {mobileMenuOpen && (
-          <div style={{
-            position: 'absolute',
-            top: '74px',
-            left: '20px',
-            right: '20px',
-            background: 'rgba(7, 15, 19, 0.98)',
-            border: '1px solid var(--border-medium)',
-            borderRadius: '16px',
-            padding: '20px',
-            zIndex: 30,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '14px',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.8)'
-          }}>
+          <div 
+            style={{
+              position: 'absolute',
+              top: '64px',
+              left: '16px',
+              right: '16px',
+              background: 'rgba(6, 9, 19, 0.98)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              borderRadius: '14px',
+              padding: '16px',
+              zIndex: 30,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              boxShadow: '0 16px 36px rgba(0,0,0,0.8)'
+            }}
+          >
             <a 
-              href="#framework" 
+              href="#" 
               onClick={() => setMobileMenuOpen(false)}
-              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--ink)', fontSize: '15px' }}
+              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#38BDF8', fontSize: '14px' }}
             >
-              4 Trục Năng Lực Liên Ngành
+              Trang Chủ
             </a>
             <a 
-              href="#chamber" 
+              href="#disciplines-section" 
               onClick={() => setMobileMenuOpen(false)}
-              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--teal)', fontSize: '15px' }}
+              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#F8FAFC', fontSize: '14px' }}
             >
-              Phòng Mô Phỏng Trọng Tài (Live Chamber)
+              Lĩnh Vực (6 Ngành Đào Tạo)
             </a>
             <a 
-              href="#cases" 
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--ink)', fontSize: '15px' }}
+              href="#mission" 
+              onClick={() => { setMobileMenuOpen(false); onNavigate('mission'); }}
+              style={{ padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', color: '#CBD5E1', fontSize: '14px' }}
             >
-              Kho Tình Huống Thực Chiến
+              Mục Đích & Sứ Mệnh
             </a>
             <a 
-              href="#credentials" 
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ padding: '8px 0', color: 'var(--ink)', fontSize: '15px' }}
+              href="#history" 
+              onClick={() => { setMobileMenuOpen(false); onNavigate('history'); }}
+              style={{ padding: '8px 0', color: '#CBD5E1', fontSize: '14px' }}
             >
-              Đơn Vị Thực Hiện & Cố Vấn
+              Lịch Sử Mô Phỏng
             </a>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenStudio();
+                  onOpenVideoGuide();
                 }}
                 className="btn-secondary"
-                style={{ width: '100%', justifyContent: 'center', height: '42px' }}
+                style={{ width: '100%', justifyContent: 'center', height: '38px', color: '#FCA5A5' }}
               >
-                <Plus size={15} />
-                <span>+ Tạo Kịch Bản Mới</span>
+                Xem Video YouTube HDSD
               </button>
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onStartScenario(SCENARIOS[0]);
+                  onOpenHearingModal();
                 }}
                 className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center', height: '42px' }}
+                style={{ width: '100%', justifyContent: 'center', height: '38px' }}
               >
-                <span>Vào Phiên Điều Trần Ngay</span>
+                Vào Hearing Ngay
               </button>
             </div>
           </div>
         )}
 
-        {/* BOTTOM HERO CONTENT (RESPONSIVE) */}
-        <div className="hero-bottom-content" style={{
-          position: 'absolute',
-          bottom: 'calc(48 * var(--u))',
-          left: 'calc(48 * var(--u))',
-          maxWidth: 'calc(800 * var(--u))',
-          zIndex: 15
-        }}>
-          <span
+        {/* BOTTOM HERO CONTENT (THU NHỎ LẠI XÍU NỮA ĐI LÀ ĐẸP, MÀU CHỮ TRẦM SANG TRỌNG) */}
+        <div 
+          className="hero-bottom-content" 
+          style={{
+            position: 'absolute',
+            bottom: '28px',
+            left: '28px',
+            maxWidth: '620px',
+            zIndex: 15
+          }}
+        >
+          {/* Subtitle tag - Tinh gọn, không lòe loẹt, không emoji */}
+          <div
             style={{
               fontFamily: 'var(--font-brand)',
               fontWeight: 600,
-              color: 'var(--teal)',
-              fontSize: '14px',
-              letterSpacing: '0.04em',
-              marginBottom: '12px',
-              display: 'block'
+              color: '#94A3B8',
+              fontSize: '11px',
+              letterSpacing: '0.08em',
+              marginBottom: '8px',
+              textTransform: 'uppercase'
             }}
           >
-            simlab.ai • interdisciplinary simulation
-          </span>
+            SIMLAB.AI • INTERDISCIPLINARY LAB • BỨT PHÁ GIỚI HẠN
+          </div>
 
+          {/* Headline title - Thu nhỏ gọn gàng, vừa mắt */}
           <h1
             className="hero-headline-title font-display"
             style={{
-              fontWeight: 300,
-              fontSize: 'calc(64 * var(--u))',
-              lineHeight: 1.05,
-              color: 'var(--ink)',
-              marginBottom: '20px'
+              fontWeight: 400,
+              fontSize: 'clamp(24px, 3.2vw, 38px)',
+              lineHeight: 1.15,
+              color: '#F8FAFC',
+              marginBottom: '12px'
             }}
           >
             <span className="headline-line-mask">
@@ -487,393 +546,592 @@ export default function LandingView({ onStartScenario, onOpenStudio }) {
             </span>
           </h1>
 
+          {/* Lede text */}
           <div
             className="hero-lede-text"
             style={{
               fontFamily: 'var(--font-text)',
               fontWeight: 400,
-              fontSize: '15.5px',
-              lineHeight: 1.55,
-              color: 'var(--ink-2)',
-              marginBottom: '28px'
+              fontSize: '13.5px',
+              lineHeight: 1.5,
+              color: '#94A3B8',
+              marginBottom: '18px'
             }}
           >
             <span className="hero-lede-line" style={{ display: 'block' }}>
-              Hệ thống mô phỏng Role-play liên ngành: Kinh tế, Quản trị, Luật kinh tế và Ngôn ngữ.
+              Hệ thống mô phỏng Role-play liên ngành: Kinh tế, Quản trị, Kinh doanh, Luật, Ngôn ngữ & Thương mại.
             </span>
             <span className="hero-lede-line" style={{ display: 'block' }}>
               Rèn luyện bản lĩnh đàm phán, tranh tụng trọng tài và xử lý khủng hoảng đa ngữ cùng AI.
             </span>
           </div>
 
-          <div className="hero-actions-container" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Actions Container - Nút màu thanh lịch, chữ thuần không icon */}
+          <div className="hero-actions-container" style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
             <button
               id="hero-cta-btn"
-              onClick={() => onStartScenario(SCENARIOS[0])}
+              onClick={onOpenHearingModal}
               className="btn-cta-pill"
+              style={{
+                height: '38px',
+                padding: '0 18px',
+                fontSize: '12.5px',
+                background: '#0B1124',
+                border: '1px solid rgba(56, 189, 248, 0.4)',
+                color: '#F8FAFC'
+              }}
             >
-              <span>Khởi Chạy Phòng Mô Phỏng Trọng Tài</span>
-              <span className="pill-disc">
-                <svg viewBox="0 0 5 8">
-                  <path d="M.6.6 4 4 .6 7.4" />
-                </svg>
-              </span>
+              <span>Bắt Đầu Phiên Thẩm Vấn</span>
             </button>
 
             <a
-              href="#framework"
+              href="#disciplines-section"
               style={{
-                fontSize: '14.5px',
+                fontSize: '12.5px',
                 fontWeight: 500,
-                color: 'var(--ink)',
-                whiteSpace: 'nowrap',
-                padding: '6px 0'
+                color: '#CBD5E1',
+                padding: '6px 0',
+                display: 'inline-flex',
+                alignItems: 'center'
               }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#38BDF8'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#CBD5E1'}
             >
-              Khám Phá 4 Trụ Cột Năng Lực
+              <span>Khám Phá 6 Lĩnh Vực Đào Tạo</span>
             </a>
           </div>
         </div>
 
         {/* Scroll cue (desktop only) */}
         <a
-          href="#framework"
+          href="#disciplines-section"
           className="hero-scroll-cue-desktop"
           style={{
             position: 'absolute',
-            bottom: 'calc(48 * var(--u))',
-            right: 'calc(48 * var(--u))',
+            bottom: '28px',
+            right: '28px',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
-            fontSize: '13px',
-            color: 'var(--ink)',
-            whiteSpace: 'nowrap',
+            fontSize: '11.5px',
+            color: '#64748B',
             zIndex: 15
           }}
         >
-          <span>Scroll for Details</span>
-          <svg viewBox="0 0 11 6" style={{ width: '10px', height: '6px', stroke: 'var(--chevron)', fill: 'none', strokeWidth: 1.5, strokeLinecap: 'round' }}>
-            <path d="M.7.7 5.5 5.3 10.3.7" />
-          </svg>
+          <span>Cuộn xem chi tiết</span>
         </a>
 
       </section>
 
-      {/* SECTION 2: 4-PILLAR ARCHITECTURE MATRIX */}
-      <section id="framework" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
-        <div className="craft-card" style={{ padding: 'clamp(20px, 4vw, 36px)', background: 'var(--bg-surface)' }}>
-          
+      {/* 2. SECTION: 6 LĨNH VỰC ĐÀO TẠO THỰC NGHIỆM (THÊM HÌNH ẢNH CHÂN THỰC, KHÔNG DÙNG ICON) */}
+      <section id="disciplines-section" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div 
+          style={{ 
+            background: '#0B1124', 
+            borderRadius: '20px', 
+            padding: 'clamp(20px, 3.5vw, 32px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 12px 36px rgba(0, 0, 0, 0.4)'
+          }}
+        >
+          {/* Section Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
             <div>
-              <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', border: '1px solid var(--border-medium)', marginBottom: '8px' }}>
-                PEDAGOGICAL FRAMEWORK // MÔ HÌNH NĂNG LỰC ĐÀO TẠO
-              </div>
-              <h2 className="font-display" style={{ fontSize: 'clamp(24px, 5vw, 32px)', fontWeight: 600, color: 'var(--ink)', marginTop: '4px' }}>
-                Bốn Trục Tri Thức Giao Thoa Thực Chiến
+              <span 
+                style={{ 
+                  background: 'rgba(56, 189, 248, 0.1)', 
+                  color: '#38BDF8', 
+                  border: '1px solid rgba(56, 189, 248, 0.25)', 
+                  padding: '3px 10px', 
+                  borderRadius: '9999px',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  display: 'inline-block',
+                  marginBottom: '8px'
+                }}
+              >
+                INTERDISCIPLINARY DISCIPLINES // 6 NGÀNH ĐÀO TẠO
+              </span>
+              <h2 style={{ fontSize: 'clamp(22px, 3.5vw, 28px)', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+                {t.disciplines.title}
               </h2>
+              <p style={{ fontSize: '13.5px', color: '#94A3B8', marginTop: '6px' }}>
+                {t.disciplines.desc}
+              </p>
             </div>
 
-            {/* Pillar Tab Bar (Scrollable on mobile) */}
-            <div className="pillars-tab-bar" style={{ display: 'flex', background: 'var(--bg-inset)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-subtle)', gap: '4px' }}>
-              {FOUR_PILLARS.map((p) => (
+            {/* 6 Tabs for Disciplines - Clean pill buttons without flashy neon */}
+            <div 
+              style={{ 
+                display: 'flex', 
+                flexWrap: 'wrap', 
+                background: 'rgba(6, 9, 19, 0.8)', 
+                padding: '4px', 
+                borderRadius: '10px', 
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                gap: '4px'
+              }}
+            >
+              {[
+                { key: 'law', label: '1. Luật' },
+                { key: 'economics', label: '2. Kinh Tế' },
+                { key: 'management', label: '3. Quản Trị' },
+                { key: 'business', label: '4. Kinh Doanh' },
+                { key: 'languages', label: '5. Ngôn Ngữ' },
+                { key: 'commerce', label: '6. Thương Mại' }
+              ].map((tab) => (
                 <button
-                  key={p.key}
-                  onClick={() => setActivePillarTab(p.key)}
+                  key={tab.key}
+                  onClick={() => setActiveFieldTab(tab.key)}
                   style={{
-                    background: activePillarTab === p.key ? 'var(--bg-surface-elevated)' : 'transparent',
-                    color: activePillarTab === p.key ? 'var(--teal)' : 'var(--text-muted)',
-                    border: activePillarTab === p.key ? '1px solid var(--border-medium)' : '1px solid transparent',
-                    borderRadius: '6px',
-                    padding: '8px 12px',
-                    fontSize: '12.5px',
+                    background: activeFieldTab === tab.key ? '#1E293B' : 'transparent',
+                    color: activeFieldTab === tab.key ? '#F8FAFC' : '#94A3B8',
+                    border: activeFieldTab === tab.key ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid transparent',
+                    borderRadius: '7px',
+                    padding: '7px 12px',
+                    fontSize: '12px',
                     fontWeight: 600,
                     cursor: 'pointer',
                     transition: 'all 0.15s ease'
                   }}
                 >
-                  {p.title}
+                  {tab.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Active Tab Content (Responsive 1/2 Column) */}
-          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '24px', alignItems: 'start' }}>
+          {/* Active Discipline Card Showcase (Thêm nhiều hình ảnh chân thực theo yêu cầu) */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '20px', alignItems: 'stretch' }}>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div className="craft-inset" style={{ padding: '16px 18px', borderLeft: '4px solid var(--teal)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
-                  <span className="font-mono" style={{ fontSize: '11px', color: 'var(--teal)' }}>{currentPillar.latinCode}</span>
-                  <span className="badge-mono" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--ink-2)' }}>{currentPillar.badge}</span>
-                </div>
-                <h3 className="font-display" style={{ fontSize: '20px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
-                  {currentPillar.title}
-                </h3>
-                <p style={{ fontSize: '13.5px', color: 'var(--ink-2)', fontStyle: 'italic', lineHeight: 1.6 }}>
-                  {currentPillar.quote}
-                </p>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                  CÁC TÌNH HUỐNG VẬN DỤNG THỰC TẾ TRONG SIMLAB:
-                </div>
-
-                {currentPillar.topics.map((t, idx) => (
-                  <div key={idx} className="craft-card" style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                      <span className="badge-mono" style={{ background: 'var(--bg-inset)', color: 'var(--teal)' }}>
-                        {t.code}
-                      </span>
-                      <span style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 500 }}>
-                        {t.name}
-                      </span>
-                    </div>
-                    <span className="font-mono" style={{ fontSize: '11.5px', color: 'var(--teal)' }}>
-                      • {t.impact}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Radar Comparison Card */}
-            <div className="craft-inset" style={{ padding: '18px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
-                <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>ĐO LƯỜNG NĂNG LỰC</span>
-                
-                <div style={{ display: 'flex', background: 'var(--bg-app)', borderRadius: '4px', padding: '2px' }}>
-                  <button
-                    onClick={() => setCompareMetric('before')}
-                    style={{
-                      background: compareMetric === 'before' ? 'var(--bg-surface-elevated)' : 'transparent',
-                      color: compareMetric === 'before' ? 'var(--ink)' : 'var(--text-faint)',
-                      border: 'none',
-                      borderRadius: '3px',
-                      padding: '4px 8px',
-                      fontSize: '11px',
-                      fontFamily: 'var(--font-mono)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Trước (35%)
-                  </button>
-                  <button
-                    onClick={() => setCompareMetric('after')}
-                    style={{
-                      background: compareMetric === 'after' ? 'var(--pine)' : 'transparent',
-                      color: compareMetric === 'after' ? 'var(--teal)' : 'var(--text-faint)',
-                      border: 'none',
-                      borderRadius: '3px',
-                      padding: '4px 8px',
-                      fontSize: '11px',
-                      fontFamily: 'var(--font-mono)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Sau SimLab (90%)
-                  </button>
-                </div>
-              </div>
-
-              <RadarChart 
-                scores={compareMetric === 'before' 
-                  ? { law: 35, lang: 30, mgmt: 40, econ: 35 } 
-                  : { law: 92, lang: 95, mgmt: 88, econ: 91 }
-                } 
-                size={230} 
-              />
-
-              <p style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '12px', lineHeight: 1.5 }}>
-                {compareMetric === 'before' 
-                  ? 'Sinh viên học lý thuyết rời rạc thường chỉ biết viện dẫn luật hoặc dịch thuật đơn thuần mà không gắn với rủi ro tài chính.' 
-                  : 'Sau 3 vòng đàm phán cọ xát với AI Persona, sinh viên đạt mức phản xạ toàn diện 4 chiều, sẵn sàng tham gia các phiên đàm phán quốc tế.'}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* SECTION 3: HEARING CHAMBER PREVIEW */}
-      <section id="chamber" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
-        <div className="craft-card" style={{ padding: 'clamp(18px, 3vw, 28px)', background: 'var(--bg-surface-elevated)', border: '1px solid var(--border-medium)' }}>
-          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '24px', alignItems: 'center' }}>
-            
-            <div className="image-zoom-container" style={{ position: 'relative' }}>
-              <img 
-                src="./assets/arbitration_hearing.jpg" 
-                alt="Arbitration Hearing Chamber" 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-              />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(3, 8, 11, 0.95) 0%, rgba(3, 8, 11, 0.2) 60%)' }} />
-              
-              <div style={{ position: 'absolute', bottom: '14px', left: '14px', right: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '8px' }}>
-                <div>
-                  <span className="badge-mono" style={{ background: 'rgba(0,0,0,0.7)', color: 'var(--teal)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    PROCEEDING ROOM // SHIAC
-                  </span>
-                  <div className="font-display" style={{ fontSize: '16px', fontWeight: 600, color: '#FFFFFF', marginTop: '4px' }}>
-                    Phiên Trọng Tài Hợp Đồng Thượng Hải
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', background: 'rgba(0,0,0,0.6)', padding: '5px 8px', borderRadius: '4px' }}>
-                  <span className="audio-wave-bar" />
-                  <span className="audio-wave-bar" />
-                  <span className="audio-wave-bar" />
-                  <span className="audio-wave-bar" />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '8px' }}>
-                AI PERSONA // CHEN XIAO DONG
-              </div>
-              <h3 className="font-display" style={{ fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
-                Trần Hiểu Đông (Chen Xiao Dong - 陈晓东)
-              </h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: 1.55 }}>
-                Giám đốc Điều hành & Cố vấn Pháp lý cấp cao, Tập đoàn HuaXin Tech (Thượng Hải). Sắc sảo, thực dụng, viện dẫn hợp đồng CISG yêu cầu bồi thường 1.2M USD.
-              </p>
-
-              <div className="craft-inset" style={{ padding: '12px 14px', marginBottom: '16px', borderLeft: '3px solid var(--teal)' }}>
-                <p className="font-cn" style={{ fontSize: '12.5px', color: 'var(--ink)', marginBottom: '4px' }}>
-                  "如果今天你们依然拿不出实质性的解决方案，我们将在明天正式向SHIAC提起仲裁程序！"
-                </p>
-                <p style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
-                  "Nếu hôm nay các bạn không đưa ra phương án thực chất, chúng tôi sẽ nộp đơn lên Trọng tài SHIAC ngay ngày mai!"
-                </p>
-              </div>
-
-              <button
-                onClick={() => onStartScenario(SCENARIOS[0])}
-                className="btn-cta-pill"
-                style={{ width: '100%', justifyContent: 'center' }}
-              >
-                <span>Vào Phòng Điều Trần Ngay</span>
-                <span className="pill-disc">
-                  <svg viewBox="0 0 5 8"><path d="M.6.6 4 4 .6 7.4" /></svg>
-                </span>
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 4: SCENARIOS REPOSITORY */}
-      <section id="cases" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
-        <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '48px', marginBottom: '28px' }}>
-          <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '8px' }}>
-            SIMULATION CASE REPOSITORY // THƯ VIỆN KỊCH BẢN
-          </div>
-          <h2 className="font-display" style={{ fontSize: 'clamp(24px, 5vw, 32px)', fontWeight: 600, color: 'var(--ink)', marginTop: '4px' }}>
-            Các Bộ Kịch Bản Thực Chiến Sẵn Sàng Vận Hành
-          </h2>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '18px' }}>
-          {SCENARIOS.map((sc, i) => (
+            {/* Column 1: Photographic Image Showcase */}
             <div 
-              key={sc.id} 
-              className="craft-card craft-card-interactive" 
               style={{ 
-                padding: '16px', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                gap: '14px',
-                border: sc.id === 'shanghai-arbitration' ? '1px solid var(--border-medium)' : '1px solid var(--border-subtle)'
+                borderRadius: '14px', 
+                overflow: 'hidden', 
+                position: 'relative',
+                minHeight: '260px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: '#070C1B'
               }}
             >
-              <div className="image-zoom-container" style={{ height: '140px', position: 'relative' }}>
-                <img 
-                  src={sc.persona.avatar} 
-                  alt={sc.title} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(3, 8, 11, 0.9) 0%, transparent 60%)' }} />
-                
-                <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
-                  <span className="badge-mono" style={{ background: 'rgba(0,0,0,0.7)', color: 'var(--ink)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    CASE #0{i + 1} • {sc.level}
-                  </span>
+              <img 
+                src={currentDiscipline.image} 
+                alt={currentDiscipline.name} 
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  display: 'block'
+                }} 
+              />
+              <div 
+                style={{ 
+                  position: 'absolute', 
+                  inset: 0, 
+                  background: 'linear-gradient(to top, rgba(6, 9, 19, 0.92) 0%, rgba(6, 9, 19, 0.3) 60%, transparent 100%)' 
+                }} 
+              />
+              <div style={{ position: 'absolute', bottom: '14px', left: '16px', right: '16px' }}>
+                <span style={{ fontSize: '11px', color: '#38BDF8', fontWeight: 600, display: 'block', marginBottom: '3px' }}>
+                  {currentDiscipline.casesCount} VỤ VIỆC SẴN SÀNG
+                </span>
+                <span style={{ fontSize: '13px', color: '#F1F5F9', fontWeight: 500, lineHeight: 1.4 }}>
+                  {currentDiscipline.imageCaption}
+                </span>
+              </div>
+            </div>
+
+            {/* Column 2: Field Overview & Highlights (Không icon, gạch đầu dòng thanh lịch) */}
+            <div 
+              style={{ 
+                background: 'rgba(6, 9, 19, 0.75)', 
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderLeft: '4px solid #38BDF8',
+                borderRadius: '14px',
+                padding: '22px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: '#38BDF8', marginBottom: '8px', letterSpacing: '0.04em' }}>
+                  {currentDiscipline.sub}
                 </div>
 
-                <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
-                  <span className="font-mono" style={{ fontSize: '11px', color: 'var(--ink-2)', background: 'rgba(0,0,0,0.7)', padding: '2px 8px', borderRadius: '4px' }}>
-                    {sc.duration}
-                  </span>
-                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#F8FAFC', marginBottom: '10px' }}>
+                  {currentDiscipline.name}
+                </h3>
+
+                <p style={{ fontSize: '13px', color: '#CBD5E1', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '18px' }}>
+                  {currentDiscipline.quote}
+                </p>
               </div>
 
               <div>
-                <h3 className="font-display" style={{ fontSize: '17px', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.35 }}>
-                  {sc.title}
-                </h3>
-                <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.45 }}>
-                  {sc.subtitle}
-                </p>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: '#94A3B8', marginBottom: '8px', textTransform: 'uppercase' }}>
+                  CĂN CỨ VẬN DỤNG & ĐÒN BẨY ĐÀM PHÁN:
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {currentDiscipline.highlights.map((hl, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12.5px', color: '#E2E8F0' }}>
+                      <span style={{ color: '#38BDF8', fontWeight: 700 }}>—</span>
+                      <span>{hl}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Column 3: Case study launch card */}
+            <div 
+              style={{ 
+                background: 'rgba(17, 26, 54, 0.75)', 
+                border: '1px solid rgba(255, 255, 255, 0.1)', 
+                borderRadius: '14px',
+                padding: '22px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#CBD5E1', background: 'rgba(255, 255, 255, 0.08)', padding: '3px 8px', borderRadius: '4px', display: 'inline-block', marginBottom: '10px' }}>
+                  CASE STUDY THỰC TẾ ĐANG MỞ
+                </span>
+
+                {SCENARIOS.find(s => s.field === activeFieldTab) ? (
+                  <>
+                    <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#F8FAFC', marginBottom: '8px', lineHeight: 1.35 }}>
+                      {SCENARIOS.find(s => s.field === activeFieldTab)?.title}
+                    </h4>
+                    <p style={{ fontSize: '12.5px', color: '#94A3B8', lineHeight: 1.5, marginBottom: '12px' }}>
+                      {SCENARIOS.find(s => s.field === activeFieldTab)?.context?.overview}
+                    </p>
+
+                    <div style={{ padding: '9px 12px', background: 'rgba(6, 9, 19, 0.85)', borderRadius: '8px', borderLeft: '3px solid #38BDF8', marginBottom: '14px' }}>
+                      <span style={{ fontSize: '10.5px', color: '#38BDF8', fontWeight: 600, display: 'block', marginBottom: '2px' }}>
+                        Mục tiêu sinh viên:
+                      </span>
+                      <span style={{ fontSize: '12px', color: '#CBD5E1' }}>
+                        {SCENARIOS.find(s => s.field === activeFieldTab)?.context?.coreObjectives?.[0]}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <p style={{ fontSize: '12.5px', color: '#94A3B8' }}>
+                    Kịch bản mẫu được lấy trực tiếp từ các án lệ và vụ việc truyền thông thực tế.
+                  </p>
+                )}
               </div>
 
-              <div className="craft-inset" style={{ padding: '10px 12px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                <div style={{ color: 'var(--text-muted)' }}>Chủ thể AI: <span style={{ color: 'var(--ink)', fontWeight: 500 }}>{sc.persona.name}</span></div>
-                <div style={{ color: 'var(--text-muted)' }}>Ngôn ngữ: <span style={{ color: 'var(--ink)' }}>{sc.languages.join(' • ')}</span></div>
-              </div>
-
-              <div style={{ marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid var(--border-subtle)' }}>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
                 <button
-                  onClick={() => onStartScenario(sc)}
+                  onClick={() => {
+                    const match = SCENARIOS.find(s => s.field === activeFieldTab) || SCENARIOS[0];
+                    onStartScenario(match);
+                  }}
                   className="btn-primary"
-                  style={{ width: '100%', justifyContent: 'center', height: '38px' }}
+                  style={{ flex: 1, justifyContent: 'center', padding: '9px 14px', fontSize: '12.5px' }}
                 >
-                  <span>Mở Hồ Sơ & Điều Trần</span>
-                  <ChevronRight size={15} />
+                  <span>Vào Thực Nghiệm Ca Này</span>
                 </button>
+
+                <button
+                  onClick={onOpenHearingModal}
+                  className="btn-secondary"
+                  style={{ padding: '9px 12px', fontSize: '12.5px' }}
+                >
+                  <span>Ngẫu Nhiên</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 3. SECTION: VISUAL SIMULATION ARENA HIGHLIGHT (CHÂN THỰC, KHÔNG ICON LÒE LOẸT) */}
+      <section style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div 
+          style={{ 
+            background: '#0B1124',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '20px',
+            padding: 'clamp(20px, 3.5vw, 36px)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))',
+            gap: '28px',
+            alignItems: 'center'
+          }}
+        >
+          <div>
+            <div style={{ display: 'inline-block', background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.25)', color: '#38BDF8', padding: '3px 10px', borderRadius: '9999px', fontSize: '11px', fontWeight: 600, marginBottom: '10px' }}>
+              TÍNH NĂNG ĐỘC QUYỀN // VISUAL SIMULATION STAGE
+            </div>
+
+            <h2 style={{ fontSize: 'clamp(20px, 3.2vw, 26px)', fontWeight: 700, color: '#F8FAFC', marginBottom: '12px', lineHeight: 1.3 }}>
+              Kiến Tạo Phân Cảnh Mô Phỏng Tương Tác Trực Quan
+            </h2>
+
+            <p style={{ fontSize: '13.5px', color: '#94A3B8', lineHeight: 1.6, marginBottom: '18px' }}>
+              SimLab tích hợp phân cảnh tương tác trực quan mô phỏng đối tượng phản biện với biểu cảm sắc thái biến thiên theo chất lượng lập luận, hội thoại bám sát bối cảnh và tự động ghi chép biên bản phiên thẩm vấn số.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+              <div style={{ fontSize: '13px', color: '#CBD5E1', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <span style={{ color: '#38BDF8', fontWeight: 700 }}>—</span>
+                <span><b>Biểu cảm AI đa chiều:</b> Biến thiên theo từng căn cứ viện dẫn và phương án nhượng bộ.</span>
+              </div>
+              <div style={{ fontSize: '13px', color: '#CBD5E1', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <span style={{ color: '#38BDF8', fontWeight: 700 }}>—</span>
+                <span><b>Thoại bong bóng trực tiếp:</b> Cập nhật lập luận trực diện giữa đoàn đàm phán và đối tác.</span>
+              </div>
+              <div style={{ fontSize: '13px', color: '#CBD5E1', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <span style={{ color: '#38BDF8', fontWeight: 700 }}>—</span>
+                <span><b>Tự động ghi chép biên bản:</b> Lưu trữ dữ liệu phiên thẩm vấn thành bảng điểm phân tích.</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => onStartScenario(SCENARIOS[0])}
+              className="btn-primary"
+              style={{ padding: '10px 20px', fontSize: '13px' }}
+            >
+              <span>Trải Nghiệm Mô Phỏng Trực Quan</span>
+            </button>
+          </div>
+
+          {/* Visual Photographic Showcase */}
+          <div 
+            style={{ 
+              borderRadius: '16px', 
+              overflow: 'hidden', 
+              position: 'relative',
+              height: '260px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: '#070C1B'
+            }}
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80" 
+              alt="Moot court and negotiation" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            />
+            <div 
+              style={{ 
+                position: 'absolute', 
+                inset: 0, 
+                background: 'linear-gradient(to top, rgba(6, 9, 19, 0.95) 0%, rgba(6, 9, 19, 0.3) 60%, transparent 100%)' 
+              }} 
+            />
+            <div style={{ position: 'absolute', bottom: '16px', left: '16px', right: '16px' }}>
+              <span style={{ fontSize: '11px', color: '#38BDF8', fontWeight: 600, display: 'block', marginBottom: '2px' }}>
+                MÔ HÌNH PHÒNG XỬ ÁN & ĐÀM PHÁN GIẢ ĐỊNH
+              </span>
+              <span style={{ fontSize: '13px', color: '#F1F5F9' }}>
+                Không gian thực nghiệm tranh tụng và giải quyết tranh chấp chuẩn quốc tế
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. NEW SECTION: KHÔNG GIAN THỰC NGHIỆM & MÔI TRƯỜNG ĐÀO TẠO (THÊM NHIỀU ẢNH THỰC TẾ) */}
+      <section style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div style={{ marginBottom: '20px' }}>
+          <span 
+            style={{ 
+              background: 'rgba(255, 255, 255, 0.06)', 
+              color: '#94A3B8', 
+              border: '1px solid rgba(255, 255, 255, 0.1)', 
+              padding: '3px 10px', 
+              borderRadius: '9999px', 
+              fontSize: '11px', 
+              fontWeight: 600, 
+              display: 'inline-block', 
+              marginBottom: '8px' 
+            }}
+          >
+            FACILITIES & ENVIRONMENTS // CƠ SỞ THỰC NGHIỆM
+          </span>
+          <h2 style={{ fontSize: 'clamp(20px, 3.2vw, 26px)', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+            Không Gian Giả Lập & Môi Trường Đào Tạo
+          </h2>
+          <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '6px' }}>
+            Hệ thống phòng mô phỏng chuẩn hóa kết nối đồng bộ giữa nền tảng AI và nghiệp vụ thực tiễn.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
+          {[
+            {
+              title: 'Phòng Trọng Tài & Phiên Tòa Giả Định',
+              caption: 'Rèn luyện kỹ năng tố tụng, đối soát hợp đồng CISG và tranh tụng trước trọng tài.',
+              image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+              title: 'Trạm Dữ Liệu Kinh Tế & Phân Tích Tài Chính',
+              caption: 'Theo dõi biến động tỷ giá, lạm phát và thiết lập hành lang phòng ngừa rủi ro.',
+              image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+              title: 'Phòng Điều Hành Khủng Hoảng Doanh Nghiệp',
+              caption: 'Xử lý khủng hoảng truyền thông mạng xã hội, phát ngôn và đàm phán nhân sự.',
+              image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+              title: 'Hệ Thống Logistics & Cảng Biển Quốc Tế',
+              caption: 'Thực hành chứng từ C/O Form E, vận tải đa phương thức và thủ tục hải quan cảng.',
+              image: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80'
+            }
+          ].map((env, idx) => (
+            <div 
+              key={idx}
+              style={{
+                borderRadius: '14px',
+                overflow: 'hidden',
+                background: '#0B1124',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 6px 18px rgba(0,0,0,0.3)',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              <div style={{ height: '150px', position: 'relative', overflow: 'hidden' }}>
+                <img 
+                  src={env.image} 
+                  alt={env.title} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
+              </div>
+              <div style={{ padding: '14px' }}>
+                <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#F8FAFC', marginBottom: '6px' }}>
+                  {env.title}
+                </h4>
+                <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: 1.45 }}>
+                  {env.caption}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SECTION 5: CREDENTIALS */}
-      <section id="credentials" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
-        <div className="craft-card" style={{ padding: 'clamp(20px, 4vw, 36px)', background: 'var(--bg-surface)' }}>
-          <div className="grid-2col-responsive" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-            
-            <div>
-              <div className="badge-mono" style={{ background: 'var(--pine)', color: 'var(--teal)', marginBottom: '8px' }}>
-                PROJECT CREDENTIALS // ĐƠN VỊ THỰC HIỆN
-              </div>
-              <h3 className="font-display" style={{ fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 600, color: 'var(--ink)', marginBottom: '10px' }}>
-                Nhóm Nghiên Cứu Sinh Viên Liên Ngành
-              </h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '16px' }}>
-                Đề tài phục vụ giảng dạy thực hành liên môn: Kinh tế, Quản trị, Luật kinh tế và Ngôn ngữ, giúp sinh viên có không gian an toàn để trải nghiệm và học hỏi từ các sai lầm trong đàm phán thương mại quốc tế.
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12.5px', color: 'var(--ink-2)' }}>
-                <div>• Khoa Luật Kinh tế & Khoa Ngoại ngữ Thương mại (Cố vấn)</div>
-                <div>• Nhóm Sinh viên Đề tài Nghiên cứu Khoa học & Đổi mới Sáng tạo</div>
-              </div>
+      {/* 5. SECTION: SCENARIOS REPOSITORY (THÊM ẢNH BÌA CHO TỪNG CA, KHÔNG DÙNG ICON) */}
+      <section id="cases" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '14px', marginBottom: '20px' }}>
+          <div>
+            <div style={{ display: 'inline-block', background: 'rgba(56, 189, 248, 0.1)', color: '#38BDF8', padding: '3px 10px', borderRadius: '9999px', fontSize: '11px', fontWeight: 600, marginBottom: '6px' }}>
+              KHO TÌNH HUỐNG THỰC CHIẾN
             </div>
-
-            <div className="craft-inset" style={{ padding: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Award size={18} color="var(--teal)" />
-                <span className="font-mono" style={{ fontSize: '12px', color: 'var(--teal)', fontWeight: 600 }}>GIÁ TRỊ ĐÓNG GÓP CHO ĐÀO TẠO</span>
-              </div>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: 'var(--ink-2)' }}>
-                <li>• <b>Đổi mới phương pháp:</b> Chuyển từ học thụ động sang nhập vai phản biện trực tiếp cùng AI.</li>
-                <li>• <b>Cầu nối thực tiễn:</b> Tiếp cận các bộ hồ sơ vụ án thực tế (Trọng tài SHIAC, VIAC, SIAC).</li>
-                <li>• <b>Chuẩn đầu ra:</b> Chứng thực định lượng 4 chiều năng lực sẵn sàng tuyển dụng.</li>
-              </ul>
-            </div>
-
+            <h2 style={{ fontSize: 'clamp(20px, 3.2vw, 26px)', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+              Kho Kịch Bản Thực Nghiệm 6 Lĩnh Vực
+            </h2>
           </div>
+
+          {/* Filter Pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+            {[
+              { key: 'all', label: 'Tất cả' },
+              { key: 'law', label: 'Luật' },
+              { key: 'economics', label: 'Kinh Tế' },
+              { key: 'management', label: 'Quản Trị' },
+              { key: 'business', label: 'Kinh Doanh' },
+              { key: 'languages', label: 'Ngôn Ngữ' },
+              { key: 'commerce', label: 'Thương Mại' }
+            ].map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setSelectedDisciplineFilter(f.key)}
+                style={{
+                  background: selectedDisciplineFilter === f.key ? '#1E293B' : 'rgba(11, 17, 36, 0.8)',
+                  color: selectedDisciplineFilter === f.key ? '#F8FAFC' : '#94A3B8',
+                  border: selectedDisciplineFilter === f.key ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid rgba(255, 255, 255, 0.08)',
+                  padding: '5px 11px',
+                  borderRadius: '9999px',
+                  fontSize: '11.5px',
+                  fontWeight: 500,
+                  cursor: 'pointer'
+                }}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Scenarios Grid Cards (Mỗi thẻ có ảnh bìa chân thực) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '18px' }}>
+          {filteredScenarios.map((sc) => (
+            <div 
+              key={sc.id} 
+              style={{
+                background: '#0B1124',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 6px 20px rgba(0,0,0,0.35)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.09)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              {/* Photo Banner */}
+              <div style={{ height: '140px', width: '100%', position: 'relative', overflow: 'hidden' }}>
+                <img 
+                  src={sc.image} 
+                  alt={sc.title} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(11, 17, 36, 0.95) 0%, transparent 60%)' }} />
+                <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(6, 9, 19, 0.85)', padding: '2px 8px', borderRadius: '4px', fontSize: '10.5px', color: '#F1F5F9', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  {sc.fieldName}
+                </div>
+                <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(6, 9, 19, 0.85)', padding: '2px 8px', borderRadius: '4px', fontSize: '10.5px', color: '#94A3B8' }}>
+                  {sc.duration}
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+                <div>
+                  <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#F8FAFC', marginBottom: '6px', lineHeight: 1.35 }}>
+                    {sc.title}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: 1.5, marginBottom: '12px' }}>
+                    {sc.subtitle}
+                  </p>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '16px' }}>
+                    {sc.tags?.map((tag, idx) => (
+                      <span key={idx} style={{ fontSize: '10.5px', color: '#CBD5E1', background: 'rgba(255, 255, 255, 0.05)', padding: '2px 6px', borderRadius: '4px' }}>
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => onStartScenario(sc)}
+                  className="btn-primary"
+                  style={{ width: '100%', justifyContent: 'center', padding: '8px', fontSize: '12.5px' }}
+                >
+                  <span>Bắt Đầu Phiên Này</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

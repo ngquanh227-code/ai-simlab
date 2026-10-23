@@ -7,6 +7,7 @@ import {
 import RadarChart from './RadarChart';
 import { playAiVoice, stopAiVoice } from '../utils/speech';
 import confetti from 'canvas-confetti';
+import GenZVisualStage from './GenZVisualStage';
 
 export default function SimChamber({ scenario, onFinish, onBack }) {
   const [messages, setMessages] = useState([
@@ -253,7 +254,7 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
             title="Hồ sơ chứng cứ"
           >
             <FileText size={13} />
-            <span className="chamber-btn-text">Hồ Sơ ({scenario.dossier.length})</span>
+            <span className="chamber-btn-text">Hồ Sơ ({(scenario.dossier?.length || scenario.dossiers?.length || 0)})</span>
           </button>
 
           <button
@@ -370,8 +371,19 @@ export default function SimChamber({ scenario, onFinish, onBack }) {
         </div>
 
         {/* CENTER COLUMN: Hearing Record & Negotiation Console */}
-        <div className={`craft-card sim-chamber-chat chamber-col-center ${mobileTab === 'chat' ? 'mobile-active' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '760px', overflow: 'hidden' }}>
+        <div className={`craft-card sim-chamber-chat chamber-col-center ${mobileTab === 'chat' ? 'mobile-active' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '860px', overflow: 'hidden' }}>
           
+          {/* GenZ Anime Visual Stage Component */}
+          <GenZVisualStage 
+            currentSpeaker={messages[messages.length - 1]?.sender || 'ai'}
+            aiStance={stance}
+            lastAiMessage={messages.filter(m => m.sender === 'ai').slice(-1)[0]?.textVi || messages.filter(m => m.sender === 'ai').slice(-1)[0]?.textZh || ''}
+            lastUserMessage={messages.filter(m => m.sender === 'user').slice(-1)[0]?.textVi || messages.filter(m => m.sender === 'user')?.slice(-1)[0]?.text || ''}
+            scores={scores}
+            isAiTyping={isAiTyping}
+            scenarioTitle={scenario.title}
+          />
+
           {/* Transcript Subheader with Wave Motion */}
           <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border-subtle)', background: 'var(--bg-inset)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
